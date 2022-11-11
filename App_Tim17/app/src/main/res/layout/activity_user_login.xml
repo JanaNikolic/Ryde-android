@@ -36,20 +36,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loginText"
         android:importantForAutofill="no" />
-
+<RelativeLayout
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.495"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/emailInput" >
     <EditText
         android:id="@+id/passwordInput"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:minHeight="50dp"
         android:ems="10"
-        android:hint="@string/password_hint"
+        android:hint="@string/password"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailInput"
-        android:importantForAutofill="no" />
+        android:minHeight="50dp"
+        />
+
+    <ImageView
+        android:id="@+id/showPassBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:alpha=".5"
+        android:onClick="ShowHidePass"
+        android:padding="5dp"
+        android:src="@drawable/ic_show_password"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="745dp"
+        tools:layout_editor_absoluteY="189dp"
+        android:contentDescription="@string/show_hide" />
+</RelativeLayout>
+
 
     <TextView
         android:id="@+id/forgotPassword"
@@ -59,9 +80,9 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/dark_teal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordInput"/>
+        app:layout_constraintTop_toBottomOf="@id/RelativeLayout01" />
 
     <Button
         android:id="@+id/loginBtn"

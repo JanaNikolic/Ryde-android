@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +36,26 @@ public class UserLoginActivity extends AppCompatActivity {
             }
         });
     }
+    public void ShowHidePass(View view){
+
+//        if(view.getId()==R.id.showPassBtn){
+//            EditText paswordInput = findViewById(R.id.passwordInput);
+//            if(passwordInput.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+//                ((ImageView(view)).setImageResource(R.drawable.hide_password);
+//
+//                //Show Password
+//                passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+//            }
+//            else{
+//                ((ImageView)(view)).setImageResource(R.drawable.ic_show_password);
+//
+//                //Hide Password
+//                passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//
+//            }
+//        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
