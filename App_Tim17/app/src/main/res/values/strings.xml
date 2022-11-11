@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">RYDE</string>
+    <string name="app_name">Ryde</string>
+    <string name="passengerinboxactivity">PassengerInboxActivity</string>
+    <string name="passengeraccountactivity">PassengerAccountActivity</string>
+    <string name="user_name">User name</string>
+    <string name="login">Login</string>
+    <string name="phone_number">Phone number</string>
+    <string name="registration">Registration</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="register">Register</string>
+    <string name="togglebutton">ToggleButton</string>
+    <string name="offline">Offline</string>
+    <string name="online">Online</string>
+    <string name="drivehistory">DriveHistory</string>
+    <string name="accountactivity">accountActivity</string>
+    <string name="inboxactivity">inboxActivity</string>
+    <string name="main">Main</string>
+    <string name="address">Address</string>
+    <string name="name">Name</string>
+    <string name="lastname">lastname</string>
+    <string name="title_activity_passenger_main">PassengerMain</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="btnCreate">Get a Ryde</string>
 </resources>
