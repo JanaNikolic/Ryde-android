@@ -13,7 +13,7 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="register">Register</string>
-    <string name="togglebutton">ToggleButton</string>
+    <string name="togglebutton">Toggle</string>
     <string name="offline">Offline</string>
     <string name="online">Online</string>
     <string name="drivehistory">DriveHistory</string>
