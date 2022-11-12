@@ -29,4 +29,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="btnCreate">Get a Ryde</string>
     <string name="show_hide">Show/Hide</string>
+    <string name="current_ride">Current Ryde</string>
 </resources>

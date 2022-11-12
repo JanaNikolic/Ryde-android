@@ -6,13 +6,10 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.app_tim17.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 public class PassengerMainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
@@ -25,6 +22,10 @@ public class PassengerMainActivity extends AppCompatActivity implements BottomNa
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
+        BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(findViewById(R.id.sheet));
+        sheetBehavior.setPeekHeight(400);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
