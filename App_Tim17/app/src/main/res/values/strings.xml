@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">RYDE</string>
     <string name="user_login">User Login</string>
     <string name="no_account">Don\'t have an Account</string>
     <string name="forgot_password"><b>Forgot password?</b></string>
+    <string name="app_name">Ryde</string>
+    <string name="inbox">Inbox</string>
     <string name="passengerinboxactivity">PassengerInboxActivity</string>
     <string name="passengeraccountactivity">PassengerAccountActivity</string>
     <string name="user_name">User name</string>

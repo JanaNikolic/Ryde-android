@@ -15,7 +15,12 @@
         <!-- Customize your theme here. -->
         <item name="android:textColorHint">@color/teal</item>
     </style>
-
+    <style name="NavigationBar">
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorSurface">@color/teal</item>
+    </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
