@@ -13,6 +13,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:navigationBarColor">@color/teal</item>
         <!-- Customize your theme here. -->
+        <item name="android:textColorHint">@color/teal</item>
     </style>
     <style name="NavigationBar">
         <item name="colorPrimary">@color/yellow</item>

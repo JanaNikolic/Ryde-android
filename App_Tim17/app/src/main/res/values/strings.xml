@@ -1,4 +1,7 @@
 <resources>
+    <string name="user_login">User Login</string>
+    <string name="no_account">Don\'t have an Account</string>
+    <string name="forgot_password"><b>Forgot password?</b></string>
     <string name="app_name">Ryde</string>
     <string name="inbox">Inbox</string>
     <string name="passengerinboxactivity">PassengerInboxActivity</string>
@@ -11,7 +14,7 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="register">Register</string>
-    <string name="togglebutton">ToggleButton</string>
+    <string name="togglebutton">Toggle</string>
     <string name="offline">Offline</string>
     <string name="online">Online</string>
     <string name="drivehistory">DriveHistory</string>
@@ -20,12 +23,12 @@
     <string name="main">Main</string>
     <string name="address">Address</string>
     <string name="name">Name</string>
-    <string name="lastname">lastname</string>
+    <string name="lastname">Last Name</string>
     <string name="title_activity_passenger_main">PassengerMain</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="btnCreate">Get a Ryde</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="show_hide">Show/Hide</string>
+    <string name="current_ride">Current Ryde</string>
 </resources>
