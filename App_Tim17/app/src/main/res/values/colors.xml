@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_teal">#053032</color>
     <color name="teal">#095255</color>
+    <color name="yellow">#FFD700</color>
 </resources>
