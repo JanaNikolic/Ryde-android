@@ -53,7 +53,7 @@ public class PassengerMainActivity extends AppCompatActivity implements BottomNa
                 overridePendingTransition(0, 0);
                 return true;
             case R.id.profile:
-                startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class));
+                startActivity(new Intent(getApplicationContext(), PassengerAccountActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
         }
