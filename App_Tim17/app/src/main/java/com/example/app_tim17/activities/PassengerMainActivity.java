@@ -27,7 +27,7 @@ public class PassengerMainActivity extends AppCompatActivity implements BottomNa
         // menu should be considered as top level destinations.
 
         BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(findViewById(R.id.sheet));
-        sheetBehavior.setPeekHeight(400);
+        sheetBehavior.setPeekHeight(300);
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
