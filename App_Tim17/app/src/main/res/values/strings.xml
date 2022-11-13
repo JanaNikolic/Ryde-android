@@ -18,6 +18,7 @@
     <string name="offline">Offline</string>
     <string name="online">Online</string>
     <string name="drivehistory">DriveHistory</string>
+    <string name="ride_history">Ride history</string>
     <string name="accountactivity">accountActivity</string>
     <string name="inboxactivity">inboxActivity</string>
     <string name="main">Main</string>

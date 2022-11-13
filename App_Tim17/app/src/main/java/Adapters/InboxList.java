@@ -12,7 +12,6 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.app_tim17.R;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import io.getstream.avatarview.AvatarView;
 
 public class InboxList extends ArrayAdapter{
     private String[] UserNames;
