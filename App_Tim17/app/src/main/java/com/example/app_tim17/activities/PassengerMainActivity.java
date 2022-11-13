@@ -22,12 +22,11 @@ public class PassengerMainActivity extends AppCompatActivity implements BottomNa
         bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
         BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(findViewById(R.id.sheet));
-        sheetBehavior.setPeekHeight(400);
+        sheetBehavior.setPeekHeight(300);
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 

@@ -32,4 +32,8 @@
     <string name="btnCreate">Get a Ryde</string>
     <string name="show_hide">Show/Hide</string>
     <string name="current_ride">Current Ryde</string>
+    <string name="get_ride">Get a Ryde</string>
+    <string name="edit">Edit Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
