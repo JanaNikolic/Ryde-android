@@ -58,27 +58,24 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.inbox:
+                startActivity(new Intent(getApplicationContext(), DriverInboxActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            case R.id.home:
+                return true;
+            case R.id.history:
+                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            case R.id.profile:
+                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+        }
         return false;
     }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if(id == R.id.TBAccount){
-//            Intent intent = new Intent(DriverMainActivity.this, DriverAccountActivity.class);
-//            startActivity(intent);
-//        }
-//        else if(id == R.id.TBdrive_history){
-//            Intent intent = new Intent(DriverMainActivity.this, DriverRideHistoryActivity.class);
-//            startActivity(intent);
-//        }
-//        else if(id == R.id.TBInbox){
-//            Intent intent = new Intent(DriverMainActivity.this, DriverInboxActivity.class);
-//            startActivity(intent);
-//        }
-//
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
 }

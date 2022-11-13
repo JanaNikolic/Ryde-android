@@ -7,31 +7,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import Adapters.PassengerProfile;
-
-public class PassengerAccountActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class PassengerSingularRideHistoryActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passenger_account);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_profile);
-        bottomNavigationView.setSelectedItemId(R.id.profile);
+        setContentView(R.layout.activity_passenger_singular_ride_history);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
+        bottomNavigationView.setSelectedItemId(R.id.history);
         bottomNavigationView.setOnItemSelectedListener(this);
-        ListView listview = findViewById(R.id.list_view_profile);
-        PassengerProfile adapter = new PassengerProfile(this);
-        listview.setAdapter(adapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_header, menu);
-        setTitle("Profile");
         return true;
     }
 
@@ -51,9 +44,11 @@ public class PassengerAccountActivity extends AppCompatActivity implements Botto
                 overridePendingTransition(0, 0);
                 return true;
             case R.id.profile:
+                startActivity(new Intent(getApplicationContext(), PassengerAccountActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
         }
         return false;
     }
+
 }

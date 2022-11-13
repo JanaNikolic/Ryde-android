@@ -49,7 +49,7 @@ public class PassengerMainActivity extends AppCompatActivity implements BottomNa
             case R.id.home:
                 return true;
             case R.id.history:
-                startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class));
+                startActivity(new Intent(getApplicationContext(), PassengerRideHistoryActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
             case R.id.profile:
