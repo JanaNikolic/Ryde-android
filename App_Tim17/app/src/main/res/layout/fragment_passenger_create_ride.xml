@@ -3,17 +3,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.PassengerCurrentRideFragment">
+    tools:context=".fragments.PassengerCurrentRideFragment"
+    android:id="@+id/CreateRideFrame">
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/get_ride"
         android:textColor="@color/teal"
         android:textSize="24sp"
+        android:layout_marginBottom="20dp"
         android:gravity="center|top"
         />
+    <AutoCompleteTextView
+        android:id="@+id/from"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="40dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginVertical="10dp"
+        android:backgroundTint="@color/teal"
+        android:drawableLeft="@drawable/ic_baseline_location_on_24"
+        android:hint="@string/from"/>
+    <AutoCompleteTextView
+        android:id="@+id/to"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="10dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/teal"
+        android:textSize="20sp"
+        android:backgroundTint="@color/teal"
+        android:drawableLeft="@drawable/ic_baseline_location_on_24"
+        android:hint="@string/to"
+        />
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="@string/search"
+        android:background="@drawable/rounded_corner" />
+</LinearLayout>
     <!--    TODO Podaci o voznji-->
 
     <!--    TODO Podaci o vozacu-->
