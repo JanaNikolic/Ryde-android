@@ -3,7 +3,6 @@ package com.example.app_tim17.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,24 +12,21 @@ import android.view.MenuItem;
 import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class DriverMainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class DriverAccountActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_main);
-        bottomNavigationView = findViewById(R.id.nav_view_driver);
-        bottomNavigationView.setSelectedItemId(R.id.home_driver);
+        setContentView(R.layout.activity_driver_account);
+        bottomNavigationView = findViewById(R.id.nav_view_driver_account);
+        bottomNavigationView.setSelectedItemId(R.id.profile_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
 
+        ActionBar actionBar = getSupportActionBar();
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_driver, menu);
-        return true;
-    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -44,8 +40,6 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
     @Override
     protected void onResume() {
         super.onResume();
-        bottomNavigationView = findViewById(R.id.nav_view_driver);
-        bottomNavigationView.setSelectedItemId(R.id.home_driver);
     }
 
     @Override
@@ -58,15 +52,20 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
         super.onStop();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_driver, menu);
+        return true;
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.profile_driver:
-                startActivity(new Intent(getApplicationContext(), DriverAccountActivity.class));
-                overridePendingTransition(0, 0);
-                return true;
             case R.id.home_driver:
+                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                this.finish();
+                return true;
+            case R.id.profile_driver:
                 return true;
         }
         return false;
