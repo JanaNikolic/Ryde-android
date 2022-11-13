@@ -7,12 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import Adapters.PassengerProfile;
 
 public class PassengerAccountActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
@@ -20,12 +17,9 @@ public class PassengerAccountActivity extends AppCompatActivity implements Botto
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_account);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_profile);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_driver_account);
         bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationView.setOnItemSelectedListener(this);
-        ListView listview = findViewById(R.id.list_view_profile);
-        PassengerProfile adapter = new PassengerProfile(this);
-        listview.setAdapter(adapter);
     }
 
     @Override
