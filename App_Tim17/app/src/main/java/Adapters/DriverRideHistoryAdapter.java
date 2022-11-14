@@ -1,5 +1,6 @@
 package Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,9 +8,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.RideInfoFragment;
+
+import java.util.Observable;
 
 public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHistoryAdapter.ViewHolder> {
     private String[] dates;
@@ -27,7 +34,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
     public DriverRideHistoryAdapter(Context context, String[] date, String[] startTime, String[] endTime,
                                     String[] duration, String[] price, String[] numOfPassengers,
                                     String[] startAddress, String[] endAddress, String[] roadLength) {
-//        super(context, R.id.my_recycler_view);
+        super();
         this.context = context;
         this.dates = date;
         this.startTimes = startTime;
@@ -58,7 +65,19 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
         holder.numOfPassengersTextView.setText(numOfPassengers[position]);
         holder.startAddressTextView.setText(startAddresses[position]);
         holder.endAddressTextView.setText(endAddresses[position]);
-        holder.roadLengthTextView.setText(roadLengths[position]);
+        holder.roadLengthTextView.setText(roadLengths[position] + " km");
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                RideInfoFragment fragment = new RideInfoFragment();
+                FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
 
     }
 

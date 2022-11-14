@@ -65,6 +65,9 @@ public class DriverAccountActivity extends AppCompatActivity implements BottomNa
                 startActivity(new Intent(getApplicationContext(), DriverMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
                 return true;
+            case R.id.history_driver:
+                startActivity(new Intent(getApplicationContext(), DriverRideHistoryActivity.class));
+                return true;
             case R.id.profile_driver:
                 return true;
         }

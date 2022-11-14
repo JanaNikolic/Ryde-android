@@ -3,6 +3,7 @@ package com.example.app_tim17.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,14 +13,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.RideInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import Adapters.DriverRideHistoryAdapter;
 
 public class DriverRideHistoryActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
+    private static RecyclerView recyclerView;
+    private DriverRideHistoryAdapter rideHistoryAdapter;
+    private static LinearLayoutManager linearLayoutManager;
     private final String[] dates = {"11. Oct", "18. Oct", "18. Oct", "18. Oct", "19. Oct", "19. Oct"};
     private final String[] startTime = {"11:30", "16:30", "15:30", "14:30", "13:30", "12:30"};
     private final String[] endTime = {"11:45", "17:00", "15:40", "14:45", "13:50", "12:55"};
@@ -39,16 +46,18 @@ public class DriverRideHistoryActivity extends AppCompatActivity implements Bott
         bottomNavigationView.setSelectedItemId(R.id.history_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
 
-        RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
+        recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
-        DriverRideHistoryAdapter rideHistoryAdapter = new DriverRideHistoryAdapter(this, dates, startTime, endTime, duration, price, numOfPassengers, startAddress, endAddress,roadLength);
+        rideHistoryAdapter = new DriverRideHistoryAdapter(this, dates, startTime, endTime, duration, price, numOfPassengers, startAddress, endAddress,roadLength);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(rideHistoryAdapter);
+        }
 
-
-    }
+    public void ShowMessages(View view){
+        Toast.makeText(this, "Selected messages", Toast.LENGTH_SHORT).show();
+    } 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_driver, menu);
@@ -89,13 +98,11 @@ public class DriverRideHistoryActivity extends AppCompatActivity implements Bott
                 startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
-            case R.id.home:
+            case R.id.home_driver:
                 startActivity(new Intent(getApplicationContext(), DriverMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
                 return true;
             case R.id.history_driver:
-//                startActivity(new Intent(getApplicationContext(), DriverRideHistoryActivity.class));
-//                overridePendingTransition(0, 0);
                 return true;
             case R.id.profile_driver:
                 startActivity(new Intent(getApplicationContext(), DriverAccountActivity.class));

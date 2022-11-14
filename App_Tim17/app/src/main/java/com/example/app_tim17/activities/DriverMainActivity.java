@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.RideInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DriverMainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
