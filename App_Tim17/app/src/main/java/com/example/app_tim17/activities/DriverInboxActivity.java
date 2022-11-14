@@ -73,6 +73,7 @@ public class DriverInboxActivity extends AppCompatActivity implements BottomNavi
                 return true;
             case R.id.home_driver:
                 startActivity(new Intent(getApplicationContext(), DriverMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                overridePendingTransition(0,0);
                 this.finish();
                 return true;
             case R.id.history_driver:

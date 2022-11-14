@@ -93,6 +93,7 @@ public class PassengerRideHistoryActivity extends AppCompatActivity implements B
                 return true;
             case R.id.home:
                 startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                overridePendingTransition(0,0);
                 this.finish();
                 return true;
             case R.id.history:
