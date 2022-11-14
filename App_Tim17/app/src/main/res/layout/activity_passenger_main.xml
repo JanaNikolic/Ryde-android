@@ -29,11 +29,12 @@
             android:src="@drawable/ic_baseline_remove_24"/>
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/currentRide"
-            android:name="com.example.app_tim17.fragments.PassengerCurrentRideFragment"
+            android:name="com.example.app_tim17.fragments.PassengerCreateRideFragment"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout="@layout/fragment_passenger_current_ride" />
+            tools:layout="@layout/fragment_passenger_create_ride" />
+
 
     </FrameLayout>
 

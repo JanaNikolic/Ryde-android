@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PassengerSingularRideHistoryActivity">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/NavigationBar"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/menu_bottom" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/mapPassengerRide"
+        android:layout_width="409dp"
+        android:layout_height="364dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/map"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/priceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Price"
+        app:layout_constraintBottom_toTopOf="@+id/priceSingular"
+        app:layout_constraintEnd_toEndOf="@+id/priceSingular"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toStartOf="@+id/priceSingular" />
+
+    <TextView
+        android:id="@+id/dateSingleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Date"
+        app:layout_constraintBottom_toTopOf="@+id/distanceSingle"
+        app:layout_constraintEnd_toEndOf="@+id/distanceSingle"
+        app:layout_constraintStart_toStartOf="@+id/distanceSingle" />
+
+    <TextView
+        android:id="@+id/durationSingleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        android:text="Duration"
+        app:layout_constraintBottom_toTopOf="@+id/durationSingle"
+        app:layout_constraintEnd_toEndOf="@+id/durationSingle"
+        app:layout_constraintStart_toStartOf="@+id/durationSingle"
+        app:layout_constraintTop_toBottomOf="@+id/mapPassengerRide" />
+
+    <TextView
+        android:id="@+id/priceSingular"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="52dp"
+        android:gravity="center"
+        android:text="99$"
+        android:textColor="@color/teal"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/distanceSingle"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toEndOf="@+id/durationSingle"
+        app:layout_constraintTop_toBottomOf="@+id/mapPassengerRide" />
+
+    <TextView
+        android:id="@+id/durationSingle"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:text="26:40"
+        android:textColor="@color/teal"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapPassengerRide" />
+
+    <TextView
+        android:id="@+id/distanceSingle"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="22/10/2022"
+        android:textColor="@color/teal"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapPassengerRide" />
+
+    <TextView
+        android:id="@+id/startSingle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        android:text="Branka Bajdica 77"
+        android:textColor="@color/teal"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintEnd_toStartOf="@+id/priceSingular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/durationSingle" />
+
+    <TextView
+        android:id="@+id/destinationSingleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Destination"
+        app:layout_constraintBottom_toTopOf="@+id/desstinationSingle"
+        app:layout_constraintEnd_toEndOf="@+id/desstinationSingle"
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toStartOf="@+id/desstinationSingle" />
+
+    <TextView
+        android:id="@+id/startSingleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        app:layout_constraintBottom_toTopOf="@+id/startSingle"
+        app:layout_constraintEnd_toEndOf="@+id/startSingle"
+        app:layout_constraintStart_toStartOf="@+id/startSingle" />
+
+    <TextView
+        android:id="@+id/desstinationSingle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="24dp"
+        android:text="Micurinova 8"
+        android:textColor="@color/teal"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/priceSingular"
+        app:layout_constraintTop_toBottomOf="@+id/distanceSingle" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/destinationSingleText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceSingular" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="1dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintEnd_toStartOf="@+id/priceSingular"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/durationSingle"
+        app:layout_constraintTop_toBottomOf="@+id/mapPassengerRide"
+        app:layout_constraintVertical_bias="0.789" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="1dp"
+        android:layout_height="100dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintEnd_toStartOf="@+id/distanceSingle"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toEndOf="@+id/priceSingular"
+        app:layout_constraintTop_toBottomOf="@+id/mapPassengerRide"
+        app:layout_constraintVertical_bias="0.789" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
