@@ -1,29 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.PassengerCurrentRideFragment">
 
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/current_ride"
-        android:textColor="@color/teal"
-        android:textSize="24sp"
-        android:gravity="center|top"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/current_ride"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/teal"
+            android:textSize="24sp"
+            android:gravity="center|top"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="8dp">
+            <TextView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dark_teal"
+                android:textSize="18sp"
+                android:layout_marginBottom="3dp"
+                android:text="@string/from"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/round_corner_yellow"
+                android:padding="12dp"
+                android:textColor="@color/dark_teal"
+                android:layout_marginBottom="3dp"
+                android:text="Zeleznicka 6"/>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="8dp">
+            <TextView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="3dp"
+                android:textColor="@color/dark_teal"
+                android:text="@string/to"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:background="@drawable/round_corner_yellow"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="12dp"
+                android:padding="12dp"
+                android:textColor="@color/dark_teal"
+                android:layout_marginBottom="3dp"
+                android:text="Bulevar cara Lazara 15"/>
+    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/panic"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/red"
         />
-<!--    TODO Podaci o voznji-->
-
-<!--    TODO Podaci o vozacu-->
-
-<!--    TODO Vreme voznje - timer-->
-
-<!--    TODO Panic dugme-->
-
-<!--    TODO ocenjivanje vozaca-->
-
-</FrameLayout>
-
-<!-- TODO prijava nekonzistentnost vozaca-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="3dp"
+            android:textColor="@color/dark_teal"
+            android:text="@string/phone"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:background="@drawable/round_corner_yellow"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="12dp"
+            android:padding="12dp"
+            android:textColor="@color/dark_teal"
+            android:layout_marginBottom="3dp"
+            android:text="+381 65 98 78 945"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="3dp"
+                android:textColor="@color/dark_teal"
+                android:text="@string/timer"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:background="@drawable/round_corner_yellow"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="12dp"
+                android:padding="12dp"
+                android:textColor="@color/dark_teal"
+                android:layout_marginBottom="3dp"
+                android:text="00:00:00"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
