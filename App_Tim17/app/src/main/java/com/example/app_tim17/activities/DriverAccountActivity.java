@@ -40,6 +40,8 @@ public class DriverAccountActivity extends AppCompatActivity implements BottomNa
     @Override
     protected void onResume() {
         super.onResume();
+        bottomNavigationView = findViewById(R.id.nav_view_driver_account);
+        bottomNavigationView.setSelectedItemId(R.id.profile_driver);
     }
 
     @Override

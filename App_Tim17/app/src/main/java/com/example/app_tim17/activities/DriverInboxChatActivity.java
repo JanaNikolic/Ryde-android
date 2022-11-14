@@ -21,7 +21,7 @@ public class DriverInboxChatActivity extends AppCompatActivity implements Bottom
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
     private ArrayList<Integer> messageList = new ArrayList<Integer>();
-
+    private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,5 +86,12 @@ public class DriverInboxChatActivity extends AppCompatActivity implements Bottom
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView = findViewById(R.id.nav_view_inbox2_driver);
+        bottomNavigationView.setSelectedItemId(R.id.inbox_driver);
     }
 }

@@ -21,6 +21,7 @@ public class DriverInboxActivity extends AppCompatActivity implements BottomNavi
     private final String[] userNames = {"User001", "User002", "User003", "User004", "User005", "User006", "User007", "User008", "User009", "User010"};
     private final String times[] = {"12:03", "12:05", "09:30", "03:33", "12:03", "12:05", "09:30", "03:33", "11:09", "17:22"};
     private final String messages[] = {"Hello", "Alright", "Listen here, I know I am late, but I am trying my best, with this traffic", "What!? NO!", "Yes", "Why?", "Cya", "Thanks, man.", "Hm", "xD"};
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,11 @@ public class DriverInboxActivity extends AppCompatActivity implements BottomNavi
         return false;
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView = findViewById(R.id.nav_view_inbox_driver);
+        bottomNavigationView.setSelectedItemId(R.id.inbox_driver);
+    }
 
 }

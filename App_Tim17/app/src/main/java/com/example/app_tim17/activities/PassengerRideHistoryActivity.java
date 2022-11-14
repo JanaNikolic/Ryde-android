@@ -39,6 +39,8 @@ public class PassengerRideHistoryActivity extends AppCompatActivity implements B
     private final String prices[] = {"66$", "68$", "96$", "90$",
             "107$", "45$", "55$", "78$", "98$", "34$"};
 
+    BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +109,11 @@ public class PassengerRideHistoryActivity extends AppCompatActivity implements B
         return false;
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView = findViewById(R.id.nav_view);
+        bottomNavigationView.setSelectedItemId(R.id.history);
+    }
 
 }

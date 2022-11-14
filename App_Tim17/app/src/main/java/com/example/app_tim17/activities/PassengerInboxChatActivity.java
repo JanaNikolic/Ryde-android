@@ -21,7 +21,7 @@ public class PassengerInboxChatActivity extends AppCompatActivity implements Bot
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
     private ArrayList<Integer> messageList = new ArrayList<Integer>();
-
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,5 +88,12 @@ public class PassengerInboxChatActivity extends AppCompatActivity implements Bot
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView = findViewById(R.id.nav_view_inbox2);
+        bottomNavigationView.setSelectedItemId(R.id.inbox);
     }
 }
