@@ -1,3 +1,4 @@
+
 package Adapters;
 
 import android.content.Context;
@@ -15,8 +16,7 @@ import com.example.app_tim17.R;
 
 import java.util.List;
 
-public class MessageListAdapter extends RecyclerView.Adapter{
-
+public class MessageListAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 

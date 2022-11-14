@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.DriverAccountActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/teal"
+        android:layout_height="250dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/profile_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/Circular"
+            app:strokeColor="@color/yellow"
+            app:strokeWidth="3dp"
+            android:padding="3dp"/>
+        <TextView
+            android:id="@+id/fullname_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif-black"
+            android:text="Taimoor Sikander"
+            android:textColor="#000"
+            android:textSize="25sp" />
+        <TextView
+            android:id="@+id/username_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fullname_field"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/profile_pic"
+            android:includeFontPadding="false"
+            android:text="taimoor_sikander"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-100dp"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="30dp"
+        android:paddingTop="40dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="125dp"
+            android:id="@+id/car_info"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="15dp"
+            app:cardBackgroundColor="#fece2f"
+            app:cardElevation="10dp">
+
+            <RelativeLayout
+                android:layout_width="352dp"
+                android:layout_height="135dp"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/car_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_baseline_directions_car_24" />
+
+                <TextView
+                    android:id="@+id/payment_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/car_icon"
+                    android:layout_toRightOf="@id/car_icon"
+                    android:paddingHorizontal="10dp"
+                    android:text="Toyota Prius"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/color_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/car_icon"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_baseline_color_lens_24" />
+
+                <TextView
+                    android:id="@+id/car_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/color_icon"
+                    android:layout_toRightOf="@id/color_icon"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="10dp"
+                    android:text="Green"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/license_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/color_icon"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/license_plate"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/license_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/license_icon"
+                    android:layout_toRightOf="@id/license_icon"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="10dp"
+                    android:text="A76-O-922"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/car_pic"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="20dp"
+                    android:src="@drawable/car_picture"
+
+                    app:shapeAppearanceOverlay="@style/Circular" />
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="20dp">
+        <com.google.android.material.textfield.TextInputLayout
+            android:hint="Full Name"
+            android:id="@+id/full_name_profile"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_width="match_parent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:drawableLeft="@drawable/ic_baseline_drive_file_rename_outline_24"
+                android:drawablePadding="10dp"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:hint="E-MAIL"
+            android:id="@+id/email_profile"
+            android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/yellow"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_width="match_parent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:drawableLeft="@drawable/ic_baseline_alternate_email_24"
+                android:drawablePadding="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:hint="Phone Number"
+            android:id="@+id/phone_number_profile"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_width="match_parent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:drawableLeft="@drawable/ic_baseline_phone_enabled_24"
+                android:drawablePadding="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:text="@string/edit"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner" />
+</LinearLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view_driver_account"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:theme="@style/NavigationBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/menu_bottom_driver" />
+</androidx.constraintlayout.widget.ConstraintLayout>

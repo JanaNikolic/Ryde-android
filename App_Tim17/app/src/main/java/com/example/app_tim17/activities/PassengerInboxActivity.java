@@ -21,6 +21,7 @@ import Adapters.InboxList;
 
 public class PassengerInboxActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private ListView listView;
+    BottomNavigationView bottomNavigationView;
     private final String[] userNames = {"User001", "User002", "User003", "User004", "User005", "User006", "User007", "User008", "User009", "User010"};
     private final String times[] = {"12:03", "12:05", "09:30", "03:33", "12:03", "12:05", "09:30", "03:33", "11:09", "17:22"};
     private final String messages[] = {"Hello", "Alright", "Listen here, I know I am late, but I am trying my best, with this traffic", "What!? NO!", "Yes", "Why?", "Cya", "Thanks, man.", "Hm", "xD"};
@@ -38,7 +39,9 @@ public class PassengerInboxActivity extends AppCompatActivity implements BottomN
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Toast.makeText(getApplicationContext(),"You Selected "+userNames[position]+ "'s message'",Toast.LENGTH_SHORT).show();        }
+                startActivity(new Intent(getApplicationContext(), PassengerInboxChatActivity.class));
+                overridePendingTransition(0,0);
+            }
         });
     }
 
@@ -53,7 +56,6 @@ public class PassengerInboxActivity extends AppCompatActivity implements BottomN
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.inbox:
-                overridePendingTransition(0, 0);
                 return true;
             case R.id.home:
                 startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -64,10 +66,19 @@ public class PassengerInboxActivity extends AppCompatActivity implements BottomN
                 overridePendingTransition(0, 0);
                 return true;
             case R.id.profile:
+
                 startActivity(new Intent(getApplicationContext(), PassengerAccountActivity.class));
                 overridePendingTransition(0, 0);
+
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView = findViewById(R.id.nav_view_inbox);
+        bottomNavigationView.setSelectedItemId(R.id.inbox);
     }
 }

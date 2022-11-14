@@ -14,6 +14,9 @@
         <item name="android:navigationBarColor">@color/teal</item>
         <!-- Customize your theme here. -->
         <item name="android:textColorHint">@color/teal</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/teal</item>
+        <item name="colorControlHighlight">@color/teal</item>
     </style>
     <style name="NavigationBar">
         <item name="colorPrimary">@color/yellow</item>

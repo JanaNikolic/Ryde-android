@@ -32,6 +32,17 @@
     <string name="show_hide">Show/Hide</string>
     <string name="current_ride">Current Ryde</string>
     <string name="get_ride">Get a Ryde</string>
+    <string name="edit">Edit Profile</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="search">SEARCH</string>
+    <string-array name="streets">
+        <item>Vuka Karadzica</item>
+        <item>Strazilovska 5</item>
+        <item>Hopovska 7</item>
+        <item>Bulevar Cara Lazar 8</item>
+        <item>Fruskogorska 1</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

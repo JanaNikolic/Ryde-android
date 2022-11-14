@@ -15,17 +15,22 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DriverMainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
-        bottomNavigationView = findViewById(R.id.nav_view);
+        bottomNavigationView = findViewById(R.id.nav_view_driver);
+        bottomNavigationView.setSelectedItemId(R.id.home_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
-
-        ActionBar actionBar = getSupportActionBar();
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_driver, menu);
+        return true;
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -39,6 +44,8 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
     @Override
     protected void onResume() {
         super.onResume();
+        bottomNavigationView = findViewById(R.id.nav_view_driver);
+        bottomNavigationView.setSelectedItemId(R.id.home_driver);
     }
 
     @Override
@@ -51,27 +58,23 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
         super.onStop();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_driver, menu);
-        return true;
-    }
 
     @Override
+
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
         switch (item.getItemId()) {
-            case R.id.inbox:
+            case R.id.inbox_driver:
                 startActivity(new Intent(getApplicationContext(), DriverInboxActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
-            case R.id.home:
+            case R.id.home_driver:
                 return true;
-            case R.id.history:
-                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+            case R.id.history_driver:
+                startActivity(new Intent(getApplicationContext(), DriverHistoryActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
-            case R.id.profile:
-                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+            case R.id.profile_driver:
+                startActivity(new Intent(getApplicationContext(), DriverAccountActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
         }
