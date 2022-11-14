@@ -95,7 +95,7 @@ public class DriverRideHistoryActivity extends AppCompatActivity implements Bott
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.inbox_driver:
-                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+                startActivity(new Intent(getApplicationContext(), DriverInboxActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
             case R.id.home_driver:

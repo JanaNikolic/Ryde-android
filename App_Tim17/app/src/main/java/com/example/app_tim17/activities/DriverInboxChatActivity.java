@@ -36,14 +36,14 @@ public class DriverInboxChatActivity extends AppCompatActivity implements Bottom
         mMessageAdapter = new MessageListAdapter(this, messageList);
         mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
         mMessageRecycler.setAdapter(mMessageAdapter);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_inbox2);
-        bottomNavigationView.setSelectedItemId(R.id.inbox);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_inbox2_driver);
+        bottomNavigationView.setSelectedItemId(R.id.inbox_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_header, menu);
+        getMenuInflater().inflate(R.menu.menu_driver, menu);
         setTitle("Other person");
         return true;
     }
@@ -51,16 +51,21 @@ public class DriverInboxChatActivity extends AppCompatActivity implements Bottom
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
+            case R.id.inbox_driver:
+                overridePendingTransition(0, 0);
+                return true;
+            case R.id.home_driver:
                 startActivity(new Intent(getApplicationContext(), DriverMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
                 return true;
-            case R.id.history:
+            case R.id.history_driver:
+                startActivity(new Intent(getApplicationContext(), DriverRideHistoryActivity.class));
+                overridePendingTransition(0, 0);
                 return true;
-            case R.id.profile:
+            case R.id.profile_driver:
+                startActivity(new Intent(getApplicationContext(), DriverAccountActivity.class));
+                overridePendingTransition(0, 0);
                 return true;
-            case R.id.inbox:
-                startActivity(new Intent(getApplicationContext(), DriverInboxActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
         return false;
     }

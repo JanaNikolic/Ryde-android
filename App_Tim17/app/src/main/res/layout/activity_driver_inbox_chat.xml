@@ -74,7 +74,7 @@
     </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view_inbox2"
+        android:id="@+id/nav_view_inbox2_driver"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
@@ -84,5 +84,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/menu_bottom" />
+        app:menu="@menu/menu_bottom_driver" />
 </androidx.constraintlayout.widget.ConstraintLayout>

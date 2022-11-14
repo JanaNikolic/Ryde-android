@@ -26,8 +26,8 @@ public class DriverInboxActivity extends AppCompatActivity implements BottomNavi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_inbox);
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.nav_view_inbox);
-        bottomNavigationView.setSelectedItemId(R.id.inbox);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.nav_view_inbox_driver);
+        bottomNavigationView.setSelectedItemId(R.id.inbox_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
         ListView listView = (ListView) findViewById(R.id.list_view);
         InboxList inboxList = new InboxList(this, userNames, times, messages);
@@ -43,7 +43,7 @@ public class DriverInboxActivity extends AppCompatActivity implements BottomNavi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_header, menu);
+        getMenuInflater().inflate(R.menu.menu_driver, menu);
         setTitle(R.string.inbox);
         return true;
     }
@@ -51,19 +51,19 @@ public class DriverInboxActivity extends AppCompatActivity implements BottomNavi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.inbox:
+            case R.id.inbox_driver:
                 overridePendingTransition(0, 0);
                 return true;
-            case R.id.home:
+            case R.id.home_driver:
                 startActivity(new Intent(getApplicationContext(), DriverMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
                 return true;
-            case R.id.history:
-                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+            case R.id.history_driver:
+                startActivity(new Intent(getApplicationContext(), DriverRideHistoryActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
-            case R.id.profile:
-                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+            case R.id.profile_driver:
+                startActivity(new Intent(getApplicationContext(), DriverAccountActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
         }

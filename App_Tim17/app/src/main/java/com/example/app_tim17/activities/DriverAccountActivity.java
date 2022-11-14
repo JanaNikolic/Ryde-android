@@ -61,15 +61,20 @@ public class DriverAccountActivity extends AppCompatActivity implements BottomNa
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.inbox_driver:
+                startActivity(new Intent(getApplicationContext(), DriverInboxActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
             case R.id.home_driver:
                 startActivity(new Intent(getApplicationContext(), DriverMainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-                overridePendingTransition(0,0);
                 this.finish();
                 return true;
             case R.id.history_driver:
                 startActivity(new Intent(getApplicationContext(), DriverRideHistoryActivity.class));
+                overridePendingTransition(0, 0);
                 return true;
             case R.id.profile_driver:
+                overridePendingTransition(0, 0);
                 return true;
         }
         return false;
