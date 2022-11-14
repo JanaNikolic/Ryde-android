@@ -81,10 +81,8 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
         switch (item.getItemId()) {
             case R.id.inbox_driver:
-                startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
+                startActivity(new Intent(getApplicationContext(), DriverInboxActivity.class));
                 overridePendingTransition(0, 0);
-                return true;
-            case R.id.home:
                 return true;
             case R.id.history_driver:
                 startActivity(new Intent(getApplicationContext(), DriverRideHistoryActivity.class));

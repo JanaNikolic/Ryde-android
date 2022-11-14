@@ -49,7 +49,7 @@ public class PassengerSingularRideHistoryActivity extends AppCompatActivity impl
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.inbox:
-                startActivity(new Intent(getApplicationContext(), PassengerInboxActivity.class));
+                startActivity(new Intent(getApplicationContext(),PassengerInboxActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
             case R.id.home:
@@ -57,8 +57,6 @@ public class PassengerSingularRideHistoryActivity extends AppCompatActivity impl
                 this.finish();
                 return true;
             case R.id.history:
-                startActivity(new Intent(getApplicationContext(), PassengerRideHistoryActivity.class));
-                overridePendingTransition(0, 0);
                 return true;
             case R.id.profile:
                 startActivity(new Intent(getApplicationContext(), PassengerAccountActivity.class));
