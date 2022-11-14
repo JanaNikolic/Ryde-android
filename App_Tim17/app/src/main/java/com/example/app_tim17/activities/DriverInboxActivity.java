@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.app_tim17.R;
@@ -30,6 +32,13 @@ public class DriverInboxActivity extends AppCompatActivity implements BottomNavi
         ListView listView = (ListView) findViewById(R.id.list_view);
         InboxList inboxList = new InboxList(this, userNames, times, messages);
         listView.setAdapter(inboxList);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                startActivity(new Intent(getApplicationContext(), DriverInboxChatActivity.class));
+                overridePendingTransition(0,0);
+            }
+        });
     }
 
     @Override
