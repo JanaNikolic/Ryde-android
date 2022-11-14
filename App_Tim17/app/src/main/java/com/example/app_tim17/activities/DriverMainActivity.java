@@ -70,7 +70,6 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
             case R.id.home_driver:
                 return true;
             case R.id.history_driver:
-                startActivity(new Intent(getApplicationContext(), DriverHistoryActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
             case R.id.profile_driver:
