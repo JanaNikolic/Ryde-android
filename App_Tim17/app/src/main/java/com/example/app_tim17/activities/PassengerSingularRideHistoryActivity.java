@@ -12,6 +12,7 @@ import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class PassengerSingularRideHistoryActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +67,10 @@ public class PassengerSingularRideHistoryActivity extends AppCompatActivity impl
         }
         return false;
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView = findViewById(R.id.nav_view);
+        bottomNavigationView.setSelectedItemId(R.id.history);
+    }
 }
