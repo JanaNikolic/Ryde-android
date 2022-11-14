@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_pic"
+        android:layout_rowSpan="2"
+        android:layout_width="80dp"
+        android:layout_marginTop="5dp"
+        android:layout_height="80dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imvCircular"
+        app:shapeAppearanceOverlay="@style/Circular"
+        app:strokeColor="@color/yellow"
+        app:strokeWidth="3dp" />
+
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_columnWeight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_row="0"
+        android:textColor="@color/teal"
+        android:layout_column="1"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:maxLength="30"
+        tools:ignore="MissingConstraints"/>
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:textColor="@color/yellow"
+        android:layout_height="40dp"
+        android:layout_row="0"
+        android:layout_column="2"
+        android:layout_columnSpan="1"
+        android:layout_marginRight="20dp"
+        android:textAlignment="center"
+        android:textSize="25dp"/>
+
+    <TextView
+        android:layout_columnSpan="2"
+        android:id="@+id/message"
+        android:layout_height="40dp"
+        android:layout_columnWeight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:maxLines="2"
+        tools:ignore="MissingConstraints"
+        android:textSize="20dp"
+        android:maxLength="25"
+        android:ellipsize="end"
+        android:textAlignment="gravity"/>
+
+</GridLayout>
