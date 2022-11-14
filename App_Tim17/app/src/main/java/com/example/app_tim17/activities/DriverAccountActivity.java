@@ -66,6 +66,9 @@ public class DriverAccountActivity extends AppCompatActivity implements BottomNa
                 overridePendingTransition(0,0);
                 this.finish();
                 return true;
+            case R.id.history_driver:
+                startActivity(new Intent(getApplicationContext(), DriverRideHistoryActivity.class));
+                return true;
             case R.id.profile_driver:
                 return true;
         }

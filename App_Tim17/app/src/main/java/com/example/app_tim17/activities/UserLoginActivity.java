@@ -3,6 +3,8 @@ package com.example.app_tim17.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,23 +39,22 @@ public class UserLoginActivity extends AppCompatActivity {
         });
     }
     public void ShowHidePass(View view){
+        if(view.getId()==R.id.showPassBtn){
+            EditText passwordInput = findViewById(R.id.passwordInput);
+            if(passwordInput.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                ((ImageView)(view)).setImageResource(R.drawable.ic_hide_password);
 
-//        if(view.getId()==R.id.showPassBtn){
-//            EditText paswordInput = findViewById(R.id.passwordInput);
-//            if(passwordInput.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-//                ((ImageView(view)).setImageResource(R.drawable.hide_password);
-//
-//                //Show Password
-//                passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-//            }
-//            else{
-//                ((ImageView)(view)).setImageResource(R.drawable.ic_show_password);
-//
-//                //Hide Password
-//                passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
-//
-//            }
-//        }
+                //Show Password
+                passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else{
+                ((ImageView)(view)).setImageResource(R.drawable.ic_show_password);
+
+                //Hide Password
+                passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+            }
+        }
     }
 
     @Override
