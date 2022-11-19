@@ -49,4 +49,5 @@ dependencies {
     implementation 'com.github.penfeizhou.android.animation:gif:2.24.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
+    implementation 'com.jjoe64:graphview:4.2.2'
 }
