@@ -27,6 +27,7 @@
             android:layout_gravity="center|top"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_baseline_remove_24"/>
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/currentRide"
             android:name="com.example.app_tim17.fragments.PassengerCreateRideFragment"

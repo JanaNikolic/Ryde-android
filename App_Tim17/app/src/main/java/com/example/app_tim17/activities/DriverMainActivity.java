@@ -3,13 +3,18 @@ package com.example.app_tim17.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.RideInfoFragment;
@@ -17,7 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DriverMainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     BottomNavigationView bottomNavigationView;
-
+    Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,26 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_driver, menu);
+        this.menu = menu;
+        TextView text = (TextView) this.menu.findItem(R.id.online_offline_bar).getActionView();
+        text.setText(R.string.online);
+        text.setTextColor(getResources().getColor(R.color.yellow));
+        RelativeLayout button_layout = (RelativeLayout) this.menu.findItem(R.id.toggle_action_bar).getActionView();
+        SwitchCompat toggle = (SwitchCompat) button_layout.findViewById(R.id.toggleButton);
+        toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (toggle.isChecked()) {
+                    text.setText(R.string.online);
+
+                    text.setTextColor(getResources().getColor(R.color.yellow));
+                } else {
+                    text.setText(R.string.offline);
+
+                    text.setTextColor(getResources().getColor(R.color.white));
+                }
+            }
+        });
         return true;
     }
     @Override
