@@ -78,8 +78,7 @@ public class PassengerCreateRideFragment extends Fragment {
         buttonName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.currentRide, new SuccesfullSearchFragment());
                 fragmentTransaction.commit();
             }

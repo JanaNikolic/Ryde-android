@@ -4,38 +4,39 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.SplashActivity;
-import com.example.app_tim17.activities.UserLoginActivity;
+import com.example.app_tim17.activities.PassengerInboxChatActivity;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import pl.droidsonroids.gif.GifImageView;
+import Adapters.InboxList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SuccesfullSearchFragment#newInstance} factory method to
+ * Use the {@link InboxPassengerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SuccesfullSearchFragment extends Fragment {
+public class InboxPassengerFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final String[] userNames = {"User001", "User002", "User003", "User004", "User005", "User006", "User007", "User008", "User009", "User010"};
+    private final String times[] = {"12:03", "12:05", "09:30", "03:33", "12:03", "12:05", "09:30", "03:33", "11:09", "17:22"};
+    private final String messages[] = {"Hello", "Alright", "Listen here, I know I am late, but I am trying my best, with this traffic", "What!? NO!", "Yes", "Why?", "Cya", "Thanks, man.", "Hm", "xD"};
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public SuccesfullSearchFragment() {
+    public InboxPassengerFragment() {
         // Required empty public constructor
     }
 
@@ -45,11 +46,11 @@ public class SuccesfullSearchFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SuccesfullSearchFragment.
+     * @return A new instance of fragment InboxPassengerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SuccesfullSearchFragment newInstance(String param1, String param2) {
-        SuccesfullSearchFragment fragment = new SuccesfullSearchFragment();
+    public static InboxPassengerFragment newInstance(String param1, String param2) {
+        InboxPassengerFragment fragment = new InboxPassengerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,14 +71,17 @@ public class SuccesfullSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
-        new Timer().schedule(new TimerTask() {
+        View view = inflater.inflate(R.layout.fragment_inbox_passenger, container, false);
+
+        ListView listView = (ListView) view.findViewById(R.id.list_view);
+        InboxList inboxList = new InboxList(getActivity(), userNames, times, messages);
+        listView.setAdapter(inboxList);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void run() {
-                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.currentRide, new PassengerCurrentRideFragment());
-                fragmentTransaction.commit();}
-        }, 4800);
-    return v;
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                startActivity(new Intent(view.getContext(), PassengerInboxChatActivity.class));
+            }
+        });
+        return view;
     }
 }
