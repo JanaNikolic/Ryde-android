@@ -41,7 +41,7 @@ public class Ride {
     private Boolean petTransport;
     @SerializedName("rejection")
     @Expose
-    private Rejection rejection;
+    private RejectionResponse rejectionResponse;
     @SerializedName("locations")
     @Expose
     private List<Location> locations = null;
@@ -49,7 +49,7 @@ public class Ride {
     public Ride() {
     }
 
-    public Ride(Long id, String startTime, String endTime, Long totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Long estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, Boolean petTransport, Rejection rejection, List<Location> locations) {
+    public Ride(Long id, String startTime, String endTime, Long totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Long estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, Boolean petTransport, RejectionResponse rejectionResponse, List<Location> locations) {
         super();
         this.id = id;
         this.startTime = startTime;
@@ -61,7 +61,7 @@ public class Ride {
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
-        this.rejection = rejection;
+        this.rejectionResponse = rejectionResponse;
         this.locations = locations;
     }
 
@@ -145,12 +145,12 @@ public class Ride {
         this.petTransport = petTransport;
     }
 
-    public Rejection getRejection() {
-        return rejection;
+    public RejectionResponse getRejection() {
+        return rejectionResponse;
     }
 
-    public void setRejection(Rejection rejection) {
-        this.rejection = rejection;
+    public void setRejection(RejectionResponse rejectionResponse) {
+        this.rejectionResponse = rejectionResponse;
     }
 
     public List<Location> getLocations() {

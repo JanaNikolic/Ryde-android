@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Rejection {
+public class RejectionResponse {
 
     @SerializedName("reason")
     @Expose
@@ -13,10 +13,10 @@ public class Rejection {
     @Expose
     private String timeOfRejection;
 
-    public Rejection() {
+    public RejectionResponse() {
     }
 
-    public Rejection(String reason, String timeOfRejection) {
+    public RejectionResponse(String reason, String timeOfRejection) {
         super();
         this.reason = reason;
         this.timeOfRejection = timeOfRejection;
