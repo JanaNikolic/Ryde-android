@@ -1,4 +1,4 @@
-package Adapters;
+package com.example.app_tim17.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

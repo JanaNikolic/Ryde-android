@@ -1,21 +1,16 @@
-package Adapters;
+package com.example.app_tim17.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.app_tim17.R;
 import com.google.android.material.imageview.ShapeableImageView;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class DriveHistoryList extends ArrayAdapter {
     private String[] startLocations;
