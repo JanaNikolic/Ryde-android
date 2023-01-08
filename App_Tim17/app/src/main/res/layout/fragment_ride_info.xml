@@ -19,23 +19,21 @@
         android:layout_gravity="center"
     android:background="@color/white"
         android:orientation="vertical"
-        android:padding="12dp"
-        android:paddingTop="24dp"
+
         tools:context=".fragments.RideInfoFragment"
         tools:layout_editor_absoluteX="2dp"
         tools:layout_editor_absoluteY="1dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/map"
-            android:layout_width="360dp"
-            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/map"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/RoundedEdges10" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
@@ -44,8 +42,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_circle_16"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/date"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
+        app:layout_constraintStart_toStartOf="@id/date"
+        app:layout_constraintTop_toBottomOf="@id/date" />
 
         <TextView
             android:id="@+id/start_address"
@@ -57,8 +55,8 @@
             android:text="Bulevar Oslobodjenja 15"
             android:textColor="@color/dark_teal"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/start_address_label"
-            app:layout_constraintTop_toTopOf="@+id/start_address_label" />
+            app:layout_constraintStart_toEndOf="@id/start_address_label"
+            app:layout_constraintTop_toTopOf="@id/start_address_label" />
 
     <ImageView
         android:id="@+id/dot1"
@@ -66,9 +64,9 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_circle_6"
         android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/start_address_label"
-        app:layout_constraintStart_toStartOf="@+id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@+id/start_address_label" />
+        app:layout_constraintEnd_toEndOf="@id/start_address_label"
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/start_address_label" />
 
     <ImageView
         android:id="@+id/dot2"
@@ -77,9 +75,9 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/ic_baseline_circle_6"
-        app:layout_constraintEnd_toEndOf="@+id/start_address_label"
-        app:layout_constraintStart_toStartOf="@+id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@+id/dot1" />
+        app:layout_constraintEnd_toEndOf="@id/start_address_label"
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/dot1" />
 
 <!--        <ImageView-->
 <!--            android:id="@+id/dot3"-->
@@ -98,8 +96,8 @@
         android:layout_marginTop="4dp"
         android:layout_marginStart="-5dp"
         android:src="@drawable/pin"
-        app:layout_constraintStart_toStartOf="@+id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@+id/dot2" />
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/dot2" />
 
         <TextView
             android:id="@+id/end_address"
@@ -110,20 +108,22 @@
             android:textColor="@color/dark_teal"
             android:textSize="20sp"
             android:layout_marginStart="11dp"
-            app:layout_constraintStart_toEndOf="@+id/end_address_label"
-            app:layout_constraintTop_toTopOf="@+id/end_address_label" />
+            app:layout_constraintStart_toEndOf="@id/end_address_label"
+            app:layout_constraintTop_toTopOf="@id/end_address_label" />
+
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/outfit_medium"
         android:text="15.10.2022."
         android:textColor="@color/dark_teal"
-        android:layout_marginTop="8dp"
-        android:textSize="18sp"
 
-        app:layout_constraintStart_toStartOf="@+id/map"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/map" />
 
 
@@ -131,44 +131,42 @@
         android:id="@+id/start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/outfit_regular"
         android:text="15:30"
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
-
-
-        app:layout_constraintEnd_toEndOf="@+id/map"
-        app:layout_constraintTop_toTopOf="@+id/start_address" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/start_address" />
 
     <ImageView
         android:id="@+id/line"
         android:layout_width="1dp"
         android:layout_height="64dp"
-        android:background="@color/teal"
+        android:background="@color/black_overlay"
         android:layout_marginTop="18dp"
         app:layout_constraintEnd_toEndOf="@id/map"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@id/map"
-        app:layout_constraintTop_toBottomOf="@+id/end_address" />
+        app:layout_constraintTop_toBottomOf="@id/end_address" />
+
 
     <TextView
         android:id="@+id/end_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/outfit_regular"
         android:text="16:00"
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/map"
-        app:layout_constraintTop_toTopOf="@+id/end_address" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/end_address" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="380dp"
         android:layout_height="1dp"
-        android:background="@color/teal"
+        android:background="@color/black_overlay"
         android:layout_marginBottom="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -184,9 +182,9 @@
         android:text="2.12 km"
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/line"
-        app:layout_constraintStart_toStartOf="@+id/map"
-        app:layout_constraintTop_toBottomOf="@+id/end_address_label" />
+        app:layout_constraintEnd_toStartOf="@id/line"
+        app:layout_constraintStart_toStartOf="@id/map"
+        app:layout_constraintTop_toBottomOf="@id/end_address_label" />
 
 
     <TextView
@@ -198,15 +196,16 @@
         android:text="300 RSD"
         android:textColor="@color/dark_teal"
         android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="@id/map"
         app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toEndOf="@+id/line"
-        app:layout_constraintTop_toBottomOf="@+id/end_address" />
+        app:layout_constraintStart_toEndOf="@id/line"
+        app:layout_constraintTop_toBottomOf="@id/end_address" />
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/map"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4">
 
             <LinearLayout
@@ -214,9 +213,105 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="@+id/map"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageView4" />
     </HorizontalScrollView>
+
+
+<!--TODO izbaciti-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/pass_info_inside_ride_history"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:paddingBottom="24dp"-->
+<!--        app:cardCornerRadius="5dp"-->
+<!--        app:cardElevation="10dp"-->
+<!--        app:cardMaxElevation="12dp"-->
+<!--        app:cardPreventCornerOverlap="true">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/exit_pass_info"-->
+<!--                android:layout_width="36dp"-->
+<!--                android:layout_height="36dp"-->
+<!--                android:src="@drawable/ic_baseline_close_24"-->
+<!--                android:layout_marginEnd="4dp"-->
+<!--                android:layout_marginTop="4dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <com.google.android.material.imageview.ShapeableImageView-->
+<!--                android:id="@+id/shapeableImageView"-->
+<!--                android:layout_width="64dp"-->
+<!--                android:layout_height="64dp"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="40dp"-->
+<!--                android:src="@drawable/profile_picture"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:shapeAppearanceOverlay="@style/Circular" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:fontFamily="@font/outfit_regular"-->
+<!--                android:textColor="@color/dark_teal"-->
+<!--                android:text="Milica Krstic"-->
+<!--                android:textSize="24sp"-->
+<!--                app:layout_constraintStart_toEndOf="@id/shapeableImageView"-->
+<!--                app:layout_constraintTop_toTopOf="@id/shapeableImageView" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView3"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="28dp"-->
+<!--                android:letterSpacing="0.1"-->
+<!--                android:text="@string/phone"-->
+<!--                app:layout_constraintStart_toStartOf="@id/shapeableImageView"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/shapeableImageView" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/phone_num"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:text="+381 65 956 58"-->
+<!--                android:textColor="@color/dark_teal"-->
+<!--                android:fontFamily="@font/outfit_regular"-->
+<!--                android:textSize="20sp"-->
+<!--                app:layout_constraintStart_toStartOf="@id/textView3"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/textView3" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView4"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="28dp"-->
+<!--                android:letterSpacing="0.1"-->
+<!--                android:text="@string/email"-->
+<!--                app:layout_constraintStart_toStartOf="@id/phone_num"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/phone_num" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:text="milica@krstic.com"-->
+<!--                android:textColor="@color/dark_teal"-->
+<!--                android:fontFamily="@font/outfit_regular"-->
+<!--                android:textSize="20sp"-->
+<!--                app:layout_constraintStart_toStartOf="@id/textView4"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/textView4" />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
