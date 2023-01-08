@@ -1,5 +1,6 @@
-package com.example.app_tim17.model;
+package com.example.app_tim17.model.response.vehicle;
 
+import com.example.app_tim17.model.response.Location;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,7 +24,7 @@ public class VehicleResponse {
     private String licenseNumber;
     @SerializedName("currentLocation")
     @Expose
-    private CurrentLocation currentLocation;
+    private Location location;
     @SerializedName("passengerSeats")
     @Expose
     private Long passengerSeats;
@@ -41,14 +42,14 @@ public class VehicleResponse {
     public VehicleResponse() {
     }
 
-    public VehicleResponse(Long id, Long driverId, String vehicleType, String model, String licenseNumber, CurrentLocation currentLocation, Long passengerSeats, Boolean babyTransport, Boolean petTransport) {
+    public VehicleResponse(Long id, Long driverId, String vehicleType, String model, String licenseNumber, Location location, Long passengerSeats, Boolean babyTransport, Boolean petTransport) {
         super();
         this.id = id;
         this.driverId = driverId;
         this.vehicleType = vehicleType;
         this.model = model;
         this.licenseNumber = licenseNumber;
-        this.currentLocation = currentLocation;
+        this.location = location;
         this.passengerSeats = passengerSeats;
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
@@ -94,12 +95,12 @@ public class VehicleResponse {
         this.licenseNumber = licenseNumber;
     }
 
-    public CurrentLocation getCurrentLocation() {
-        return currentLocation;
+    public Location getCurrentLocation() {
+        return location;
     }
 
-    public void setCurrentLocation(CurrentLocation currentLocation) {
-        this.currentLocation = currentLocation;
+    public void setCurrentLocation(Location location) {
+        this.location = location;
     }
 
     public Long getPassengerSeats() {

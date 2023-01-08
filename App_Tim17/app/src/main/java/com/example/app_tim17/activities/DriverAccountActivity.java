@@ -5,16 +5,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.model.DriverResponse;
-import com.example.app_tim17.model.VehicleResponse;
+import com.example.app_tim17.model.response.driver.DriverResponse;
+import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.DriverService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

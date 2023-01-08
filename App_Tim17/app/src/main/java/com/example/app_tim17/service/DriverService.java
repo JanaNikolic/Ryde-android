@@ -1,7 +1,7 @@
 package com.example.app_tim17.service;
 
-import com.example.app_tim17.model.DriverResponse;
-import com.example.app_tim17.model.VehicleResponse;
+import com.example.app_tim17.model.response.driver.DriverResponse;
+import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

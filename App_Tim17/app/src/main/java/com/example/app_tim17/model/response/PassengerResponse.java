@@ -1,4 +1,4 @@
-package com.example.app_tim17.model;
+package com.example.app_tim17.model.response;
 
 public class PassengerResponse extends UserResponse {
     public PassengerResponse() {

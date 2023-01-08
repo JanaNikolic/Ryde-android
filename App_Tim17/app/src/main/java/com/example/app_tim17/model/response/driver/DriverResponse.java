@@ -1,4 +1,6 @@
-package com.example.app_tim17.model;
+package com.example.app_tim17.model.response.driver;
+
+import com.example.app_tim17.model.response.UserResponse;
 
 public class DriverResponse extends UserResponse {
     public DriverResponse() {

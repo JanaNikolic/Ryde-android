@@ -1,10 +1,10 @@
-package com.example.app_tim17.model;
+package com.example.app_tim17.model.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class CurrentLocation {
+public class Location {
 
     @SerializedName("address")
     @Expose
@@ -16,10 +16,10 @@ public class CurrentLocation {
     @Expose
     private Double longitude;
 
-    public CurrentLocation() {
+    public Location() {
     }
 
-    public CurrentLocation(String address, Double latitude, Double longitude) {
+    public Location(String address, Double latitude, Double longitude) {
         super();
         this.address = address;
         this.latitude = latitude;

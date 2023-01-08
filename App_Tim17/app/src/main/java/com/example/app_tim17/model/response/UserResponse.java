@@ -1,45 +1,33 @@
-package com.example.app_tim17.model;
+package com.example.app_tim17.model.response;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class UserRequest {
-
-    @SerializedName("name")
-    @Expose
+public abstract class UserResponse {
+    private Long id;
     private String name;
-    @SerializedName("surname")
-    @Expose
     private String surname;
-    @SerializedName("profilePicture")
-    @Expose
     private String profilePicture;
-    @SerializedName("telephoneNumber")
-    @Expose
     private String telephoneNumber;
-    @SerializedName("email")
-    @Expose
     private String email;
-    @SerializedName("address")
-    @Expose
     private String address;
-    @SerializedName("password")
-    @Expose
-    private String password;
 
-    public UserRequest() {
+    public UserResponse() {
     }
 
-
-    public UserRequest(String name, String surname, String profilePicture, String telephoneNumber, String email, String address, String password) {
-        super();
+    public UserResponse(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email, String address) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.profilePicture = profilePicture;
         this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
-        this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -89,13 +77,4 @@ public class UserRequest {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 }
