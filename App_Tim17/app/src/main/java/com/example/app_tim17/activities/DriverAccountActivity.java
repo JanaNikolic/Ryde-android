@@ -5,15 +5,28 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.model.DriverResponse;
+import com.example.app_tim17.model.VehicleResponse;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.DriverService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DriverAccountActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     BottomNavigationView bottomNavigationView;
+
+    DriverService driverService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +37,65 @@ public class DriverAccountActivity extends AppCompatActivity implements BottomNa
         bottomNavigationView.setOnItemSelectedListener(this);
 
         ActionBar actionBar = getSupportActionBar();
+
+        RetrofitService retrofitService = new RetrofitService();
+
+        driverService = retrofitService.getRetrofit().create(DriverService.class);
+
+        initializeComponents();
+
+    }
+
+    private void initializeComponents() {
+        TextView fullName = findViewById(R.id.fullname_field);
+        TextView email = findViewById(R.id.email_field);
+        TextView model = findViewById(R.id.car_model);
+        TextView licenseNumber = findViewById(R.id.license_number);
+
+        Call<DriverResponse> call = driverService.getDriver(1001L);
+
+        Call<VehicleResponse> callVehicle = driverService.getDriversVehicle(1001L);
+
+        callVehicle.enqueue(new Callback<VehicleResponse>() {
+            @Override
+            public void onResponse(Call<VehicleResponse> call, Response<VehicleResponse> response) {
+                VehicleResponse vehicle = response.body();
+
+                if (vehicle != null) {
+                    model.setText(vehicle.getModel());
+                    licenseNumber.setText(vehicle.getLicenseNumber());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VehicleResponse> call, Throwable t) {
+                callVehicle.cancel();
+            }
+        });
+
+        call.enqueue(new Callback<DriverResponse>() {
+            @Override
+            public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
+
+//                Log.d("TAG",response.code()+"");
+
+                DriverResponse driver = response.body();
+                if (driver != null) {
+                    String fullNameStr = driver.getName() + " " + driver.getSurname();
+                    fullName.setText(fullNameStr);
+                    email.setText(driver.getEmail());
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<DriverResponse> call, Throwable t) {
+                call.cancel();
+            }
+        });
+
+
 
     }
 
