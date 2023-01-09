@@ -61,4 +61,6 @@
     <string name="panic">Panic</string>
     <string name="driver_phone">Driver\'s phone</string>
     <string name="timer">Timer</string>
+    <string name="ride_info">Ride information:</string>
+    <string name="edit_review">Edit review</string>
 </resources>
