@@ -10,15 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.time.LocalDateTime;
-
-import Adapters.DriveHistoryList;
-import Adapters.InboxList;
+import com.example.app_tim17.adapters.DriveHistoryList;
 
 public class PassengerRideHistoryActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private final String[] startLocations = {"Nikole Tesle 76", "Karadjordjeva 22",

@@ -8,7 +8,7 @@
     <string name="passengeraccountactivity">PassengerAccountActivity</string>
     <string name="user_name">User name</string>
     <string name="login">Login</string>
-    <string name="phone_number">Phone number</string>
+    <string name="phone_number">Phone Number</string>
     <string name="registration">Registration</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
@@ -63,4 +63,11 @@
     <string name="timer">Timer</string>
     <string name="ride_info">Ride information:</string>
     <string name="edit_review">Edit review</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="reason_for_declining">Reason for declining</string>
+    <string name="submit">Submit</string>
+    <string name="full_name">Full Name</string>
 </resources>
