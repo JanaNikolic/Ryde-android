@@ -31,6 +31,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:hint="@string/reason_for_declining"
+            android:fontFamily="@font/outfit_regular"
             android:id="@+id/decline_message"
             android:layout_width="300dp"
             android:layout_height="200dp"
