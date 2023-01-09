@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,24 +21,6 @@ public class PassengerAccountActivity extends AppCompatActivity implements Botto
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_driver_account);
         bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationView.setOnItemSelectedListener(this);
-
-        Button reportBtn = findViewById(R.id.reportBtn);
-        reportBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PassengerAccountActivity.this, PassengerReportActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button favRouteBtn = findViewById(R.id.favRouteBtn);
-        favRouteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PassengerAccountActivity.this, PassengerFavoriteRouteActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
