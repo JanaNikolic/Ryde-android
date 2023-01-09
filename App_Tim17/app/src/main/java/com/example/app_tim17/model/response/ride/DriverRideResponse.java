@@ -11,18 +11,9 @@ public class DriverRideResponse {
     @Expose
     private String email;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public DriverRideResponse() {
     }
 
-    /**
-     *
-     * @param id
-     * @param email
-     */
     public DriverRideResponse(Long id, String email) {
         super();
         this.id = id;

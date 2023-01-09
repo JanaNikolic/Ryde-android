@@ -1,8 +1,10 @@
 package com.example.app_tim17.model.response.ride;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.app_tim17.model.response.Location;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,10 +16,12 @@ public class Ride {
     private Long id;
     @SerializedName("startTime")
     @Expose
-    private String startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime startTime;
     @SerializedName("endTime")
     @Expose
-    private String endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime endTime;
     @SerializedName("totalCost")
     @Expose
     private Long totalCost;
@@ -49,7 +53,7 @@ public class Ride {
     public Ride() {
     }
 
-    public Ride(Long id, String startTime, String endTime, Long totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Long estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, Boolean petTransport, RejectionResponse rejectionResponse, List<Location> locations) {
+    public Ride(Long id, LocalDateTime startTime, LocalDateTime endTime, Long totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Long estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, Boolean petTransport, RejectionResponse rejectionResponse, List<Location> locations) {
         super();
         this.id = id;
         this.startTime = startTime;
@@ -73,19 +77,19 @@ public class Ride {
         this.id = id;
     }
 
-    public String getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 

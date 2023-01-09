@@ -1,6 +1,9 @@
 package com.example.app_tim17.model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.time.LocalDateTime;
 
 public class WorkingHour {
 
@@ -9,15 +12,17 @@ public class WorkingHour {
     private Long id;
     @SerializedName("start")
     @Expose
-    private String start;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime start;
     @SerializedName("end")
     @Expose
-    private String end;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime end;
 
     public WorkingHour() {
     }
 
-    public WorkingHour(Long id, String start, String end) {
+    public WorkingHour(Long id, LocalDateTime start, LocalDateTime end) {
         super();
         this.id = id;
         this.start = start;
@@ -32,19 +37,19 @@ public class WorkingHour {
         this.id = id;
     }
 
-    public String getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(String start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public String getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(String end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 
