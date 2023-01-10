@@ -20,7 +20,6 @@ import com.example.app_tim17.R;
 
 public class ReviewDriverAndVehicleFragment extends Fragment {
 
-    private ReviewDriverAndVehicleViewModel mViewModel;
 
     public static ReviewDriverAndVehicleFragment newInstance() {
         return new ReviewDriverAndVehicleFragment();
