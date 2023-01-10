@@ -3,14 +3,19 @@ package com.example.app_tim17.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
+import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.ReviewDriverAndVehicleFragment;
 import com.example.app_tim17.model.response.driver.DriverResponse;
 import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
@@ -41,6 +46,19 @@ public class DriverAccountActivity extends AppCompatActivity implements BottomNa
         driverService = retrofitService.getRetrofit().create(DriverService.class);
 
         initializeComponents();
+
+        Button editProfile = (Button) findViewById(R.id.edit_profile);
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                transaction.add(R.id.activity_driver_account, new ReviewDriverAndVehicleFragment()); // give your fragment container id in first parameter
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+            }
+        });
 
     }
 

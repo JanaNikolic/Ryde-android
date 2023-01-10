@@ -71,4 +71,11 @@
     <string name="submit">Submit</string>
     <string name="full_name">Full Name</string>
     <string name="send_a_message">Send a message</string>
+    <string name="report_inconsistency">Report inconsistency</string>
+    <string name="send_driver_message">Send message to driver</string>
+    <string name="rate_driver">Rate your driver</string>
+    <string name="enjoyed_ride">We hope you enjoyed your ride with us today</string>
+    <string name="rate_vehicle">Rate vehicle</string>
+    <string name="later">Later</string>
+    <string name="tell_us_what_you_think">Tell us what you think</string>
 </resources>

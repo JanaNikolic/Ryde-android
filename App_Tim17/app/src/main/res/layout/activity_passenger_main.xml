@@ -15,8 +15,10 @@
     <FrameLayout
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/sheet"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:minHeight="250dp"
+        android:paddingBottom="64dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@drawable/rounded_drawer"
         tools:ignore="MissingConstraints">
@@ -31,8 +33,9 @@
             android:id="@+id/currentRide"
             android:name="com.example.app_tim17.fragments.PassengerCreateRideFragment"
             android:layout_marginTop="15dp"
+            android:minHeight="250dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:layout="@layout/fragment_passenger_create_ride" />
 
 
