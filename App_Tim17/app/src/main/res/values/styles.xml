@@ -6,6 +6,11 @@
         <item name="colorSwitchThumbNormal">@color/off_switch</item>
         <item name="android:colorForeground">@color/foreground_switch</item>
     </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/yellow</item>
+        <item name="colorControlActivated">@color/yellow</item>
+    </style>
+
 
     <style name="Circular">
         <item name="cornerSize">50%</item>

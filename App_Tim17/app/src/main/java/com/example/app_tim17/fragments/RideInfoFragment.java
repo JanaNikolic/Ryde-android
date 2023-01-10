@@ -55,28 +55,12 @@ public class RideInfoFragment extends Fragment {
         reviewCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ConstraintLayout inside = view.findViewById(R.id.pass_info_inside_ride_history);
-                // TODO izbaciti
-//                ConstraintLayout v = view.findViewById(R.id.passenger_info);
-
-//                view.findViewById(R.id.ride_info_fragment).addView();
-//                inside.setVisibility(View.VISIBLE);
-//                v.setVisibility(View.VISIBLE);
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
                 //TODO add passenger_info fragment
-                transaction.add(R.id.passenger_info, RideInfoFragment.this);
+                transaction.add(R.id.ride_info_fragment, new UserInfoFragment());
+                transaction.addToBackStack(null);
                 transaction.commit();
-
-
-//                ImageView exit = transaction.findViewById(R.id.exit_pass_info);
-//                exit.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        inside.setVisibility(View.GONE);
-//                    }
-//                });
-
 
             }
         });
