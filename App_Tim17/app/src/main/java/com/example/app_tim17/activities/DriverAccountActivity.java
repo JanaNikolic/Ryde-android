@@ -3,17 +3,33 @@ package com.example.app_tim17.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
+import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.ReviewDriverAndVehicleFragment;
+import com.example.app_tim17.model.response.driver.DriverResponse;
+import com.example.app_tim17.model.response.vehicle.VehicleResponse;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.DriverService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DriverAccountActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     BottomNavigationView bottomNavigationView;
+
+    DriverService driverService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +40,78 @@ public class DriverAccountActivity extends AppCompatActivity implements BottomNa
         bottomNavigationView.setOnItemSelectedListener(this);
 
         ActionBar actionBar = getSupportActionBar();
+
+        RetrofitService retrofitService = new RetrofitService();
+
+        driverService = retrofitService.getRetrofit().create(DriverService.class);
+
+        initializeComponents();
+
+        Button editProfile = (Button) findViewById(R.id.edit_profile);
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                transaction.add(R.id.activity_driver_account, new ReviewDriverAndVehicleFragment()); // give your fragment container id in first parameter
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+            }
+        });
+
+    }
+
+    private void initializeComponents() {
+        TextView fullName = findViewById(R.id.fullname_field);
+        TextView email = findViewById(R.id.email_field);
+        TextView model = findViewById(R.id.car_model);
+        TextView licenseNumber = findViewById(R.id.license_number);
+
+        Call<DriverResponse> call = driverService.getDriver(1001L);
+
+        Call<VehicleResponse> callVehicle = driverService.getDriversVehicle(1001L);
+
+        callVehicle.enqueue(new Callback<VehicleResponse>() {
+            @Override
+            public void onResponse(Call<VehicleResponse> call, Response<VehicleResponse> response) {
+                VehicleResponse vehicle = response.body();
+
+                if (vehicle != null) {
+                    model.setText(vehicle.getModel());
+                    licenseNumber.setText(vehicle.getLicenseNumber());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VehicleResponse> call, Throwable t) {
+                callVehicle.cancel();
+            }
+        });
+
+        call.enqueue(new Callback<DriverResponse>() {
+            @Override
+            public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
+
+//                Log.d("TAG",response.code()+"");
+
+                DriverResponse driver = response.body();
+                if (driver != null) {
+                    String fullNameStr = driver.getName() + " " + driver.getSurname();
+                    fullName.setText(fullNameStr);
+                    email.setText(driver.getEmail());
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<DriverResponse> call, Throwable t) {
+                call.cancel();
+            }
+        });
+
+
 
     }
 

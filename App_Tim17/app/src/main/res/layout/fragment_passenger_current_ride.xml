@@ -1,106 +1,301 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.PassengerCurrentRideFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/current_ride"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/teal"
-            android:textSize="24sp"
-            android:gravity="center|top"
-            />
+        android:paddingBottom="4dp"
+        >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginStart="8dp">
-            <TextView
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/dark_teal"
-                android:textSize="18sp"
-                android:layout_marginBottom="3dp"
-                android:text="@string/from"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="12dp"
-                android:background="@drawable/round_corner_yellow"
-                android:padding="12dp"
-                android:textColor="@color/dark_teal"
-                android:layout_marginBottom="3dp"
-                android:text="Zeleznicka 6"/>
-        </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="8dp">
-            <TextView
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginBottom="3dp"
-                android:textColor="@color/dark_teal"
-                android:text="@string/to"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:background="@drawable/round_corner_yellow"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="12dp"
-                android:padding="12dp"
-                android:textColor="@color/dark_teal"
-                android:layout_marginBottom="3dp"
-                android:text="Bulevar cara Lazara 15"/>
-    </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="@font/outfit_medium"
+        android:text="00:02:15"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/start_address_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/ic_baseline_circle_16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/start_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="-4dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="Bulevar Oslobodjenja 15"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/start_address_label"
+        app:layout_constraintTop_toTopOf="@id/start_address_label" />
+
+    <ImageView
+        android:id="@+id/dot1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_circle_6"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@id/start_address_label"
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/start_address_label" />
+
+    <ImageView
+        android:id="@+id/dot2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_baseline_circle_6"
+        app:layout_constraintEnd_toEndOf="@id/start_address_label"
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/dot1" />
+
+
+    <ImageView
+        android:id="@+id/end_address_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="-5dp"
+        android:src="@drawable/pin"
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/dot2" />
+
+    <TextView
+        android:id="@+id/end_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/outfit_regular"
+        android:text="Bulevar cara Lazara 115"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        android:layout_marginStart="11dp"
+        app:layout_constraintStart_toEndOf="@id/end_address_label"
+        app:layout_constraintTop_toTopOf="@id/end_address_label" />
+
+    <TextView
+        android:id="@+id/start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="15:30"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_address" />
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/black_overlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/end_address" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/shapeableImageView2"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/profile_picture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:shapeAppearanceOverlay="@style/Circular" />
+
+    <TextView
+        android:id="@+id/driver_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="@string/full_name"
+        android:textColor="@color/dark_teal"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line" />
+
+    <TextView
+        android:id="@+id/license_number_ride"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/outfit_semi_bold"
+        android:text="NS-055-25"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/driver_name" />
+
+    <TextView
+        android:id="@+id/model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="Model"
+        android:textColor="@color/dark_teal"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/license_number_ride" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contact_driver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shapeableImageView2">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="300dp"
+            android:padding="12dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginBottom="3dp"
-                android:textColor="@color/dark_teal"
-                android:text="@string/phone"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:background="@drawable/round_corner_yellow"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="12dp"
-                android:padding="12dp"
-                android:textColor="@color/dark_teal"
-                android:layout_marginBottom="3dp"
-                android:text="+381 65 98 78 945"/>
-        </LinearLayout>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/panic"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/message_input"
+            android:hint="@string/send_a_message"
+            android:scrollHorizontally="true"
+            android:paddingStart="16dp"
+            android:paddingEnd="36dp"
+            android:maxLines="2"
             android:textColor="@color/dark_teal"
-            android:backgroundTint="@color/yellow"
-        />
+            android:fontFamily="@font/outfit_regular"
+            android:inputType="textMultiLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/send_message"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_baseline_send_dark_teal_24"
+            android:contentDescription="@string/send_driver_message"
+            app:layout_constraintBottom_toBottomOf="@+id/editText"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/message_input"
+            app:layout_constraintBottom_toBottomOf="@id/contact_driver"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/contact_driver"
+            app:layout_constraintTop_toTopOf="@id/contact_driver"
+             />
+
+    <Button
+        android:id="@+id/call_driver"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ic_baseline_dark_teal_phone_24"
+        app:layout_constraintBottom_toBottomOf="@id/contact_driver"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/contact_driver"
+        app:layout_constraintTop_toTopOf="@id/contact_driver" />
+
+    <ImageView
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/black_overlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contact_driver" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/panic_btn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/panic_button"
+            android:fontFamily="@font/outfit_bold"
+            android:letterSpacing="0.3"
+            android:text="@string/panic"
+            android:textColor="@color/dark_teal"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/send_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/panic_btn">
+
+            <EditText
+                android:id="@+id/note_content"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@drawable/note_input"
+                android:fontFamily="@font/outfit_regular"
+                android:gravity="bottom"
+                android:hint="@string/report_inconsistency"
+                android:paddingStart="16dp"
+                android:nestedScrollingEnabled="true"
+                android:verticalScrollbarPosition="right"
+                android:maxLines="4"
+                android:paddingEnd="38dp"
+                android:paddingBottom="8dp"
+                android:inputType="textMultiLine"
+                android:textColor="@color/dark_teal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/send_note_btn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/ic_baseline_send_dark_teal_24"
+            app:layout_constraintBottom_toBottomOf="@id/note_content"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

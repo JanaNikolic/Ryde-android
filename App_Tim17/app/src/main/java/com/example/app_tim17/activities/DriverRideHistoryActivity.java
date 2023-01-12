@@ -2,25 +2,20 @@ package com.example.app_tim17.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.fragments.RideInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import Adapters.DriverRideHistoryAdapter;
+import com.example.app_tim17.adapters.DriverRideHistoryAdapter;
 
 public class DriverRideHistoryActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     private BottomNavigationView bottomNavigationView;

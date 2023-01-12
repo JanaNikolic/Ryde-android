@@ -14,7 +14,7 @@ import android.widget.ListView;
 import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import Adapters.InboxList;
+import com.example.app_tim17.adapters.InboxList;
 
 public class DriverInboxActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 

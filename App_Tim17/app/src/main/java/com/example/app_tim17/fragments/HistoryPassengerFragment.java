@@ -13,8 +13,7 @@ import android.widget.ListView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.activities.PassengerSingularRideHistoryActivity;
-
-import Adapters.DriveHistoryList;
+import com.example.app_tim17.adapters.DriveHistoryList;
 
 /**
  * A simple {@link Fragment} subclass.

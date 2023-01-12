@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-import Adapters.MessageListAdapter;
+import com.example.app_tim17.adapters.MessageListAdapter;
 
 public class PassengerInboxChatActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     private RecyclerView mMessageRecycler;

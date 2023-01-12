@@ -13,8 +13,7 @@ import android.widget.ListView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.activities.PassengerInboxChatActivity;
-
-import Adapters.InboxList;
+import com.example.app_tim17.adapters.InboxList;
 
 /**
  * A simple {@link Fragment} subclass.
