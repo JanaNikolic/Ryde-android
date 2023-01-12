@@ -1,6 +1,7 @@
 package com.example.app_tim17.tools;
 
 import android.content.Context;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;

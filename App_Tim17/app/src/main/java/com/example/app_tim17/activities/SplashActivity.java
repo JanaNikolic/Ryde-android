@@ -6,6 +6,7 @@ import android.app.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.dialogs.LocationDialog;
+import com.example.app_tim17.service.TokenUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,39 +30,38 @@ public class SplashActivity extends Activity {
 
     private static AlertDialog dialog;
     private static LocationManager locationManager;
-    int SPLASH_TIME_OUT = 5000;
+    private final int SPLASH_TIME_OUT = 5000;
+    private TokenUtils tokenUtils;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        tokenUtils = new TokenUtils();
     }
 
     private void startApplication() {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+                SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+                String token = sp.getString("token", "");
 
-                //                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                //                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                if (token == null) {
+                    startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
+                    finish();
+                } else {
+                    String role = tokenUtils.getRole(token);
 
-                //                if (mAuth.getCurrentUser() == null) {
-                //                    Intent intent = new Intent(SplashActivity.this, UserLoginActivity.class);
-                //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //                    startActivity(intent);
-                //                    finish();
-                //
-                //                }
-                //                else {
-                //                    // TODO Check if driver or passenger
-                //                    Intent intent = new Intent(SplashActivity.this, DriverMainActivity.class);
-                //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //                    startActivity(intent);
-                //                    finish();
-                //                }
-                startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
-                finish();
+                    if (role.equals("ROLE_DRIVER")) {
+                        startActivity(new Intent(SplashActivity.this, DriverActivity.class));
+                        finish();
+                    } else if (role.equals("ROLE_PASSENGER")) {
+                        startActivity(new Intent(SplashActivity.this, PassengerActivity.class));
+                        finish();
+                    }
+                }
             }
         }, SPLASH_TIME_OUT);
     }

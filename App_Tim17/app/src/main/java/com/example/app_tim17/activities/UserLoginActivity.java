@@ -71,7 +71,6 @@ public class UserLoginActivity extends AppCompatActivity {
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             LoginResponse token = response.body();
                             if (token != null) {
-                                // TODO sacuvati usera i preusmeriti na odg stranicu
                                 SharedPreferences sharedPreferences = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor edit = sharedPreferences.edit();
                                 String saveToken = token.getAccessToken();
