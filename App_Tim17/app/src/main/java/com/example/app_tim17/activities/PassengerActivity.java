@@ -11,10 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.fragments.HistoryPassengerFragment;
-import com.example.app_tim17.fragments.InboxPassengerFragment;
-import com.example.app_tim17.fragments.MainPassengerFragment;
-import com.example.app_tim17.fragments.ProfilePassengerFragment;
+import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
+import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
+import com.example.app_tim17.fragments.passenger.MainPassengerFragment;
+import com.example.app_tim17.fragments.passenger.ProfilePassengerFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class PassengerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{

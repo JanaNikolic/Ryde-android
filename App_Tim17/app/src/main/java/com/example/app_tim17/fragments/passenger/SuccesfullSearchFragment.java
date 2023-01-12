@@ -1,6 +1,5 @@
-package com.example.app_tim17.fragments;
+package com.example.app_tim17.fragments.passenger;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,13 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.SplashActivity;
-import com.example.app_tim17.activities.UserLoginActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import pl.droidsonroids.gif.GifImageView;
 
 /**
  * A simple {@link Fragment} subclass.

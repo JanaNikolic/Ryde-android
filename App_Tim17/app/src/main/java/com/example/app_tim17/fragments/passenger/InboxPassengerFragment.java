@@ -1,4 +1,4 @@
-package com.example.app_tim17.fragments;
+package com.example.app_tim17.fragments.passenger;
 
 import android.content.Intent;
 import android.os.Bundle;

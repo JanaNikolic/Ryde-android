@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DriverMainActivity"
-    android:paddingTop="?attr/actionBarSize">
+    tools:context=".activities.DriverActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view_driver"
@@ -21,10 +20,10 @@
         app:menu="@menu/menu_bottom_driver" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_passenger_container"
+        android:id="@+id/fragment_driver_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.app_tim17.fragments.MainPassengerFragment"
-        tools:layout="@layout/fragment_main_passenger" />
+        android:name="com.example.app_tim17.fragments.driver.MainDriverFragment"
+        tools:layout="@layout/fragment_main_driver" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.MainPassengerFragment">
+    tools:context=".fragments.passenger.MainPassengerFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -36,7 +36,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/currentRide"
-            android:name="com.example.app_tim17.fragments.PassengerCreateRideFragment"
+            android:name="com.example.app_tim17.fragments.passenger.PassengerCreateRideFragment"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

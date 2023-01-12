@@ -25,7 +25,7 @@
         android:id="@+id/fragment_passenger_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.app_tim17.fragments.MainPassengerFragment"
+        android:name="com.example.app_tim17.fragments.passenger.MainPassengerFragment"
         tools:layout="@layout/fragment_main_passenger" />
 
 

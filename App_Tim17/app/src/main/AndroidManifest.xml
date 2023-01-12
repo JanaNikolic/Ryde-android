@@ -43,13 +43,6 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".activities.DriverRideHistoryActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".activities.DriverInboxChatActivity"
             android:exported="false">
             <meta-data
@@ -71,28 +64,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.DriverInboxActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".activities.PassengerInboxChatActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".activities.DriverAccountActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".activities.DriverMainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

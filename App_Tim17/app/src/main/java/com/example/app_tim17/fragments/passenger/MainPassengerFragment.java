@@ -1,4 +1,4 @@
-package com.example.app_tim17.fragments;
+package com.example.app_tim17.fragments.passenger;
 
 import android.os.Bundle;
 
@@ -9,10 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.MapsFragment;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;

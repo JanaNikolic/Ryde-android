@@ -15,10 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.fragments.HistoryPassengerFragment;
-import com.example.app_tim17.fragments.InboxPassengerFragment;
-import com.example.app_tim17.fragments.MainPassengerFragment;
-import com.example.app_tim17.fragments.ProfilePassengerFragment;
+import com.example.app_tim17.fragments.driver.HistoryDriverFragment;
+import com.example.app_tim17.fragments.driver.InboxDriverFragment;
+import com.example.app_tim17.fragments.driver.MainDriverFragment;
+import com.example.app_tim17.fragments.driver.ProfileDriverFragment;
+import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
+import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
+import com.example.app_tim17.fragments.passenger.MainPassengerFragment;
+import com.example.app_tim17.fragments.passenger.ProfilePassengerFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DriverActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -28,7 +32,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_main);
+        setContentView(R.layout.activity_driver);
         bottomNavigationView = findViewById(R.id.nav_view_driver);
         bottomNavigationView.setSelectedItemId(R.id.home_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
@@ -83,24 +87,24 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         switch (item.getItemId()) {
-            case R.id.inbox:
+            case R.id.inbox_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_passenger_container, InboxPassengerFragment.class, null);
+                transaction.replace(R.id.fragment_driver_container, InboxDriverFragment.class, null);
                 transaction.commit();
                 return true;
-            case R.id.home:
+            case R.id.home_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_passenger_container, MainPassengerFragment.class, null);
+                transaction.replace(R.id.fragment_driver_container, MainDriverFragment.class, null);
                 transaction.commit();
                 return true;
-            case R.id.history:
+            case R.id.history_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_passenger_container, HistoryPassengerFragment.class, null);
+                transaction.replace(R.id.fragment_driver_container, HistoryDriverFragment.class, null);
                 transaction.commit();
                 return true;
-            case R.id.profile:
+            case R.id.profile_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_passenger_container, ProfilePassengerFragment.class, null);
+                transaction.replace(R.id.fragment_driver_container, ProfileDriverFragment.class, null);
                 transaction.commit();
                 return true;
         }
