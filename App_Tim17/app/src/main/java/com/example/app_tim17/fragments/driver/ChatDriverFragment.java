@@ -1,30 +1,30 @@
-package com.example.app_tim17.fragments;
+package com.example.app_tim17.fragments.driver;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.SplashActivity;
-import com.example.app_tim17.activities.UserLoginActivity;
+import com.example.app_tim17.adapters.MessageListAdapter;
+import com.example.app_tim17.model.response.message.Message;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import pl.droidsonroids.gif.GifImageView;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SuccesfullSearchFragment#newInstance} factory method to
+ * Use the {@link ChatDriverFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SuccesfullSearchFragment extends Fragment {
+public class ChatDriverFragment extends Fragment {
+    private RecyclerView mMessageRecycler;
+    private MessageListAdapter mMessageAdapter;
+    private ArrayList<Integer> messageList = new ArrayList<Integer>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +35,7 @@ public class SuccesfullSearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SuccesfullSearchFragment() {
+    public ChatDriverFragment() {
         // Required empty public constructor
     }
 
@@ -45,11 +45,11 @@ public class SuccesfullSearchFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SuccesfullSearchFragment.
+     * @return A new instance of fragment ChatDriverFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SuccesfullSearchFragment newInstance(String param1, String param2) {
-        SuccesfullSearchFragment fragment = new SuccesfullSearchFragment();
+    public static ChatDriverFragment newInstance(String param1, String param2) {
+        ChatDriverFragment fragment = new ChatDriverFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,16 +69,11 @@ public class SuccesfullSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.currentRide, new PassengerCurrentRideFragment());
-                fragmentTransaction.commit();}
-        }, 4800);
-    return v;
+        View view = inflater.inflate(R.layout.fragment_chat_driver, container, false);
+        mMessageRecycler = (RecyclerView) view.findViewById(R.id.recycler_gchat);
+        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
+        mMessageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        mMessageRecycler.setAdapter(mMessageAdapter);
+        return view;
     }
 }

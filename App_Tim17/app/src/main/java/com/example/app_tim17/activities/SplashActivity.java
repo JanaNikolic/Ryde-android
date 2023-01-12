@@ -1,14 +1,11 @@
 package com.example.app_tim17.activities;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -18,8 +15,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 
 import com.example.app_tim17.R;
@@ -123,98 +118,4 @@ public class SplashActivity extends Activity {
         }
         dialog.show();
     }
-//
-//@Override
-//protected void onCreate(Bundle savedInstanceState) {
-//    super.onCreate(savedInstanceState);
-//    setContentView(R.layout.activity_main);
-//    cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//    build = new Builder(Context);
-//
-//    if (cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-//            .isConnectedOrConnecting()
-//            || cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-//                    .isConnectedOrConnecting()// if connection is
-//    // there screen goes
-//    // to next screen
-//    // else shows
-//    // message toast
-//    ) {
-//        Log.e("cm value", "" + cm.getAllNetworkInfo().toString());
-//        Toast.makeText(SplashScreen.this, "Internet is active", 2000)
-//                .show();
-//        Thread mythread = new Thread() {
-//            public void run() {
-//                try {
-//
-//                    sleep(5000);
-//
-//                } catch (Exception e) {
-//                } finally {
-//                    Intent intent = new Intent(SplashScreen.this,
-//                            Yournextactivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//            }
-//        };
-//        mythread.start();
-//    } else {
-//
-//        build.setMessage("This application requires Internet connection.Would you connect to internet ?");
-//        build.setPositiveButton("Yes", new OnClickListener() {
-//
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                // TODO Auto-generated method stub
-//                finish();
-//                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-//
-//            }
-//        });
-//        build.setNegativeButton("No", new OnClickListener() {
-//
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                // TODO Auto-generated method stub
-//                build.setMessage("Are sure you want to exit?");
-//                build.setPositiveButton("Yes", new OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // TODO Auto-generated method stub
-//                        finish();
-//                    }
-//                });
-//                build.setNegativeButton("NO", new OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // TODO Auto-generated method stub
-//                        finish();
-//                        Intent intent = new Intent(SplashScreen.this,
-//                                SplashScreen.class);
-//                        startActivity(intent);
-//
-//                        dialog.dismiss();
-//
-//                    }
-//                });
-//                dailog = build.create();
-//                dailog.show();
-//            }
-//        });
-//        dailog = build.create();
-//        dailog.show();
-//
-//    }
-//
-//}
-//
-//@Override
-//public boolean onCreateOptionsMenu(Menu menu) {
-//    // Inflate the menu; this adds items to the action bar if it is present.
-//    getMenuInflater().inflate(R.menu.main, menu);
-//    return true;
-//}
 }

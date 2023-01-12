@@ -1,4 +1,4 @@
-package com.example.app_tim17.fragments;
+package com.example.app_tim17.fragments.passenger;
 
 import android.os.Bundle;
 
@@ -8,18 +8,18 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 
 import com.example.app_tim17.R;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PassengerCreateRideFragment#newInstance} factory method to
+ * Use the {@link SuccesfullSearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PassengerCreateRideFragment extends Fragment {
+public class SuccesfullSearchFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +30,7 @@ public class PassengerCreateRideFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public PassengerCreateRideFragment() {
+    public SuccesfullSearchFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class PassengerCreateRideFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PassengerCreateRideFragment.
+     * @return A new instance of fragment SuccesfullSearchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PassengerCreateRideFragment newInstance(String param1, String param2) {
-        PassengerCreateRideFragment fragment = new PassengerCreateRideFragment();
+    public static SuccesfullSearchFragment newInstance(String param1, String param2) {
+        SuccesfullSearchFragment fragment = new SuccesfullSearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,25 +65,14 @@ public class PassengerCreateRideFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_passenger_create_ride, container, false);
-        AutoCompleteTextView textView1 = (AutoCompleteTextView) v.findViewById(R.id.from);
-        AutoCompleteTextView textView2 = (AutoCompleteTextView) v.findViewById(R.id.to);
-        String[] streets1 = getResources().getStringArray(R.array.streets);
-
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, streets1);
-        textView1.setAdapter(adapter);
-        textView2.setAdapter(adapter);
-        Button buttonName = v.findViewById(R.id.btnSearch);
-        buttonName.setOnClickListener(new View.OnClickListener() {
+        View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
+        new Timer().schedule(new TimerTask() {
             @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.currentRide, new SuccesfullSearchFragment());
-                fragmentTransaction.commit();
-            }
-        });
-        return v;
+            public void run() {
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.currentRide, new PassengerCurrentRideFragment());
+                fragmentTransaction.commit();}
+        }, 4800);
+    return v;
     }
 }

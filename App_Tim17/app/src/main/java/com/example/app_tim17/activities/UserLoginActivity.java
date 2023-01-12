@@ -45,46 +45,46 @@ public class UserLoginActivity extends AppCompatActivity {
 
                 userService = retrofitService.getRetrofit().create(UserService.class);
                 
-//                Intent intent = new Intent(UserLoginActivity.this, DriverMainActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(UserLoginActivity.this, DriverActivity.class);
+                startActivity(intent);
 //                finish();
-                EditText email = findViewById(R.id.emailInput);
-                EditText password = findViewById(R.id.passwordInput);
-                
-                LoginRequest user = new LoginRequest();
-                if (user.getEmail().isEmpty()) {
-                    Toast.makeText(UserLoginActivity.this, "Email field must not be empty", Toast.LENGTH_SHORT).show();
-                } else if (user.getPassword().isEmpty()) {
-                    Toast.makeText(UserLoginActivity.this, "Password field must not be empty", Toast.LENGTH_SHORT).show();
-                } else {
-                    user.setEmail(email.getText().toString());
-                    user.setPassword(password.getText().toString());
-
-                    Call<LoginResponse> call = userService.login(user);
-                    
-                    call.enqueue(new Callback<LoginResponse>() {
-                        @Override
-                        public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                            LoginResponse token = response.body();
-                            if (token != null) {
-                                // TODO sacuvati usera i preusmeriti na odg stranicu
-                                SharedPreferences sharedPreferences = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor edit = sharedPreferences.edit();
-                                String saveToken = token.getAccessToken();
-                                edit.putString("token", saveToken);
-                                Log.i("Login",saveToken);
-                                edit.commit();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<LoginResponse> call, Throwable t) {
-                            Toast.makeText(UserLoginActivity.this, "Email or password not valid", Toast.LENGTH_SHORT).show();
-                            call.cancel();
-                        }
-                    });
-                }
-                
+//                EditText email = findViewById(R.id.emailInput);
+//                EditText password = findViewById(R.id.passwordInput);
+//
+//                LoginRequest user = new LoginRequest();
+//                if (email.getText().length() == 0) {
+//                    Toast.makeText(UserLoginActivity.this, "Email field must not be empty", Toast.LENGTH_SHORT).show();
+//                } else if (password.getText().length() == 0) {
+//                    Toast.makeText(UserLoginActivity.this, "Password field must not be empty", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    user.setEmail(email.getText().toString());
+//                    user.setPassword(password.getText().toString());
+//
+//                    Call<LoginResponse> call = userService.login(user);
+//
+//                    call.enqueue(new Callback<LoginResponse>() {
+//                        @Override
+//                        public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+//                            LoginResponse token = response.body();
+//                            if (token != null) {
+//                                // TODO sacuvati usera i preusmeriti na odg stranicu
+//                                SharedPreferences sharedPreferences = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+//                                SharedPreferences.Editor edit = sharedPreferences.edit();
+//                                String saveToken = token.getAccessToken();
+//                                edit.putString("token", saveToken);
+//                                Log.i("Login",saveToken);
+//                                edit.commit();
+//                                Log.i("jwt", saveToken);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<LoginResponse> call, Throwable t) {
+//                            Toast.makeText(UserLoginActivity.this, "Email or password not valid", Toast.LENGTH_SHORT).show();
+//                            call.cancel();
+//                        }
+//                    });
+//                }
             }
         });
         Button registerBtn = findViewById(R.id.registerBtn);

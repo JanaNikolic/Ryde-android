@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DriverInboxActivity">
+    tools:context=".activities.DriverActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view_inbox_driver"
+        android:id="@+id/nav_view_driver"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
@@ -19,14 +19,11 @@
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/menu_bottom_driver" />
 
-    <ListView
-        android:id="@+id/list_view"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_driver_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/nav_view_inbox_driver"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="?attr/actionBarSize"/>
+        android:name="com.example.app_tim17.fragments.driver.MainDriverFragment"
+        tools:layout="@layout/fragment_main_driver" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

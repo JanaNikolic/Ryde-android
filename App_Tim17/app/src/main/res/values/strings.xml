@@ -49,6 +49,7 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="search">SEARCH</string>
+    <string name="no_ride">Waiting for ryde...</string>
     <string-array name="streets">
         <item>Vuka Karadzica</item>
         <item>Strazilovska 5</item>
