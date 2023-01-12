@@ -2,16 +2,22 @@ package com.example.app_tim17.retrofit;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Authenticator;
+import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
 
-    public static final String SERVICE_API_PATH = "http://192.168.1.23:8080/api/";
+    public static final String SERVICE_API_PATH = "http://192.168.43.198:8080/api/";
     private Retrofit retrofit;
 
     public RetrofitService() {
