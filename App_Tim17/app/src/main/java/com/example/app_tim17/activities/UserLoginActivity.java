@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.service.TokenUtils;
 
 public class UserLoginActivity extends AppCompatActivity {
 
@@ -22,10 +23,13 @@ public class UserLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
         Button loginBtn = findViewById(R.id.loginBtn);
+
+        TokenUtils tokenUtils = new TokenUtils();
+        tokenUtils.getRole();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserLoginActivity.this, DriverMainActivity.class);
+                Intent intent = new Intent(UserLoginActivity.this, DriverActivity.class);
                 startActivity(intent);
             }
         });
