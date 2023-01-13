@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import com.example.app_tim17.R;
 import com.example.app_tim17.activities.DriverInboxChatActivity;
 import com.example.app_tim17.adapters.InboxList;
+import com.example.app_tim17.fragments.passenger.PassengerCurrentRideFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
@@ -78,8 +80,9 @@ public class InboxDriverFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                startActivity(new Intent(view.getContext(), DriverInboxChatActivity.class));
-            }
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_driver_container, new ChatDriverFragment());
+                fragmentTransaction.commit();}
         });
         return view;
     }

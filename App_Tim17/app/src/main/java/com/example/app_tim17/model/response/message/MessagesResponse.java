@@ -1,41 +1,50 @@
 package com.example.app_tim17.model.response.message;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MessagesResponse {
+public class MessagesResponse implements Serializable {
 
-    @SerializedName("totalCount")
+    @SerializedName("count")
     @Expose
-    private Long totalCount;
-    @SerializedName("results")
+    private Integer count;
+    @SerializedName("messages")
     @Expose
-    private List<Message> results = null;
+    private List<Message> messages = new ArrayList<Message>();
 
     public MessagesResponse() {
     }
 
-    public MessagesResponse(Long totalCount, List<Message> results) {
+    public MessagesResponse(Integer count, List<Message> messages) {
         super();
-        this.totalCount = totalCount;
-        this.results = results;
+        this.count = count;
+        this.messages = messages;
     }
 
-    public Long getTotalCount() {
-        return totalCount;
+    public Integer getTotalCount() {
+        return count;
     }
 
-    public void setTotalCount(Long totalCount) {
-        this.totalCount = totalCount;
+    public void setTotalCount(Integer count) {
+        this.count = count;
     }
 
     public List<Message> getMessages() {
-        return results;
+        return messages;
     }
 
-    public void setMessages(List<Message> results) {
-        this.results = results;
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
+    @Override
+    public String toString() {
+        return "MessagesResponse{" +
+                "count=" + count +
+                ", messages=" + messages +
+                '}';
+    }
 }
