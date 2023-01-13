@@ -83,6 +83,29 @@ public class ChatDriverFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        RetrofitService retrofitService = new RetrofitService();
+        messageService = retrofitService.getRetrofit().create(MessageService.class);
+        //String token = getCurrentToken();
+        Call<MessagesResponse> call = messageService.getMessages(1009L);
+
+        call.enqueue(new Callback<MessagesResponse>() {
+            @Override
+            public void onResponse(Call<MessagesResponse> call, Response<MessagesResponse> response) {
+                MessagesResponse messagesResponse = response.body();
+                if (messagesResponse != null) {
+                    for (Message message : messagesResponse.getMessages()) {
+                        messageList.add(message);;
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessagesResponse> call, Throwable t) {
+                call.cancel();
+            }
+        });
 
     }
 
@@ -98,32 +121,12 @@ public class ChatDriverFragment extends Fragment {
                 sendMessage(text.getText().toString());
             }
         });
-        RetrofitService retrofitService = new RetrofitService();
-        messageService = retrofitService.getRetrofit().create(MessageService.class);
-        //String token = getCurrentToken();
-        Call<MessagesResponse> call = messageService.getMessages(1009L);
 
-        call.enqueue(new Callback<MessagesResponse>() {
-            @Override
-            public void onResponse(Call<MessagesResponse> call, Response<MessagesResponse> response) {
-                MessagesResponse messagesResponse = response.body();
-                if (messagesResponse != null) {
-                    for (Message message : messagesResponse.getMessages()) {
-                        messageList.add(message);;
-                    }
-                    mMessageRecycler = (RecyclerView) view.findViewById(R.id.recycler_gchat);
-                    mMessageAdapter = new MessageListAdapter(getContext(), messageList);
-                    mMessageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-                    mMessageRecycler.setAdapter(mMessageAdapter);
+        mMessageRecycler = (RecyclerView) view.findViewById(R.id.recycler_gchat);
+        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
+        mMessageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        mMessageRecycler.setAdapter(mMessageAdapter);
 
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MessagesResponse> call, Throwable t) {
-                call.cancel();
-            }
-        });
         return view;
 
     }
