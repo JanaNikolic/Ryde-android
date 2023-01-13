@@ -47,8 +47,9 @@ public class SplashActivity extends Activity {
             public void run() {
                 SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
                 String token = sp.getString("token", "");
+                Log.d("jwt token", token);
 
-                if (token == null) {
+                if (token.equals("")) {
                     startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
                     finish();
                 } else {
