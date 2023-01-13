@@ -49,6 +49,7 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="search">SEARCH</string>
+    <string name="next">NEXT</string>
     <string name="no_ride">Waiting for ryde...</string>
     <string-array name="streets">
         <item>Vuka Karadzica</item>
@@ -104,5 +105,8 @@
     <string name="good_news_sync">Good news, everything is sync now.</string>
     <string name="new_comments">New comments</string>
     <string name="new_">New</string>
+    <string name="standard">STANDARD</string>
+    <string name="luxurious">LUXURIOUS</string>
+    <string name="van">VAN</string>
     <string name="turn_wifi_on">Turn wifi on</string>
 </resources>

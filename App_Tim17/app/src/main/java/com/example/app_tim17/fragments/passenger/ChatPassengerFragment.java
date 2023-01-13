@@ -1,4 +1,4 @@
-package com.example.app_tim17.fragments.driver;
+package com.example.app_tim17.fragments.passenger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,10 +35,10 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChatDriverFragment#newInstance} factory method to
+ * Use the {@link ChatPassengerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatDriverFragment extends Fragment {
+public class ChatPassengerFragment extends Fragment {
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
     private ArrayList<Message> messageList = new ArrayList<Message>();
@@ -55,7 +55,7 @@ public class ChatDriverFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ChatDriverFragment() {
+    public ChatPassengerFragment() {
         // Required empty public constructor
     }
 
@@ -68,8 +68,8 @@ public class ChatDriverFragment extends Fragment {
      * @return A new instance of fragment ChatDriverFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatDriverFragment newInstance(String param1, String param2) {
-        ChatDriverFragment fragment = new ChatDriverFragment();
+    public static ChatPassengerFragment newInstance(String param1, String param2) {
+        ChatPassengerFragment fragment = new ChatPassengerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -93,10 +93,11 @@ public class ChatDriverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat_driver, container, false);
+        tokenUtils = new TokenUtils();
         retrofitService = new RetrofitService();
         messageService = retrofitService.getRetrofit().create(MessageService.class);
 
-        Call<MessagesResponse> call = messageService.getMessages(1009L);
+        Call<MessagesResponse> call = messageService.getMessages(tokenUtils.getId(getCurrentToken()));
 
         call.enqueue(new Callback<MessagesResponse>() {
             @Override

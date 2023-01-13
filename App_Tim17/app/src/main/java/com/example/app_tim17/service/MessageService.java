@@ -7,6 +7,7 @@ import com.example.app_tim17.model.response.message.MessagesResponse;
 import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -17,5 +18,5 @@ public interface MessageService {
     Call<MessagesResponse> getMessages(@Path("id") Long id);
 
     @POST("user/{id}/message")
-    Call<Message> sendMessage(@Path("id") Long id, @Header("Authorization") String token);
+    Call<Message> sendMessage(@Path("id") Long id, @Header("Authorization") String token, @Body MessageRequest message);
 }
