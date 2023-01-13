@@ -29,9 +29,9 @@
         android:textColor="@color/teal"
         android:textSize="10dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/startTime"
-        app:layout_constraintEnd_toEndOf="@+id/startTime"
-        app:layout_constraintTop_toTopOf="@+id/rider_profile"
+        app:layout_constraintBottom_toTopOf="@id/startTime"
+        app:layout_constraintEnd_toEndOf="@id/startTime"
+        app:layout_constraintTop_toTopOf="@id/rider_profile"
         app:layout_constraintVertical_bias="0.804" />
 
     <TextView
@@ -41,8 +41,8 @@
         android:textColor="@color/teal"
         android:textSize="10dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/rider_profile"
-        app:layout_constraintStart_toStartOf="@+id/durationText" />
+        app:layout_constraintBottom_toBottomOf="@id/rider_profile"
+        app:layout_constraintStart_toStartOf="@id/durationText" />
 
     <TextView
         android:id="@+id/price"
@@ -51,10 +51,10 @@
         android:textColor="@color/teal"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/startTime"
+        app:layout_constraintBottom_toBottomOf="@id/startTime"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/startTime"
-        app:layout_constraintTop_toBottomOf="@+id/duration" />
+        app:layout_constraintStart_toEndOf="@id/startTime"
+        app:layout_constraintTop_toBottomOf="@id/duration" />
 
     <TextView
         android:id="@+id/startLocation"
@@ -62,9 +62,9 @@
         android:layout_height="40dp"
         android:textSize="14dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/endLocation"
-        app:layout_constraintStart_toStartOf="@+id/startTime"
-        app:layout_constraintTop_toTopOf="@+id/endLocation"
+        app:layout_constraintBottom_toBottomOf="@id/endLocation"
+        app:layout_constraintStart_toStartOf="@id/startTime"
+        app:layout_constraintTop_toTopOf="@id/endLocation"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
