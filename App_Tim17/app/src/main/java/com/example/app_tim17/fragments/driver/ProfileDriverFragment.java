@@ -1,6 +1,8 @@
 package com.example.app_tim17.fragments.driver;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,7 +20,10 @@ import com.example.app_tim17.model.response.driver.DriverResponse;
 import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.DriverService;
+import com.example.app_tim17.service.TokenUtils;
 import com.google.android.gms.maps.SupportMapFragment;
+
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,35 +36,17 @@ import retrofit2.Response;
  */
 public class ProfileDriverFragment extends Fragment {
 
-    DriverService driverService;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private DriverService driverService;
+    private TokenUtils tokenUtils;
 
     public ProfileDriverFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileDriverFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ProfileDriverFragment newInstance(String param1, String param2) {
         ProfileDriverFragment fragment = new ProfileDriverFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,17 +54,13 @@ public class ProfileDriverFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_driver, container, false);
-
+        tokenUtils = new TokenUtils();
         RetrofitService retrofitService = new RetrofitService();
 
         driverService = retrofitService.getRetrofit().create(DriverService.class);
@@ -104,10 +87,15 @@ public class ProfileDriverFragment extends Fragment {
         TextView email = view.findViewById(R.id.email_profile);
         TextView model = view.findViewById(R.id.car_model);
         TextView licenseNumber = view.findViewById(R.id.license_number);
+        TextView phoneNumber = view.findViewById(R.id.phone_num_profile);
 
-        Call<DriverResponse> call = driverService.getDriver(1001L);
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+        Long id = tokenUtils.getId(token);
 
-        Call<VehicleResponse> callVehicle = driverService.getDriversVehicle(1001L);
+        Call<DriverResponse> call = driverService.getDriver(id, "Bearer " + token);
+
+        Call<VehicleResponse> callVehicle = driverService.getDriversVehicle(id, "Bearer " + token);
 
         callVehicle.enqueue(new Callback<VehicleResponse>() {
             @Override
@@ -136,6 +124,8 @@ public class ProfileDriverFragment extends Fragment {
                     String fullNameStr = driver.getName() + " " + driver.getSurname();
                     fullName.setText(fullNameStr);
                     email.setText(driver.getEmail());
+                    phoneNumber.setText(driver.getTelephoneNumber());
+                    // TODO add profile picture
                 }
             }
             @Override
