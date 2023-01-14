@@ -27,4 +27,10 @@
         <item>3</item>
         <item>10</item>
     </string-array>
+
+    <array name="stepper_names">
+        <item>Locations</item>
+        <item>Preferences</item>
+        <item>Time</item>
+    </array>
 </resources>

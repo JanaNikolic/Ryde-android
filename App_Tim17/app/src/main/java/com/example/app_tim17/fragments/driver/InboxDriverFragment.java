@@ -1,10 +1,10 @@
 package com.example.app_tim17.fragments.driver;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.DriverInboxChatActivity;
 import com.example.app_tim17.adapters.InboxList;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.app_tim17.fragments.passenger.ChatFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,9 +77,25 @@ public class InboxDriverFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                startActivity(new Intent(view.getContext(), DriverInboxChatActivity.class));
+                replaceFragment(new ChatFragment());
             }
         });
         return view;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        String backStateName = fragment.getClass().getName();
+        String fragmentTag = backStateName;
+
+        FragmentManager manager = getParentFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
+
+        if (!fragmentPopped && manager.findFragmentByTag(fragmentTag) == null) { //fragment not in back stack, create it.
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(R.id.fragment_driver_container, fragment, fragmentTag);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.addToBackStack(backStateName);
+            ft.commit();
+        }
     }
 }

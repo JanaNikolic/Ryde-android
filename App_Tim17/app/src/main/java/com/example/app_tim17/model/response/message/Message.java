@@ -1,20 +1,22 @@
 package com.example.app_tim17.model.response.message;
 
+import androidx.annotation.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Message {
+public class Message implements Serializable {
 
     @SerializedName("id")
     @Expose
     private Long id;
     @SerializedName("timeOfSending")
     @Expose
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime timeOfSending;
+    private String timeOfSending;
     @SerializedName("senderId")
     @Expose
     private Long senderId;
@@ -29,12 +31,13 @@ public class Message {
     private String type;
     @SerializedName("rideId")
     @Expose
+    @Nullable
     private Long rideId;
 
     public Message() {
     }
 
-    public Message(Long id, LocalDateTime timeOfSending, Long senderId, Long receiverId, String message, String type, Long rideId) {
+    public Message(Long id, String timeOfSending, Long senderId, Long receiverId, String message, String type, Long rideId) {
         super();
         this.id = id;
         this.timeOfSending = timeOfSending;
@@ -53,11 +56,11 @@ public class Message {
         this.id = id;
     }
 
-    public LocalDateTime getTimeOfSending() {
+    public String getTimeOfSending() {
         return timeOfSending;
     }
 
-    public void setTimeOfSending(LocalDateTime timeOfSending) {
+    public void setTimeOfSending(String timeOfSending) {
         this.timeOfSending = timeOfSending;
     }
 

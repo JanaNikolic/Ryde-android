@@ -1,30 +1,21 @@
-package com.example.app_tim17.fragments.driver;
+package com.example.app_tim17.fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.adapters.MessageListAdapter;
-import com.example.app_tim17.model.response.message.Message;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChatDriverFragment#newInstance} factory method to
+ * Use the {@link DriverCurrentRideFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatDriverFragment extends Fragment {
-    private RecyclerView mMessageRecycler;
-    private MessageListAdapter mMessageAdapter;
-    private ArrayList<Integer> messageList = new ArrayList<Integer>();
+public class DriverCurrentRideFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +26,7 @@ public class ChatDriverFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ChatDriverFragment() {
+    public DriverCurrentRideFragment() {
         // Required empty public constructor
     }
 
@@ -45,11 +36,11 @@ public class ChatDriverFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatDriverFragment.
+     * @return A new instance of fragment DriverCurrentRideFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatDriverFragment newInstance(String param1, String param2) {
-        ChatDriverFragment fragment = new ChatDriverFragment();
+    public static DriverCurrentRideFragment newInstance(String param1, String param2) {
+        DriverCurrentRideFragment fragment = new DriverCurrentRideFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,11 +60,7 @@ public class ChatDriverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat_driver, container, false);
-        mMessageRecycler = (RecyclerView) view.findViewById(R.id.recycler_gchat);
-        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
-        mMessageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        mMessageRecycler.setAdapter(mMessageAdapter);
-        return view;
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_driver_current_ride, container, false);
     }
 }

@@ -1,116 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="200dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    app:cardMaxElevation="12dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
 
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/rider_profile"
-        android:layout_width="88dp"
-        android:layout_height="100dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:contentDescription="@null"
-        android:src="@drawable/profile_picture"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/Circular"
-        app:strokeColor="@color/yellow"
-        app:strokeWidth="3dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="101dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/teal"
-        android:textSize="10dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/startTime"
-        app:layout_constraintEnd_toEndOf="@id/startTime"
-        app:layout_constraintTop_toTopOf="@id/rider_profile"
-        app:layout_constraintVertical_bias="0.804" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="12dp"
+            android:layout_height="match_parent"
+            android:background="@color/yellow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/startTime"
-        android:layout_width="146dp"
-        android:layout_height="20dp"
-        android:textColor="@color/teal"
-        android:textSize="10dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/rider_profile"
-        app:layout_constraintStart_toStartOf="@id/durationText" />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="54dp"
-        android:layout_height="30dp"
-        android:textColor="@color/teal"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/startTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/startTime"
-        app:layout_constraintTop_toBottomOf="@id/duration" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:text="@string/start"
+            android:textColor="@color/dark_teal"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/time_start"
+            app:layout_constraintStart_toStartOf="@+id/time_start" />
 
-    <TextView
-        android:id="@+id/startLocation"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:textSize="14dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/endLocation"
-        app:layout_constraintStart_toStartOf="@id/startTime"
-        app:layout_constraintTop_toTopOf="@id/endLocation"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/endLocation"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:textSize="14dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/price"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/startLocation"
-        app:layout_constraintTop_toTopOf="@+id/rider_profile" />
-
-    <TextView
-        android:id="@+id/startText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="11dp"
-        android:text="Start"
-        app:layout_constraintBottom_toTopOf="@+id/startLocation"
-        app:layout_constraintStart_toStartOf="@+id/startLocation"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/destinationText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="11dp"
-        android:text="Destination"
-        app:layout_constraintBottom_toTopOf="@+id/endLocation"
-        app:layout_constraintStart_toStartOf="@+id/endLocation"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/durationText"
-        android:layout_width="45dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="24dp"
-        android:text="Duration: "
-        android:textColor="@color/teal"
-        android:textSize="10dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/duration"
-        app:layout_constraintStart_toEndOf="@+id/rider_profile"
-        app:layout_constraintTop_toTopOf="@+id/duration"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/dark_teal"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:text="@string/end"
+            android:textColor="@color/dark_teal"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/time_end"
+            app:layout_constraintStart_toStartOf="@+id/time_end" />
+
+        <TextView
+            android:id="@+id/time_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/dark_teal"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/time_start" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/duration"
+            android:textColor="@color/dark_teal"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/duration"
+            app:layout_constraintStart_toStartOf="@+id/duration" />
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/dark_teal"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/time_end" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="38dp"
+            android:layout_height="80dp"
+
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/stops"
+            app:layout_constraintStart_toEndOf="@+id/date"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/start_address"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/dark_teal"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/road_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/dark_teal"
+            android:textSize="13sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/start_address" />
+
+        <TextView
+            android:id="@+id/end_address"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/dark_teal"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/road_length" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/dark_teal"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/duration" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/price"
+            android:textColor="@color/dark_teal"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/price"
+            app:layout_constraintStart_toStartOf="@+id/price" />
+
+        <ImageView
+            android:id="@+id/star1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/price" />
+
+        <ImageView
+            android:id="@+id/star2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/star1" />
+
+        <ImageView
+            android:id="@+id/star3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/star2" />
+
+        <ImageView
+            android:id="@+id/star4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/star3" />
+
+        <ImageView
+            android:id="@+id/star5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_baseline_star_24"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/star4" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="-6dp"
+            android:layout_marginEnd="32dp"
+            android:src="@drawable/ic_baseline_people_alt_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_address" />
+
+        <TextView
+            android:id="@+id/num_of_passengers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/dark_teal"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/start_address" />
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end"
+            android:onClick="ShowMessages"
+            android:src="@drawable/ic_baseline_message_24"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/end_address" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

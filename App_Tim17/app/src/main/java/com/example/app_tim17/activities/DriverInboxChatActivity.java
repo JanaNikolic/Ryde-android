@@ -31,11 +31,11 @@ public class DriverInboxChatActivity extends AppCompatActivity implements Bottom
         messageList.add(3);
         messageList.add(4);
         messageList.add(5);
-        messageList.add(6);
-        mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_gchat);
-        mMessageAdapter = new MessageListAdapter(this, messageList);
-        mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mMessageRecycler.setAdapter(mMessageAdapter);
+//        messageList.add(6);
+//        mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_gchat);
+//        mMessageAdapter = new MessageListAdapter(this, messageList);
+//        mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
+//        mMessageRecycler.setAdapter(mMessageAdapter);
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_inbox2_driver);
         bottomNavigationView.setSelectedItemId(R.id.inbox_driver);
         bottomNavigationView.setOnItemSelectedListener(this);

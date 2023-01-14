@@ -3,33 +3,36 @@ package com.example.app_tim17.fragments.passenger;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ListView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.fragments.UserInfoFragment;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ProfilePassengerFragment#newInstance} factory method to
+ * Use the {@link PassengerFavoriteRouteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfilePassengerFragment extends Fragment {
+public class PassengerFavoriteRouteFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private final String[] startAddress = {"Bulevar Oslobođenja 15", "Bulevar Oslobođenja 150",
+            "Železnička 12", "Fruškogorska 12", "Fruškogorska 18", "Fruškogorska 15"};
+    private final String[] endAddress = {"Fruškogorska 15", "Železnička 12", "Fruškogorska 12",
+            "Bulevar Oslobođenja 150", "Nemanjina 18", "Bulevar Oslobođenja 15"};
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public ProfilePassengerFragment() {
+    public PassengerFavoriteRouteFragment() {
         // Required empty public constructor
     }
 
@@ -39,11 +42,11 @@ public class ProfilePassengerFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfilePassengerFragment.
+     * @return A new instance of fragment PassengerFavoriteRouteFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfilePassengerFragment newInstance(String param1, String param2) {
-        ProfilePassengerFragment fragment = new ProfilePassengerFragment();
+    public static PassengerFavoriteRouteFragment newInstance(String param1, String param2) {
+        PassengerFavoriteRouteFragment fragment = new PassengerFavoriteRouteFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,30 +67,11 @@ public class ProfilePassengerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile_passenger, container, false);
+        View view = inflater.inflate(R.layout.fragment_passenger_favorite_route, container, false);
 
-        Button favBtn = (Button) view.findViewById(R.id.favRouteBtn);
-        Button statBtn = (Button) view.findViewById(R.id.reportBtn);
-
-        favBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment_passenger_container, new PassengerFavoriteRouteFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-
-        statBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment_passenger_container, new PassengerReportFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+        ListView listView = (ListView) view.findViewById(R.id.list_view_fav_route);
+        Adapters.FavoriteRouteAdapter favRouteAdapter = new Adapters.FavoriteRouteAdapter(getActivity(), startAddress, endAddress);
+        listView.setAdapter(favRouteAdapter);
 
         return view;
     }

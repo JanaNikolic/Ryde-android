@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
