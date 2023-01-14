@@ -33,10 +33,10 @@ public class PassengerInboxChatActivity extends AppCompatActivity implements Bot
         messageList.add(4);
         messageList.add(5);
         messageList.add(6);
-        mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_gchat);
-        mMessageAdapter = new MessageListAdapter(this, messageList);
-        mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mMessageRecycler.setAdapter(mMessageAdapter);
+//        mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_gchat);
+//        mMessageAdapter = new MessageListAdapter(this, messageList);
+//        mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
+//        mMessageRecycler.setAdapter(mMessageAdapter);
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_inbox2);
         bottomNavigationView.setSelectedItemId(R.id.inbox);
         bottomNavigationView.setOnItemSelectedListener(this);

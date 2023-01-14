@@ -8,7 +8,7 @@ import com.auth0.android.jwt.JWT;
 
 public class TokenUtils {
 
-    public static Long getId(String token) {
+    public Long getId(String token) {
         JWT parsedJWT = new JWT(token);
         Claim subscriptionMetaData = parsedJWT.getClaim("id");
         Long parsedValue = subscriptionMetaData.asLong();
@@ -23,5 +23,10 @@ public class TokenUtils {
         return test;
     }
 
+    public String getEmail(String token) {
+        JWT parsedJWT = new JWT(token);
+        String email = parsedJWT.getSubject();
+        return email;
+    }
 
 }
