@@ -4,50 +4,37 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
-public class PassengerAccountActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
-    BottomNavigationView bottomNavigationView;
+public class PassengerReportActivity extends AppCompatActivity  implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passenger_account);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_driver_account);
+        setContentView(R.layout.activity_passenger_report);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_report);
         bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationView.setOnItemSelectedListener(this);
-
-        Button reportBtn = findViewById(R.id.reportBtn);
-        reportBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PassengerAccountActivity.this, PassengerReportActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button favRouteBtn = findViewById(R.id.favRouteBtn);
-        favRouteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PassengerAccountActivity.this, PassengerFavoriteRouteActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_header, menu);
-        setTitle("Profile");
-        return true;
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+        double y;
+        for(int x = 0;x<90;x++){
+            y = x+100;
+            series.appendData(new DataPoint(x,y), true, 90);
+            graph.addSeries(series);
+            series.setColor(Color.parseColor("#095255"));
+            series.setThickness(10);
+            series.setDataPointsRadius(16);
+        }
     }
 
     @Override
@@ -66,6 +53,14 @@ public class PassengerAccountActivity extends AppCompatActivity implements Botto
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_header, menu);
+        return true;
+    }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -88,12 +83,5 @@ public class PassengerAccountActivity extends AppCompatActivity implements Botto
                 return true;
         }
         return false;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bottomNavigationView = findViewById(R.id.nav_view_driver_account);
-        bottomNavigationView.setSelectedItemId(R.id.profile);
     }
 }

@@ -7,47 +7,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ListView;
 
 import com.example.app_tim17.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class PassengerAccountActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
-    BottomNavigationView bottomNavigationView;
+import Adapters.FavoriteRouteAdapter;
+
+
+public class PassengerFavoriteRouteActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+
+    private final String[] startAddress = {"Bulevar Oslobođenja 15", "Bulevar Oslobođenja 150",
+            "Železnička 12", "Fruškogorska 12", "Fruškogorska 18", "Fruškogorska 15"};
+    private final String[] endAddress = {"Fruškogorska 15", "Železnička 12", "Fruškogorska 12",
+            "Bulevar Oslobođenja 150", "Nemanjina 18", "Bulevar Oslobođenja 15"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passenger_account);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_driver_account);
+        setContentView(R.layout.activity_passenger_favorite_route);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view_fav_route);
         bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationView.setOnItemSelectedListener(this);
+        ListView listView = (ListView) findViewById(R.id.list_view_fav_route);
+        FavoriteRouteAdapter favRouteAdapter = new FavoriteRouteAdapter(this, startAddress, endAddress);
+        listView.setAdapter(favRouteAdapter);
 
-        Button reportBtn = findViewById(R.id.reportBtn);
-        reportBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PassengerAccountActivity.this, PassengerReportActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        Button favRouteBtn = findViewById(R.id.favRouteBtn);
-        favRouteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PassengerAccountActivity.this, PassengerFavoriteRouteActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_header, menu);
-        setTitle("Profile");
-        return true;
     }
 
     @Override
@@ -66,6 +52,14 @@ public class PassengerAccountActivity extends AppCompatActivity implements Botto
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_header, menu);
+        return true;
+    }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -88,12 +82,5 @@ public class PassengerAccountActivity extends AppCompatActivity implements Botto
                 return true;
         }
         return false;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bottomNavigationView = findViewById(R.id.nav_view_driver_account);
-        bottomNavigationView.setSelectedItemId(R.id.profile);
     }
 }
