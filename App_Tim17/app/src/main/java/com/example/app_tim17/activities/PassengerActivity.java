@@ -7,8 +7,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+<<<<<<< Updated upstream
+=======
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+>>>>>>> Stashed changes
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
@@ -17,8 +25,21 @@ import com.example.app_tim17.fragments.passenger.MainPassengerFragment;
 import com.example.app_tim17.fragments.passenger.ProfilePassengerFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class PassengerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+import java.net.URI;
+import java.net.URISyntaxException;
 
+import tech.gusavila92.websocketclient.WebSocketClient;
+
+public class PassengerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+    public WebSocketClient getWebSocketClient() {
+        return webSocketClient;
+    }
+
+    public void setWebSocketClient(WebSocketClient webSocketClient) {
+        this.webSocketClient = webSocketClient;
+    }
+
+    private WebSocketClient webSocketClient;
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -29,6 +50,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
+        createWebSocketClient();
     }
 
     @Override
@@ -84,5 +106,69 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                 return true;
         }
         return false;
+    }
+
+    private void createWebSocketClient() {
+        URI uri;
+        try {
+            // Connect to local host
+            uri = new URI("ws://192.168.1.7:8080/websocket");
+        }
+        catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        webSocketClient = new WebSocketClient(uri) {
+            @Override
+            public void onOpen() {
+                Log.i("WebSocket", "Session is starting");
+                webSocketClient.send("Hello World!");
+            }
+
+            @Override
+            public void onTextReceived(String s) {
+                Log.i("WebSocket", "Message received");
+                final String message = s;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onBinaryReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPingReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPongReceived(byte[] data) {
+            }
+
+            @Override
+            public void onException(Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            @Override
+            public void onCloseReceived() {
+                Log.i("WebSocket", "Closed ");
+                System.out.println("onCloseReceived");
+            }
+        };
+
+        webSocketClient.setConnectTimeout(10000);
+        webSocketClient.setReadTimeout(60000);
+        webSocketClient.enableAutomaticReconnection(5000);
+        webSocketClient.connect();
     }
 }

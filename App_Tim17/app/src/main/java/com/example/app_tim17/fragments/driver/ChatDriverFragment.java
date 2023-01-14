@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.activities.PassengerActivity;
 import com.example.app_tim17.adapters.MessageListAdapter;
 import com.example.app_tim17.model.response.driver.DriverResponse;
 import com.example.app_tim17.model.response.message.Message;
@@ -133,6 +134,40 @@ public class ChatDriverFragment extends Fragment {
 
     private void sendMessage(String text) {
 
+<<<<<<< Updated upstream:App_Tim17/app/src/main/java/com/example/app_tim17/fragments/driver/ChatDriverFragment.java
+=======
+    public void sendSocketMessage(View view) {
+        Log.i("WebSocket", "Button was clicked");
+        PassengerActivity pa = (PassengerActivity) getActivity();
+        pa.getWebSocketClient().send("1");
+        }
+
+    private void sendMessage(String text, Long receiverId) {
+        retrofitService = new RetrofitService();
+        messageService = retrofitService.getRetrofit().create(MessageService.class);
+        String token = "Bearer " + getCurrentToken();
+        MessageRequest messageRequest = new MessageRequest(receiverId, text, "SUPPORT", null);
+
+        sendSocketMessage(getView());
+        Call<Message> call = messageService.sendMessage(receiverId, token, messageRequest);
+
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                Message message = response.body();
+                if (message != null) {
+                    Integer size = messageList.size();
+                    messageList.add(message);
+                    mMessageAdapter.notifyItemInserted(size);
+                    mMessageRecycler.scrollToPosition(mMessageAdapter.getItemCount()-1);
+                }
+            }
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                call.cancel();
+            }
+        });
+>>>>>>> Stashed changes:App_Tim17/app/src/main/java/com/example/app_tim17/fragments/passenger/ChatFragment.java
     }
 
     private String getCurrentToken() {
