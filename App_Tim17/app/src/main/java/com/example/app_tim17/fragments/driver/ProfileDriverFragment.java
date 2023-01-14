@@ -1,6 +1,5 @@
 package com.example.app_tim17.fragments.driver;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,15 +14,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.fragments.ReviewDriverAndVehicleFragment;
+import com.example.app_tim17.fragments.passenger.ReviewDriverAndVehicleFragment;
 import com.example.app_tim17.model.response.driver.DriverResponse;
 import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.TokenUtils;
-import com.google.android.gms.maps.SupportMapFragment;
-
-import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,7 +87,7 @@ public class ProfileDriverFragment extends Fragment {
 
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
-        Long id = tokenUtils.getId(token);
+        Long id = TokenUtils.getId(token);
 
         Call<DriverResponse> call = driverService.getDriver(id, "Bearer " + token);
 

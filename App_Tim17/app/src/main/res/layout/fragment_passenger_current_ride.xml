@@ -9,8 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="4dp"
-        >
+        android:paddingTop="16dp"
+        android:paddingBottom="4dp" >
 
     <TextView
         android:id="@+id/ride_timer"
@@ -19,7 +19,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="18dp"
         android:fontFamily="@font/outfit_medium"
-        android:text="00:02:15"
+        android:text="00:00:00"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -241,15 +241,15 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/panic_btn"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/panic_button"
             android:fontFamily="@font/outfit_bold"
             android:letterSpacing="0.3"
             android:text="@string/panic"
             android:textColor="@color/dark_teal"
-            android:textSize="15sp"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -261,6 +261,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:paddingBottom="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/panic_btn">
 

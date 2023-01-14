@@ -23,14 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
  */
 public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private BottomSheetBehavior sheetBehavior;
 
     public MainDriverFragment() {
         // Required empty public constructor
@@ -48,8 +41,7 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
     public static MainDriverFragment newInstance(String param1, String param2) {
         MainDriverFragment fragment = new MainDriverFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,10 +49,7 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        sheetBehavior.setPeekHeight(300);
     }
 
     @Override
@@ -75,7 +64,7 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_driver, container, false);
-        BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.sheet));
+        sheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.sheet));
         sheetBehavior.setPeekHeight(300);
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         Fragment fragment = new MapsFragment();
@@ -86,5 +75,11 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
                 .commit();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sheetBehavior.setPeekHeight(300);
     }
 }
