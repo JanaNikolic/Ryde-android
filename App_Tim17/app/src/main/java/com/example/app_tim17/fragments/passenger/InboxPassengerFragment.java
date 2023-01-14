@@ -1,6 +1,5 @@
 package com.example.app_tim17.fragments.passenger;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,9 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.PassengerInboxChatActivity;
 import com.example.app_tim17.adapters.InboxList;
-import com.example.app_tim17.fragments.driver.ChatDriverFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +78,7 @@ public class InboxPassengerFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                replaceFragment(new ChatPassengerFragment());
+                replaceFragment(new ChatFragment());
             }
         });
         return view;

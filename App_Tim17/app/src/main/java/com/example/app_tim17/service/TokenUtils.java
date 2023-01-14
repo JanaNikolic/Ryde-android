@@ -23,5 +23,10 @@ public class TokenUtils {
         return test;
     }
 
+    public String getEmail(String token) {
+        JWT parsedJWT = new JWT(token);
+        String email = parsedJWT.getSubject();
+        return email;
+    }
 
 }

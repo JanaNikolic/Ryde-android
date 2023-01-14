@@ -1,12 +1,10 @@
 package com.example.app_tim17.fragments.driver;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.DriverInboxChatActivity;
 import com.example.app_tim17.adapters.InboxList;
-import com.example.app_tim17.fragments.passenger.ChatPassengerFragment;
-import com.example.app_tim17.fragments.passenger.PassengerCurrentRideFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.app_tim17.fragments.passenger.ChatFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,7 +77,7 @@ public class InboxDriverFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                replaceFragment(new ChatPassengerFragment());
+                replaceFragment(new ChatFragment());
             }
         });
         return view;

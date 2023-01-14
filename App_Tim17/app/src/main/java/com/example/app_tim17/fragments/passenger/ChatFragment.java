@@ -18,12 +18,9 @@ import android.widget.EditText;
 import com.example.app_tim17.R;
 import com.example.app_tim17.adapters.MessageListAdapter;
 import com.example.app_tim17.model.request.MessageRequest;
-import com.example.app_tim17.model.response.driver.DriverResponse;
 import com.example.app_tim17.model.response.message.Message;
 import com.example.app_tim17.model.response.message.MessagesResponse;
-import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
-import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.MessageService;
 import com.example.app_tim17.service.TokenUtils;
 
@@ -35,10 +32,10 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChatPassengerFragment#newInstance} factory method to
+ * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatPassengerFragment extends Fragment {
+public class ChatFragment extends Fragment {
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
     private ArrayList<Message> messageList = new ArrayList<Message>();
@@ -55,7 +52,7 @@ public class ChatPassengerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ChatPassengerFragment() {
+    public ChatFragment() {
         // Required empty public constructor
     }
 
@@ -68,8 +65,8 @@ public class ChatPassengerFragment extends Fragment {
      * @return A new instance of fragment ChatDriverFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatPassengerFragment newInstance(String param1, String param2) {
-        ChatPassengerFragment fragment = new ChatPassengerFragment();
+    public static ChatFragment newInstance(String param1, String param2) {
+        ChatFragment fragment = new ChatFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -92,7 +89,7 @@ public class ChatPassengerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat_driver, container, false);
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
         tokenUtils = new TokenUtils();
         retrofitService = new RetrofitService();
         messageService = retrofitService.getRetrofit().create(MessageService.class);
@@ -105,7 +102,8 @@ public class ChatPassengerFragment extends Fragment {
                 MessagesResponse messagesResponse = response.body();
                 if (messagesResponse != null) {
                     for (Message message : messagesResponse.getMessages()) {
-                        messageList.add(message);;
+                        messageList.add(message);
+                        Log.d("Message", "one message");
                     }
                     loadMessages(view);
                 }
