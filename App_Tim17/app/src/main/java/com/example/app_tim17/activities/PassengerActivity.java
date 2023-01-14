@@ -10,13 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-<<<<<<< Updated upstream
-=======
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
->>>>>>> Stashed changes
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;

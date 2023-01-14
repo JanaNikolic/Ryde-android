@@ -36,17 +36,17 @@ public class DriveHistoryList extends ArrayAdapter {
         if(convertView==null)
             view = inflater.inflate(R.layout.drive_history_view, null, true);
 
-        TextView startTime = (TextView) view.findViewById(R.id.startTime);
+        TextView startTime = (TextView) view.findViewById(R.id.time_start);
         TextView duration = (TextView) view.findViewById(R.id.duration);
         TextView price = (TextView) view.findViewById(R.id.price);
-        TextView startLocation = (TextView) view.findViewById(R.id.startLocation);
-        TextView endLocation = (TextView) view.findViewById(R.id.endLocation);
-        ShapeableImageView profilePicture = (ShapeableImageView) view.findViewById(R.id.rider_profile);
+        TextView startLocation = (TextView) view.findViewById(R.id.start_address);
+        TextView endLocation = (TextView) view.findViewById(R.id.end_address);
+//        ShapeableImageView profilePicture = (ShapeableImageView) view.findViewById(R.id.rider_profile);
 
 
         startTime.setText(startTimes[position]);
         duration.setText(durations[position]);
-        profilePicture.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.profile_picture, null));
+//        profilePicture.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.profile_picture, null));
         price.setText(prices[position]);
         startLocation.setText(startLocations[position]);
         endLocation.setText(endLocations[position]);

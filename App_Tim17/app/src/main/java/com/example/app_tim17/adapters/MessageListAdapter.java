@@ -98,7 +98,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void bind(Message message) {
             messageText.setText(message.getMessage());
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(message.getTimeOfSending());
+            timeText.setText(message.getTimeOfSending().toString());
         }
     }
 
@@ -119,7 +119,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(message.getTimeOfSending());
+            timeText.setText(message.getTimeOfSending().toString());
 
             nameText.setText(message.getSenderId().toString());
 

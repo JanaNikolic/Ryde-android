@@ -60,6 +60,30 @@
                     android:includeFontPadding="false"
                     android:text="taimoor_sikander"
                     android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/reportBtn"
+                    android:layout_width="69dp"
+                    android:layout_height="62dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="0dp"
+                    android:backgroundTint="@color/teal"
+                    android:drawableTop="@drawable/ic_baseline_assessment_24"
+                    />
+
+                <Button
+                    android:id="@+id/favRouteBtn"
+                    android:layout_width="69dp"
+                    android:layout_height="62dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/reportBtn"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="0dp"
+                    android:backgroundTint="@color/teal"
+                    android:drawableTop="@drawable/ic_baseline_favorite_24"
+                    />
             </RelativeLayout>
 
             <LinearLayout
@@ -147,4 +171,5 @@
 
 
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

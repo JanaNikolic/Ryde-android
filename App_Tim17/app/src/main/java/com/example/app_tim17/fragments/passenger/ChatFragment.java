@@ -1,4 +1,4 @@
-package com.example.app_tim17.fragments.driver;
+package com.example.app_tim17.fragments.passenger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,12 +18,10 @@ import android.widget.EditText;
 import com.example.app_tim17.R;
 import com.example.app_tim17.activities.PassengerActivity;
 import com.example.app_tim17.adapters.MessageListAdapter;
-import com.example.app_tim17.model.response.driver.DriverResponse;
+import com.example.app_tim17.model.request.MessageRequest;
 import com.example.app_tim17.model.response.message.Message;
 import com.example.app_tim17.model.response.message.MessagesResponse;
-import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
-import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.MessageService;
 import com.example.app_tim17.service.TokenUtils;
 
@@ -35,15 +33,16 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChatDriverFragment#newInstance} factory method to
+ * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatDriverFragment extends Fragment {
+public class ChatFragment extends Fragment {
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
     private ArrayList<Message> messageList = new ArrayList<Message>();
     private MessageService messageService;
     private TokenUtils tokenUtils;
+    private RetrofitService retrofitService;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,7 +53,7 @@ public class ChatDriverFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ChatDriverFragment() {
+    public ChatFragment() {
         // Required empty public constructor
     }
 
@@ -67,8 +66,8 @@ public class ChatDriverFragment extends Fragment {
      * @return A new instance of fragment ChatDriverFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatDriverFragment newInstance(String param1, String param2) {
-        ChatDriverFragment fragment = new ChatDriverFragment();
+    public static ChatFragment newInstance(String param1, String param2) {
+        ChatFragment fragment = new ChatFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -84,10 +83,19 @@ public class ChatDriverFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        RetrofitService retrofitService = new RetrofitService();
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        tokenUtils = new TokenUtils();
+        retrofitService = new RetrofitService();
         messageService = retrofitService.getRetrofit().create(MessageService.class);
-        //String token = getCurrentToken();
-        Call<MessagesResponse> call = messageService.getMessages(1009L);
+
+        Call<MessagesResponse> call = messageService.getMessages(tokenUtils.getId(getCurrentToken()));
 
         call.enqueue(new Callback<MessagesResponse>() {
             @Override
@@ -95,10 +103,10 @@ public class ChatDriverFragment extends Fragment {
                 MessagesResponse messagesResponse = response.body();
                 if (messagesResponse != null) {
                     for (Message message : messagesResponse.getMessages()) {
-                        messageList.add(message);;
+                        messageList.add(message);
+                        Log.d("Message", "one message");
                     }
-
-
+                    loadMessages(view);
                 }
             }
 
@@ -108,39 +116,54 @@ public class ChatDriverFragment extends Fragment {
             }
         });
 
-    }
+        View message = view.findViewById(R.id.edit_gchat_message);
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMessageRecycler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMessageRecycler.scrollToPosition(mMessageRecycler.getAdapter().getItemCount() - 1);
+                    }
+                }, 500);
+            }
+        });
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat_driver, container, false);
         Button btn = view.findViewById(R.id.button_gchat_send);
         EditText text = view.findViewById(R.id.edit_gchat_message);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessage(text.getText().toString());
+                sendMessage(text.getText().toString(), 1006L);
+                text.getText().clear();
             }
         });
 
-        mMessageRecycler = (RecyclerView) view.findViewById(R.id.recycler_gchat);
-        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
-        mMessageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        mMessageRecycler.setAdapter(mMessageAdapter);
 
         return view;
 
     }
 
-    private void sendMessage(String text) {
-
-<<<<<<< Updated upstream:App_Tim17/app/src/main/java/com/example/app_tim17/fragments/driver/ChatDriverFragment.java
-=======
+    private void loadMessages(View view) {
+        mMessageRecycler = (RecyclerView) view.findViewById(R.id.recycler_gchat);
+        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
+        mMessageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        mMessageRecycler.setAdapter(mMessageAdapter);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setStackFromEnd(true);
+        mMessageRecycler.setLayoutManager(layoutManager);
+    }
     public void sendSocketMessage(View view) {
         Log.i("WebSocket", "Button was clicked");
         PassengerActivity pa = (PassengerActivity) getActivity();
         pa.getWebSocketClient().send("1");
-        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadMessages(getView());
+    }
 
     private void sendMessage(String text, Long receiverId) {
         retrofitService = new RetrofitService();
@@ -149,6 +172,7 @@ public class ChatDriverFragment extends Fragment {
         MessageRequest messageRequest = new MessageRequest(receiverId, text, "SUPPORT", null);
 
         sendSocketMessage(getView());
+
         Call<Message> call = messageService.sendMessage(receiverId, token, messageRequest);
 
         call.enqueue(new Callback<Message>() {
@@ -167,7 +191,6 @@ public class ChatDriverFragment extends Fragment {
                 call.cancel();
             }
         });
->>>>>>> Stashed changes:App_Tim17/app/src/main/java/com/example/app_tim17/fragments/passenger/ChatFragment.java
     }
 
     private String getCurrentToken() {
