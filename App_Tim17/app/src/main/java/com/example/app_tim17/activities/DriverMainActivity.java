@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.RideInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class DriverMainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     BottomNavigationView bottomNavigationView;
@@ -25,6 +26,9 @@ public class DriverMainActivity extends AppCompatActivity implements BottomNavig
         bottomNavigationView = findViewById(R.id.nav_view_driver);
         bottomNavigationView.setSelectedItemId(R.id.home_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
+        BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(findViewById(R.id.sheetDriver));
+        sheetBehavior.setPeekHeight(300);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
     }
 

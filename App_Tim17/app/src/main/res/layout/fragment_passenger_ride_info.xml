@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:fillViewport="true"-->
+<!--    android:layout_gravity="center"-->
+<!--    android:layout_marginBottom="24dp"-->
+<!--    >-->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/passenger_ride_info_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:orientation="vertical"
+
+    tools:context=".fragments.PassengerRideInfoFragment"
+    tools:layout_editor_absoluteX="2dp"
+    tools:layout_editor_absoluteY="1dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/start_address_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_circle_16"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@id/date"
+        app:layout_constraintTop_toBottomOf="@id/date" />
+
+    <TextView
+        android:id="@+id/start_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="-4dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="Bulevar Oslobodjenja 15"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/start_address_label"
+        app:layout_constraintTop_toTopOf="@id/start_address_label" />
+
+    <ImageView
+        android:id="@+id/dot1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_circle_6"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@id/start_address_label"
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/start_address_label" />
+
+    <ImageView
+        android:id="@+id/dot2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_baseline_circle_6"
+        app:layout_constraintEnd_toEndOf="@id/start_address_label"
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/dot1" />
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/dot3"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="-5dp"-->
+    <!--            android:layout_marginTop="8dp"-->
+    <!--            android:src="@drawable/ic_baseline_circle_6"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"/>-->
+
+
+    <ImageView
+        android:id="@+id/end_address_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="-5dp"
+        android:src="@drawable/pin"
+        app:layout_constraintStart_toStartOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/dot2" />
+
+    <TextView
+        android:id="@+id/end_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/outfit_regular"
+        android:text="Bulevar cara Lazara 115"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        android:layout_marginStart="11dp"
+        app:layout_constraintStart_toEndOf="@id/end_address_label"
+        app:layout_constraintTop_toTopOf="@id/end_address_label" />
+
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/outfit_medium"
+        android:text="15.10.2022."
+        android:textColor="@color/dark_teal"
+
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/map" />
+
+
+    <TextView
+        android:id="@+id/start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="15:30"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/start_address" />
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="1dp"
+        android:layout_height="64dp"
+        android:background="@color/black_overlay"
+        android:layout_marginTop="18dp"
+        app:layout_constraintEnd_toEndOf="@id/map"
+        app:layout_constraintStart_toStartOf="@id/map"
+        app:layout_constraintTop_toBottomOf="@id/end_address" />
+
+
+    <TextView
+        android:id="@+id/end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="16:00"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/end_address" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="380dp"
+        android:layout_height="1dp"
+        android:background="@color/black_overlay"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line" />
+
+
+    <TextView
+        android:id="@+id/ride_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="2.12 km"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@id/line"
+        app:layout_constraintStart_toStartOf="@id/map"
+        app:layout_constraintTop_toBottomOf="@id/end_address_label" />
+
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/outfit_semi_bold"
+        android:text="300 RSD"
+        android:textColor="@color/dark_teal"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="@id/map"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toEndOf="@id/line"
+        app:layout_constraintTop_toBottomOf="@id/end_address" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4">
+
+        <LinearLayout
+            android:id="@+id/review_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView4" />
+    </HorizontalScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
