@@ -22,7 +22,7 @@ public class PassengerRegisterActivity extends AppCompatActivity {
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PassengerRegisterActivity.this, PassengerMainActivity.class);
+                Intent intent = new Intent(PassengerRegisterActivity.this, PassengerActivity.class);
                 startActivity(intent);
             }
         });

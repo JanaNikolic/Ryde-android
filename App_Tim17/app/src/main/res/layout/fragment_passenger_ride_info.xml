@@ -20,7 +20,7 @@
     android:background="@color/white"
     android:orientation="vertical"
 
-    tools:context=".fragments.PassengerRideInfoFragment"
+    tools:context=".fragments.passenger.PassengerRideInfoFragment"
     tools:layout_editor_absoluteX="2dp"
     tools:layout_editor_absoluteY="1dp">
 

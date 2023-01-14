@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -47,6 +48,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.github.penfeizhou.android.animation:gif:2.24.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-auth:21.0.3'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -55,4 +59,7 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.2.1'
     implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'com.auth0.android:jwtdecode:2.0.2'
 }

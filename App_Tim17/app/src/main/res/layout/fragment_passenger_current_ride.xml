@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".fragments.PassengerCurrentRideFragment">-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.passenger.PassengerCurrentRideFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    tools:context=".fragments.PassengerCurrentRideFragment">
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        >
 
     <TextView
         android:id="@+id/textView6"
@@ -175,14 +174,19 @@
 
         <EditText
             android:id="@+id/editText"
-            android:layout_width="330dp"
-            android:layout_height="48dp"
+            android:layout_width="300dp"
+            android:padding="12dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:background="@drawable/message_input"
             android:hint="@string/send_a_message"
+            android:scrollHorizontally="true"
             android:paddingStart="16dp"
+            android:paddingEnd="36dp"
+            android:maxLines="2"
             android:textColor="@color/dark_teal"
             android:fontFamily="@font/outfit_regular"
+            android:inputType="textMultiLine"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -190,17 +194,34 @@
             android:id="@+id/send_message"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/ic_baseline_send_dark_teal_24"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_baseline_send_dark_teal_24"
+            android:contentDescription="@string/send_driver_message"
             app:layout_constraintBottom_toBottomOf="@+id/editText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editText" />
+            app:layout_constraintEnd_toEndOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/message_input"
+            app:layout_constraintBottom_toBottomOf="@id/contact_driver"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/contact_driver"
+            app:layout_constraintTop_toTopOf="@id/contact_driver"
+             />
+
+    <Button
+        android:id="@+id/call_driver"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/ic_baseline_dark_teal_phone_24"
         app:layout_constraintBottom_toBottomOf="@id/contact_driver"
         app:layout_constraintEnd_toEndOf="parent"
@@ -218,22 +239,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/contact_driver" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/panic_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/panic_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/panic"
-        android:fontFamily="@font/outfit_bold"
-        android:textSize="15sp"
-        android:letterSpacing="0.3"
-        android:textColor="@color/dark_teal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line2" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/panic_btn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/panic_button"
+            android:fontFamily="@font/outfit_bold"
+            android:letterSpacing="0.3"
+            android:text="@string/panic"
+            android:textColor="@color/dark_teal"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line2" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/send_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -242,20 +264,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/panic_btn">
 
-        <EditText
-            android:id="@+id/note_content"
-            android:layout_width="330dp"
-            android:layout_height="64dp"
-            android:background="@drawable/note_input"
-            android:fontFamily="@font/outfit_regular"
-            android:hint="@string/send_a_message"
-            android:paddingStart="16dp"
-            android:gravity="bottom"
-            android:paddingBottom="8dp"
-            android:textColor="@color/dark_teal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/note_content"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@drawable/note_input"
+                android:fontFamily="@font/outfit_regular"
+                android:gravity="bottom"
+                android:hint="@string/report_inconsistency"
+                android:paddingStart="16dp"
+                android:nestedScrollingEnabled="true"
+                android:verticalScrollbarPosition="right"
+                android:maxLines="4"
+                android:paddingEnd="38dp"
+                android:paddingBottom="8dp"
+                android:inputType="textMultiLine"
+                android:textColor="@color/dark_teal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/send_note_btn"
@@ -270,4 +298,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--</ScrollView>-->
+</ScrollView>
