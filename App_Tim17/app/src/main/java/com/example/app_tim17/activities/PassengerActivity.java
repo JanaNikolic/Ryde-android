@@ -2,49 +2,70 @@ package com.example.app_tim17.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
 import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
 import com.example.app_tim17.fragments.passenger.MainPassengerFragment;
 import com.example.app_tim17.fragments.passenger.ProfilePassengerFragment;
+import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.TokenUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
+import io.reactivex.CompletableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import tech.gusavila92.websocketclient.WebSocketClient;
+import ua.naiksoftware.stomp.Stomp;
+import ua.naiksoftware.stomp.StompClient;
+import ua.naiksoftware.stomp.dto.StompHeader;
 
 public class PassengerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
-    public WebSocketClient getWebSocketClient() {
-        return webSocketClient;
-    }
-
-    public void setWebSocketClient(WebSocketClient webSocketClient) {
-        this.webSocketClient = webSocketClient;
-    }
-
+    private StompClient mStompClient;
+    private TokenUtils tokenUtils;
+    private Disposable mRestPingDisposable;
+    private CompositeDisposable compositeDisposable;
+    private Gson mGson = new GsonBuilder().create();
     private WebSocketClient webSocketClient;
     BottomNavigationView bottomNavigationView;
+    ChatFragment fragment;
+
+    private RetrofitService retrofitService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragment = (ChatFragment) getSupportFragmentManager().findFragmentByTag("ChatFragment");
         setContentView(R.layout.activity_passenger);
-
+        tokenUtils = new TokenUtils();
         bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
-        createWebSocketClient();
+
+        retrofitService = new RetrofitService();
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        connectStomp();
     }
 
     @Override
@@ -102,67 +123,113 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         return false;
     }
 
-    private void createWebSocketClient() {
-        URI uri;
-        try {
-            // Connect to local host
-            uri = new URI("ws://192.168.1.7:8080/websocket");
-        }
-        catch (URISyntaxException e) {
-            e.printStackTrace();
-            return;
-        }
+    public static final String LOGIN = "login";
+    public static final String PASSCODE = "passcode";
 
-        webSocketClient = new WebSocketClient(uri) {
-            @Override
-            public void onOpen() {
-                Log.i("WebSocket", "Session is starting");
-                webSocketClient.send("Hello World!");
-            }
+    public void connectStomp() {
 
-            @Override
-            public void onTextReceived(String s) {
-                Log.i("WebSocket", "Message received");
-                final String message = s;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
+        List<StompHeader> headers = new ArrayList<>();
+        headers.add(new StompHeader(LOGIN, "guest"));
+        headers.add(new StompHeader(PASSCODE, "guest"));
+        mStompClient.connect();
+        mStompClient.withClientHeartbeat(1000).withServerHeartbeat(1000);
+
+        resetSubscriptions();
+
+
+
+
+        Disposable dispLifecycle = mStompClient.lifecycle()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(lifecycleEvent -> {
+                    switch (lifecycleEvent.getType()) {
+                        case OPENED:
+                            Toast.makeText(getApplicationContext(), "Stomp connection opened", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ERROR:
+                            Log.e("STOMP", "Stomp connection error", lifecycleEvent.getException());
+                            Toast.makeText(getApplicationContext(), "Stomp connection error", Toast.LENGTH_SHORT).show();
+                            break;
+                        case CLOSED:
+                            Toast.makeText(getApplicationContext(), "Stomp connection closed", Toast.LENGTH_SHORT).show();
+                            resetSubscriptions();
+                            break;
+                        case FAILED_SERVER_HEARTBEAT:
+                            Toast.makeText(getApplicationContext(), "Stomp failed server heartbeat", Toast.LENGTH_SHORT).show();
+                            break;
                     }
                 });
-            }
 
-            @Override
-            public void onBinaryReceived(byte[] data) {
-            }
+        compositeDisposable.add(dispLifecycle);
 
-            @Override
-            public void onPingReceived(byte[] data) {
-            }
+        // Receive greetings
+        Disposable dispTopic = mStompClient.topic("/socket-publisher/" + tokenUtils.getId(getCurrentToken()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(topicMessage -> {
+                    Log.d("STOMP", "Received " + topicMessage.getPayload());
+                    Toast.makeText(getApplicationContext(), "you got a message!", Toast.LENGTH_LONG).show();
+                }, throwable -> {
+                    Log.e("STOMP", "Error on subscribe topic", throwable);
+                });
 
-            @Override
-            public void onPongReceived(byte[] data) {
-            }
-
-            @Override
-            public void onException(Exception e) {
-                System.out.println(e.getMessage());
-            }
-
-            @Override
-            public void onCloseReceived() {
-                Log.i("WebSocket", "Closed ");
-                System.out.println("onCloseReceived");
-            }
-        };
-
-        webSocketClient.setConnectTimeout(10000);
-        webSocketClient.setReadTimeout(60000);
-        webSocketClient.enableAutomaticReconnection(5000);
-        webSocketClient.connect();
+        compositeDisposable.add(dispTopic);
     }
+
+    public void sendEchoViaStomp(MessageRequest message) {
+//        if (!mStompClient.isConnected()) return;
+        compositeDisposable.add(mStompClient.send("/topic/hello-msg-mapping", mGson.toJson(message))
+                .compose(applySchedulers())
+                .subscribe(() -> {
+                    Log.d("STOMP", "STOMP echo send successfully");
+                    Toast.makeText(getApplicationContext(), "Sent message", Toast.LENGTH_LONG).show();
+                }, throwable -> {
+                    Log.e("STOMP", "Error send STOMP echo", throwable);
+                    Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG);
+
+                }));
+    }
+
+    public void disconnectStomp(View view) {
+        mStompClient.disconnect();
+    }
+
+    private void resetSubscriptions() {
+        if (compositeDisposable != null) {
+            compositeDisposable.dispose();
+        }
+        compositeDisposable = new CompositeDisposable();
+    }
+
+    protected CompletableTransformer applySchedulers() {
+        return upstream -> upstream
+                .unsubscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    protected void onDestroy() {
+        mStompClient.disconnect();
+
+        if (mRestPingDisposable != null) mRestPingDisposable.dispose();
+        if (compositeDisposable != null) compositeDisposable.dispose();
+        super.onDestroy();
+    }
+
+    private String getCurrentToken() {
+        SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
+    }
+
+
+    public RetrofitService getRetrofitService() {
+        return retrofitService;
+    }
+
+    public void setRetrofitService(RetrofitService retrofitService) {
+        this.retrofitService = retrofitService;
+    }
+
 }

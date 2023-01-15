@@ -16,13 +16,9 @@ import android.widget.TextView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.driver.HistoryDriverFragment;
-import com.example.app_tim17.fragments.driver.InboxDriverFragment;
 import com.example.app_tim17.fragments.driver.MainDriverFragment;
 import com.example.app_tim17.fragments.driver.ProfileDriverFragment;
-import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
 import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
-import com.example.app_tim17.fragments.passenger.MainPassengerFragment;
-import com.example.app_tim17.fragments.passenger.ProfilePassengerFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DriverActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -89,7 +85,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         switch (item.getItemId()) {
             case R.id.inbox_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_driver_container, InboxDriverFragment.class, null);
+                transaction.replace(R.id.fragment_driver_container, InboxPassengerFragment.class, null);
                 transaction.commit();
                 return true;
             case R.id.home_driver:

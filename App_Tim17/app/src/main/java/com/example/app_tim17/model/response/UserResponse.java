@@ -1,12 +1,35 @@
 package com.example.app_tim17.model.response;
 
-public abstract class UserResponse {
+import androidx.annotation.Nullable;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class UserResponse implements Serializable {
+
+    @SerializedName("id")
+    @Expose
     private Long id;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("surname")
+    @Expose
     private String surname;
+    @SerializedName("profilePicture")
+    @Expose
+    @Nullable
     private String profilePicture;
+    @SerializedName("telephoneNumber")
+    @Expose
     private String telephoneNumber;
+    @SerializedName("email")
+    @Expose
     private String email;
+    @SerializedName("address")
+    @Expose
     private String address;
 
     public UserResponse() {

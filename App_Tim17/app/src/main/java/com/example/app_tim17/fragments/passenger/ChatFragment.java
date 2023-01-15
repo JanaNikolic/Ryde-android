@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.example.app_tim17.service.MessageService;
 import com.example.app_tim17.service.TokenUtils;
 
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,10 +41,13 @@ import retrofit2.Response;
 public class ChatFragment extends Fragment {
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
-    private ArrayList<Message> messageList = new ArrayList<Message>();
+    private ArrayList<Message> messageList = new ArrayList<>();
+    private ArrayList<Message> newMessageList;
     private MessageService messageService;
     private TokenUtils tokenUtils;
     private RetrofitService retrofitService;
+    CountDownTimer timer;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,18 +65,11 @@ public class ChatFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ChatDriverFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatFragment newInstance(String param1, String param2) {
+    public static ChatFragment newInstance() {
         ChatFragment fragment = new ChatFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -82,39 +80,57 @@ public class ChatFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         tokenUtils = new TokenUtils();
-        retrofitService = new RetrofitService();
+        Bundle args = getArguments();
+        Long userId = args.getLong("userId");
+        String name = args.getString("userName");
+
+        PassengerActivity myActivity = (PassengerActivity) getActivity();
+        retrofitService = myActivity.getRetrofitService();
         messageService = retrofitService.getRetrofit().create(MessageService.class);
+        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
 
-        Call<MessagesResponse> call = messageService.getMessages(tokenUtils.getId(getCurrentToken()));
-
-        call.enqueue(new Callback<MessagesResponse>() {
+        timer = new CountDownTimer(Long.MAX_VALUE, 2000) {
             @Override
-            public void onResponse(Call<MessagesResponse> call, Response<MessagesResponse> response) {
-                MessagesResponse messagesResponse = response.body();
-                if (messagesResponse != null) {
-                    for (Message message : messagesResponse.getMessages()) {
-                        messageList.add(message);
-                        Log.d("Message", "one message");
+            public void onTick(long l) {
+                Call<MessagesResponse> call = messageService.getMessages(userId, "Bearer " + getCurrentToken());
+
+                call.enqueue(new Callback<MessagesResponse>() {
+                    @Override
+                    public void onResponse(Call<MessagesResponse> call, Response<MessagesResponse> response) {
+                        MessagesResponse messagesResponse = response.body();
+                        newMessageList = new ArrayList<>();
+                        if (messagesResponse != null) {
+                            for (Message message : messagesResponse.getMessages()) {
+                                newMessageList.add(message);
+                                Log.d("Message", "one message");
+                            }
+                            if (newMessageList.size() > mMessageAdapter.getItemCount()) {
+                                messageList = newMessageList;
+                                loadMessages(view);
+                            }
+                        }
                     }
-                    loadMessages(view);
-                }
-            }
 
-            @Override
-            public void onFailure(Call<MessagesResponse> call, Throwable t) {
-                call.cancel();
+                    @Override
+                    public void onFailure(Call<MessagesResponse> call, Throwable t) {
+                        call.cancel();
+                    }
+                });
             }
-        });
+            @Override
+            public void onFinish() {
+            }
+        };
+
+        timer.start();
 
         View message = view.findViewById(R.id.edit_gchat_message);
         message.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +150,7 @@ public class ChatFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessage(text.getText().toString(), 1006L);
+                sendMessage(text.getText().toString(), userId);
                 text.getText().clear();
             }
         });
@@ -144,19 +160,20 @@ public class ChatFragment extends Fragment {
 
     }
 
-    private void loadMessages(View view) {
+    public void loadMessages(View view) {
         mMessageRecycler = (RecyclerView) view.findViewById(R.id.recycler_gchat);
-        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
         mMessageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
         mMessageRecycler.setAdapter(mMessageAdapter);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setStackFromEnd(true);
         mMessageRecycler.setLayoutManager(layoutManager);
     }
-    public void sendSocketMessage(View view) {
+
+    public void sendSocketMessage(MessageRequest messageRequest) {
         Log.i("WebSocket", "Button was clicked");
         PassengerActivity pa = (PassengerActivity) getActivity();
-        pa.getWebSocketClient().send("1");
+        pa.sendEchoViaStomp(messageRequest);
     }
 
     @Override
@@ -169,9 +186,9 @@ public class ChatFragment extends Fragment {
         retrofitService = new RetrofitService();
         messageService = retrofitService.getRetrofit().create(MessageService.class);
         String token = "Bearer " + getCurrentToken();
-        MessageRequest messageRequest = new MessageRequest(receiverId, text, "SUPPORT", null);
+        MessageRequest messageRequest = new MessageRequest(receiverId, text,"SUPPORT", null);
 
-        sendSocketMessage(getView());
+        sendSocketMessage(messageRequest);
 
         Call<Message> call = messageService.sendMessage(receiverId, token, messageRequest);
 
@@ -196,5 +213,11 @@ public class ChatFragment extends Fragment {
     private String getCurrentToken() {
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timer.cancel();
     }
 }
