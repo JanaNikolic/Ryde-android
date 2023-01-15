@@ -53,11 +53,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemViewType(int position) {
         Message message = (Message) mMessageList.get(position);
-        //SharedPreferences prefs= mContext.getSharedPreferences("com.example.app_tim17_preferences",Context.MODE_PRIVATE);
-        //String token = prefs.getString("token","");
+        SharedPreferences prefs= mContext.getSharedPreferences("com.example.app_tim17_preferences",Context.MODE_PRIVATE);
+        String token = prefs.getString("token","");
 
-        //if (message.getSenderId().equals(tokenUtils.getId(token))) {
-        if (message.getSenderId().equals(1009L)) {
+        if (message.getSenderId().equals(tokenUtils.getId(token))) {
             // If the current user is the sender of the message
             return VIEW_TYPE_MESSAGE_SENT;
         } else {
@@ -98,7 +97,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void bind(Message message) {
             messageText.setText(message.getMessage());
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(message.getTimeOfSending().toString());
+            timeText.setText(message.getTimeOfSending().toString().substring(11, 16));
         }
     }
 
@@ -119,7 +118,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(message.getTimeOfSending().toString());
+            timeText.setText(message.getTimeOfSending().toString().substring(11, 16));
 
             nameText.setText(message.getSenderId().toString());
 

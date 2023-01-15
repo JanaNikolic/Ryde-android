@@ -1,10 +1,8 @@
 package com.example.app_tim17.model.response.ride;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
-import com.example.app_tim17.model.response.Location;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,11 +14,9 @@ public class Ride {
     private Long id;
     @SerializedName("startTime")
     @Expose
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private String startTime;
     @SerializedName("endTime")
     @Expose
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private String endTime;
     @SerializedName("totalCost")
     @Expose
@@ -48,7 +44,7 @@ public class Ride {
     private RejectionResponse rejectionResponse;
     @SerializedName("locations")
     @Expose
-    private List<LocationForRide> locations = null;
+    private List<LocationForRide> locations;
 
     public Ride() {
     }

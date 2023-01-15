@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.driver.ChatDriverFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/layout_group_chat"
@@ -12,16 +14,15 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_gchat2"
+        android:id="@+id/recycler_gchat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/text_gchat_indicator"
-        app:layout_constraintTop_toBottomOf="@id/layout_group_chat" />
+        app:layout_constraintBottom_toTopOf="@+id/text_gchat_indicator"
+        app:layout_constraintTop_toBottomOf="@+id/layout_group_chat" />
 
     <TextView
         android:id="@+id/text_gchat_indicator"
@@ -37,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#e0e0e0"
-        app:layout_constraintBottom_toTopOf="@id/layout_gchat_chatbox" />
+        app:layout_constraintBottom_toTopOf="@+id/layout_gchat_chatbox" />
 
     <RelativeLayout
         android:id="@+id/layout_gchat_chatbox"
@@ -54,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/button_gchat_send"
+            android:layout_toStartOf="@+id/button_gchat_send"
             android:background="@android:color/transparent"
             android:hint="Enter Message"
             android:inputType="text"
@@ -73,16 +74,4 @@
 
     </RelativeLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view_inbox2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:theme="@style/NavigationBar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/menu_bottom" />
 </androidx.constraintlayout.widget.ConstraintLayout>

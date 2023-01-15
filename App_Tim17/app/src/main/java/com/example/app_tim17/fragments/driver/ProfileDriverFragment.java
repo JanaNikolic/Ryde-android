@@ -87,7 +87,7 @@ public class ProfileDriverFragment extends Fragment {
 
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
-        Long id = tokenUtils.getId(token);
+        Long id = TokenUtils.getId(token);
 
         Call<DriverResponse> call = driverService.getDriver(id, "Bearer " + token);
 
