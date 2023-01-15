@@ -16,15 +16,15 @@ public class Ride {
     private Long id;
     @SerializedName("startTime")
     @Expose
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime startTime;
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private String startTime;
     @SerializedName("endTime")
     @Expose
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime endTime;
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private String endTime;
     @SerializedName("totalCost")
     @Expose
-    private Long totalCost;
+    private Integer totalCost;
     @SerializedName("driver")
     @Expose
     private DriverRideResponse driver;
@@ -33,7 +33,7 @@ public class Ride {
     private List<PassengerRideResponse> passengers = null;
     @SerializedName("estimatedTimeInMinutes")
     @Expose
-    private Long estimatedTimeInMinutes;
+    private Integer estimatedTimeInMinutes;
     @SerializedName("vehicleType")
     @Expose
     private String vehicleType;
@@ -48,12 +48,12 @@ public class Ride {
     private RejectionResponse rejectionResponse;
     @SerializedName("locations")
     @Expose
-    private List<Location> locations = null;
+    private List<LocationForRide> locations = null;
 
     public Ride() {
     }
 
-    public Ride(Long id, LocalDateTime startTime, LocalDateTime endTime, Long totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Long estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, Boolean petTransport, RejectionResponse rejectionResponse, List<Location> locations) {
+    public Ride(Long id, String startTime, String endTime, Integer totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Integer estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, Boolean petTransport, RejectionResponse rejectionResponse, List<LocationForRide> locations) {
         super();
         this.id = id;
         this.startTime = startTime;
@@ -77,27 +77,27 @@ public class Ride {
         this.id = id;
     }
 
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public Long getTotalCost() {
+    public Integer getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(Long totalCost) {
+    public void setTotalCost(Integer totalCost) {
         this.totalCost = totalCost;
     }
 
@@ -117,11 +117,11 @@ public class Ride {
         this.passengers = passengers;
     }
 
-    public Long getEstimatedTimeInMinutes() {
+    public Integer getEstimatedTimeInMinutes() {
         return estimatedTimeInMinutes;
     }
 
-    public void setEstimatedTimeInMinutes(Long estimatedTimeInMinutes) {
+    public void setEstimatedTimeInMinutes(Integer estimatedTimeInMinutes) {
         this.estimatedTimeInMinutes = estimatedTimeInMinutes;
     }
 
@@ -157,11 +157,11 @@ public class Ride {
         this.rejectionResponse = rejectionResponse;
     }
 
-    public List<Location> getLocations() {
+    public List<LocationForRide> getLocations() {
         return locations;
     }
 
-    public void setLocations(List<Location> locations) {
+    public void setLocations(List<LocationForRide> locations) {
         this.locations = locations;
     }
 

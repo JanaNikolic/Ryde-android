@@ -1,15 +1,23 @@
 package com.example.app_tim17.fragments.driver;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.MapsFragment;
+import com.example.app_tim17.model.response.ride.Ride;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.RideService;
+import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.tools.Utils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
@@ -18,6 +26,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import okhttp3.internal.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +43,10 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private RetrofitService retrofitService;
+    private RideService rideService;
+    private TokenUtils tokenUtils;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -91,12 +108,51 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.map_container, new DriverAcceptanceRideFragment())
-                        .commit();
+                Bundle args = fragment.getArguments();
+                if (args == null)
+                    args = new Bundle();
+
+                retrofitService = new RetrofitService();
+                rideService = retrofitService.getRetrofit().create(RideService.class);
+                String token = "Bearer " + getCurrentToken();
+
+
+                tokenUtils = new TokenUtils();
+                Call<Ride> call = rideService.getActiveRide(token, tokenUtils.getId(getCurrentToken()));
+
+                Bundle finalArgs = args;
+                call.enqueue(new Callback<Ride>() {
+                    @Override
+                    public void onResponse(Call<Ride> call, Response<Ride> response) {
+                        Ride ride = response.body();
+
+
+
+                        if (ride != null) {
+                            finalArgs.putString("ride", Utils.getGsonParser().toJson(ride));
+                            DriverAcceptanceRideFragment acceptanceRideFragment = new DriverAcceptanceRideFragment();
+                            acceptanceRideFragment.setArguments(finalArgs);
+
+                            getChildFragmentManager().beginTransaction()
+                                    .add(R.id.map_container, acceptanceRideFragment)
+                                    .commit();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ride> call, Throwable t) {
+                        call.cancel();
+                    }
+                });
             }
-        }, 2000);
+        }, 5000);
 
         return view;
+    }
+
+    private String getCurrentToken() {
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
     }
 }

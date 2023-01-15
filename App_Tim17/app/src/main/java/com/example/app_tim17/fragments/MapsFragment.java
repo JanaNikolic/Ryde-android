@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.model.response.ride.Ride;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -47,6 +49,11 @@ public class MapsFragment extends Fragment implements LocationListener, OnMapRea
     private Marker home;
     private GoogleMap map;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+    }
 
     @Nullable
     @Override
@@ -62,6 +69,8 @@ public class MapsFragment extends Fragment implements LocationListener, OnMapRea
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        provider = locationManager.getBestProvider(new Criteria(), true);
 
         SupportMapFragment supportMapFragment=(SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.map);
@@ -91,13 +100,36 @@ public class MapsFragment extends Fragment implements LocationListener, OnMapRea
         LocationListener.super.onProviderDisabled(provider);
     }
 
+    private void createMapFragmentAndInflate() {
+        //specificiramo krijterijum da dobijamo informacije sa svih izvora
+        //ako korisnik to dopusti
+        Criteria criteria = new Criteria();
+
+        //sistemskom servisu prosledjujemo taj kriterijum da bi
+        //mogli da dobijamo informacje sa tog izvora
+        provider = locationManager.getBestProvider(criteria, true);
+
+        //kreiramo novu instancu fragmenta
+        mMapFragment = SupportMapFragment.newInstance();
+
+        //i vrsimo zamenu trenutnog prikaza sa prikazom mape
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.map_container, mMapFragment).commit();
+
+        //pozivamo ucitavnje mape.
+        //VODITI RACUNA OVO JE ASINHRONA OPERACIJA
+        //LOKACIJE MOGU DA SE DOBIJU PRE MAPE I OBRATNO
+        mMapFragment.getMapAsync(this);
+    }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
         Location location = null;
-
-        if (provider == null) {
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean wifi = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (provider == null && !gps && !wifi) {
             Log.i("ASD", "Onmapre");
 
 //            showLocatonDialog();
@@ -117,6 +149,26 @@ public class MapsFragment extends Fragment implements LocationListener, OnMapRea
                     //Request location updates:
                     location = locationManager.getLastKnownLocation(provider);
                 }
+                map.setMyLocationEnabled(true);
+                if (location != null) {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(17).build();
+
+                    map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                    Bundle args = new Bundle();
+
+                    args.putDouble("currentLat", location.getLatitude());
+                    args.putDouble("currentLng", location.getLongitude());
+
+//                    Log.d("currentLat", String.valueOf(location.getLatitude()));
+//                    Log.d("currentLng", String.valueOf(location.getLongitude()));
+
+                    Log.d("currentLat", String.valueOf(args.getDouble("currentLat")));
+                    Log.d("currentLng", String.valueOf(args.getDouble("currentLng")));
+                    setArguments(args);
+                }
+
             }
         }
 
@@ -163,9 +215,9 @@ public class MapsFragment extends Fragment implements LocationListener, OnMapRea
             }
         });
 
-        if (location != null) {
-            addMarker(location);
-        }
+//        if (location != null) {
+//            addMarker(location);
+//        }
 
     }
 
@@ -247,6 +299,5 @@ public class MapsFragment extends Fragment implements LocationListener, OnMapRea
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
-
 
 }

@@ -48,10 +48,11 @@ public class SplashActivity extends Activity {
                 SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
                 String token = sp.getString("token", "");
 
-                if (token == null) {
+                if (token == null || token.equals("")) {
                     startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
                     finish();
                 } else {
+                    Log.d("Jwt" , token);
                     String role = tokenUtils.getRole(token);
 
                     if (role.equals("ROLE_DRIVER")) {

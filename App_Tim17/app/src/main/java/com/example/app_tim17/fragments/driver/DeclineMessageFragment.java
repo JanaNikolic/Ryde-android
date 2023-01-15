@@ -21,6 +21,7 @@ public class DeclineMessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        // TODO on submit send request to back
         return inflater.inflate(R.layout.fragment_decline_message, container, false);
     }
 }
