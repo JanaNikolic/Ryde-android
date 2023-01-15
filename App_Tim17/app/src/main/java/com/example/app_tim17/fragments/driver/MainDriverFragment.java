@@ -16,6 +16,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MainDriverFragment#newInstance} factory method to
@@ -84,6 +87,15 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
         getChildFragmentManager()
                 .beginTransaction().replace(R.id.map_container,fragment)
                 .commit();
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getChildFragmentManager().beginTransaction()
+                        .add(R.id.map_container, new DriverAcceptanceRideFragment())
+                        .commit();
+            }
+        }, 2000);
 
         return view;
     }

@@ -13,9 +13,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_medium"
+            android:textSize="26sp"
             android:text="@string/no_ride"
             android:textColor="@color/teal"
-            android:textSize="24sp"
             android:layout_marginBottom="-20dp"
             android:gravity="center|top"
             />

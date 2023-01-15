@@ -1,21 +1,23 @@
-package com.example.app_tim17.fragments;
+package com.example.app_tim17.fragments.driver;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.app_tim17.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DriverCurrentRideFragment#newInstance} factory method to
+ * Use the {@link DriverOnRouteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DriverCurrentRideFragment extends Fragment {
+public class DriverOnRouteFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +28,7 @@ public class DriverCurrentRideFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public DriverCurrentRideFragment() {
+    public DriverOnRouteFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +38,11 @@ public class DriverCurrentRideFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DriverCurrentRideFragment.
+     * @return A new instance of fragment DriverOnRouteFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DriverCurrentRideFragment newInstance(String param1, String param2) {
-        DriverCurrentRideFragment fragment = new DriverCurrentRideFragment();
+    public static DriverOnRouteFragment newInstance(String param1, String param2) {
+        DriverOnRouteFragment fragment = new DriverOnRouteFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +63,24 @@ public class DriverCurrentRideFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_driver_current_ride, container, false);
+        View view = inflater.inflate(R.layout.fragment_driver_on_route, container, false);
+
+        Button start = view.findViewById(R.id.start_btn);
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                getParentFragmentManager().beginTransaction().remove(DriverOnRouteFragment.this).commit();
+
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.currentRide, new DriverCurrentRideFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
+
+
+
+        return view;
     }
 }

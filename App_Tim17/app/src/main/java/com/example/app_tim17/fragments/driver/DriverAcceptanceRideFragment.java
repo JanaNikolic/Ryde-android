@@ -1,8 +1,9 @@
-package com.example.app_tim17.fragments;
+package com.example.app_tim17.fragments.driver;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.passenger.SuccesfullSearchFragment;
 
 public class DriverAcceptanceRideFragment extends Fragment {
     public DriverAcceptanceRideFragment() {
@@ -31,8 +33,11 @@ public class DriverAcceptanceRideFragment extends Fragment {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getActivity().onBackPressed();
                 getParentFragmentManager().beginTransaction().remove(DriverAcceptanceRideFragment.this).commit();
+
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.currentRide, new DriverOnRouteFragment());
+                fragmentTransaction.commit();
             }
         });
 

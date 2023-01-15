@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@color/black_overlay"
-    tools:context=".fragments.DeclineMessageFragment">
+    tools:context=".fragments.driver.DeclineMessageFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="350dp"

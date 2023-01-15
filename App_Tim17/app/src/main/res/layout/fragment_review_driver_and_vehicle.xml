@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/black_overlay"
     android:paddingBottom="24dp"
-    tools:context=".fragments.ReviewDriverAndVehicleFragment">
+    tools:context=".fragments.passenger.ReviewDriverAndVehicleFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
