@@ -10,6 +10,10 @@ import android.widget.TextView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.app_tim17.R;
+<<<<<<< Updated upstream:App_Tim17/app/src/main/java/Adapters/InboxList.java
+=======
+import com.example.app_tim17.model.response.chat.Chat;
+>>>>>>> Stashed changes:App_Tim17/app/src/main/java/com/example/app_tim17/adapters/InboxList.java
 import com.google.android.material.imageview.ShapeableImageView;
 
 import io.getstream.avatarview.AvatarView;

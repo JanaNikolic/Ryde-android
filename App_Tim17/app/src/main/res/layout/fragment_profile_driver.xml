@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:id="@+id/fragment_driver_account"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activities.DriverAccountActivity">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/teal"
+            android:layout_height="250dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="30dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/profile_picture"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:shapeAppearanceOverlay="@style/Circular"
+                app:strokeColor="@color/yellow"
+                app:strokeWidth="3dp"
+                android:padding="3dp"/>
+            <TextView
+                android:id="@+id/fullname_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/profile_pic"
+                android:includeFontPadding="false"
+                android:fontFamily="sans-serif-black"
+                android:textColor="#000"
+                android:textSize="25sp" />
+            <TextView
+                android:id="@+id/email_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fullname_field"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/profile_pic"
+                android:includeFontPadding="false"
+                android:textSize="18sp" />
+            <Button
+                android:id="@+id/reportBtn"
+                android:layout_width="69dp"
+                android:layout_height="62dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:backgroundTint="@color/teal"
+                android:drawableTop="@drawable/ic_baseline_edit_24"
+                />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-100dp"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="30dp"
+            android:paddingTop="40dp">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_height="125dp"
+                android:id="@+id/car_info"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="15dp"
+                app:cardBackgroundColor="#fece2f"
+                app:cardElevation="10dp">
+
+                <RelativeLayout
+                    android:layout_width="352dp"
+                    android:layout_height="135dp"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/car_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/ic_baseline_directions_car_24" />
+
+                    <TextView
+                        android:id="@+id/car_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/car_icon"
+                        android:layout_toEndOf="@id/car_icon"
+                        android:paddingHorizontal="10dp"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/color_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/car_icon"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/ic_baseline_color_lens_24" />
+
+                    <TextView
+                        android:id="@+id/car_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/color_icon"
+                        android:layout_toEndOf="@id/color_icon"
+                        android:includeFontPadding="false"
+                        android:paddingHorizontal="10dp"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/license_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/color_icon"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/license_plate"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/license_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/license_icon"
+                        android:layout_toEndOf="@id/license_icon"
+                        android:includeFontPadding="false"
+                        android:paddingHorizontal="10dp"
+                        android:textSize="20sp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/car_pic"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginHorizontal="20dp"
+                        android:src="@drawable/car_picture"
+
+                        app:shapeAppearanceOverlay="@style/Circular" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="50dp"
+            android:paddingVertical="20dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/full_name_profile"
+                android:layout_height="match_parent"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:textAlignment="viewEnd"
+                android:drawableStart="@drawable/ic_baseline_drive_file_rename_outline_24"
+                android:drawablePadding="20dp"
+                android:textSize="22sp"
+                android:paddingVertical="10dp"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:paddingVertical="10dp"
+                android:id="@+id/email_profile"
+                android:layout_height="match_parent"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:textAlignment="viewEnd"
+                android:drawableStart="@drawable/ic_baseline_alternate_email_24"
+                android:drawablePadding="20dp"
+                android:textSize="22sp"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:paddingVertical="10dp"
+                android:id="@+id/phone_num_profile"
+                android:layout_height="match_parent"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:textAlignment="viewEnd"
+                android:drawableStart="@drawable/ic_baseline_phone_enabled_24"
+                android:drawablePadding="20dp"
+                android:textSize="22sp"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_bold"
+            android:textSize="20sp"
+            android:paddingTop="30dp"
+            android:gravity="center"
+            android:textColor="@color/teal"
+            android:text="STATISTICS"
+            />
+
+        <com.google.android.material.card.MaterialCardView
+            android:clickable="true"
+            android:layout_height="250dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="40dp"
+            android:layout_marginHorizontal="60dp"
+            app:cardCornerRadius="15dp"
+            app:cardBackgroundColor="#fece2f"
+            app:cardElevation="10dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/money_earned"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_bold"
+                    android:gravity="center"
+                    android:paddingVertical="20dp"
+                    android:text="Money Earned"
+                    android:textColor="@color/teal"
+                    android:textSize="24sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/money_amount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="4.790"
+                android:layout_marginBottom="30dp"
+                android:textColor="@color/teal"
+                android:gravity="center"
+                android:textSize="60sp"/>
+            <TextView
+                android:id="@+id/rsd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RSD"
+                android:textColor="@color/teal"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@id/this_month"
+                android:textSize="26sp"/>
+            <TextView
+                android:id="@+id/this_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/teal"
+                android:text="This Month"
+                android:fontFamily="@font/outfit_bold"
+                android:textSize="24sp"
+                android:paddingVertical="20dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="250dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginBottom="40dp"
+            app:cardCornerRadius="15dp"
+            app:cardBackgroundColor="#fece2f"
+            app:cardElevation="10dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/kilometers_crossed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_bold"
+                    android:gravity="center"
+                    android:paddingVertical="20dp"
+                    android:text="Kilometers Driven"
+                    android:textColor="@color/teal"
+                    android:textSize="24sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/kilometers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="47,2"
+                    android:layout_marginBottom="30dp"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    android:textSize="60sp"/>
+                <TextView
+                    android:id="@+id/km"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="km"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="@id/this_week"
+                    android:textSize="26sp"/>
+                <TextView
+                    android:id="@+id/this_week"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/teal"
+                    android:text="This Week"
+                    android:fontFamily="@font/outfit_bold"
+                    android:textSize="24sp"
+                    android:paddingVertical="20dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
