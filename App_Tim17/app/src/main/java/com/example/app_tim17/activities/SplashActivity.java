@@ -49,10 +49,11 @@ public class SplashActivity extends Activity {
                 String token = sp.getString("token", "");
                 Log.d("jwt token", token);
 
-                if (token.equals("")) {
+                if (token == null || token.equals("")) {
                     startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
                     finish();
                 } else {
+                    Log.d("Jwt" , token);
                     String role = tokenUtils.getRole(token);
 
                     if (role.equals("ROLE_DRIVER")) {
