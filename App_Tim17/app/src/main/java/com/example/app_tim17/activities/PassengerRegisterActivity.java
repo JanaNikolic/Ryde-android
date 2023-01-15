@@ -172,15 +172,10 @@ public class PassengerRegisterActivity extends AppCompatActivity {
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< Updated upstream
-                Intent intent = new Intent(PassengerRegisterActivity.this, PassengerMainActivity.class);
-                startActivity(intent);
-=======
                 if (validName && validAddress && validSurname && validEmail && validPassword && validPhoneNumber && password.getEditableText().toString().equals(confirmPasword.getEditableText().toString())) {
                     register();
                 } else {
                 }
->>>>>>> Stashed changes
             }
         });
     }
@@ -208,12 +203,6 @@ public class PassengerRegisterActivity extends AppCompatActivity {
         });
 
         Toast.makeText(getApplicationContext(), "NO!", Toast.LENGTH_SHORT);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_header, menu);
-        return true;
     }
 
     @Override

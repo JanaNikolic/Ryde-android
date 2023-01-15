@@ -11,5 +11,4 @@ public interface UserService {
 
     @POST("user/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
-
 }

@@ -71,6 +71,7 @@ public class ProfileDriverFragment extends Fragment {
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
                 transaction.add(R.id.fragment_driver_container, new ReviewDriverAndVehicleFragment()); // give your fragment container id in first parameter
+
                 transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                 transaction.commit();
             }

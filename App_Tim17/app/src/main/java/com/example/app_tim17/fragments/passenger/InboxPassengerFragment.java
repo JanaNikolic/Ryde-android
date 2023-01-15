@@ -17,13 +17,24 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+<<<<<<< HEAD
 import com.example.app_tim17.adapters.InboxList;
 import com.example.app_tim17.model.response.chat.Chat;
 import com.example.app_tim17.model.response.chat.ChatResponse;
+=======
+import com.example.app_tim17.activities.PassengerActivity;
+import com.example.app_tim17.adapters.InboxList;
+import com.example.app_tim17.model.response.Chat;
+import com.example.app_tim17.model.response.ChatResponse;
+>>>>>>> development
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.MessageService;
 import com.example.app_tim17.service.TokenUtils;
 import com.google.gson.Gson;
+<<<<<<< HEAD
+=======
+import com.google.gson.GsonBuilder;
+>>>>>>> development
 
 import java.util.ArrayList;
 import java.util.List;
