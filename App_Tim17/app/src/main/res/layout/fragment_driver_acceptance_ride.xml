@@ -1,208 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="400dp"
-    android:layout_height="550dp"
-    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:id="@+id/fragment_driver_acceptance_ride"
+    android:background="@color/black_overlay"
     tools:context=".fragments.DriverAcceptanceRideFragment">
 
-    <ImageView
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/map"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/start_address_label"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_circle_16"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/map" />
-
-    <TextView
-        android:id="@+id/start_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="-4dp"
-        android:fontFamily="@font/outfit_regular"
-        android:text="Bulevar Oslobodjenja 15"
-        android:textColor="@color/dark_teal"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/start_address_label"
-        app:layout_constraintTop_toTopOf="@+id/start_address_label" />
-
-    <ImageView
-        android:id="@+id/dot1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_circle_6"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/start_address_label"
-        app:layout_constraintStart_toStartOf="@+id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@+id/start_address_label" />
-
-    <ImageView
-        android:id="@+id/dot2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="4dp"
-        android:src="@drawable/ic_baseline_circle_6"
-        app:layout_constraintEnd_toEndOf="@+id/start_address_label"
-        app:layout_constraintStart_toStartOf="@+id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@+id/dot1" />
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/dot3"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginStart="-5dp"-->
-    <!--            android:layout_marginTop="8dp"-->
-    <!--            android:src="@drawable/ic_baseline_circle_6"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"/>-->
-
-
-    <ImageView
-        android:id="@+id/end_address_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="-5dp"
-        android:src="@drawable/pin"
-        app:layout_constraintStart_toStartOf="@+id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@+id/dot2" />
-
-    <TextView
-        android:id="@+id/end_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/outfit_regular"
-        android:text="Bulevar cara Lazara 115"
-        android:textColor="@color/dark_teal"
-        android:textSize="20sp"
-        android:layout_marginStart="11dp"
-        app:layout_constraintStart_toEndOf="@+id/end_address_label"
-        app:layout_constraintTop_toTopOf="@+id/end_address_label" />
-
-    <TextView
-        android:id="@+id/distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/outfit_regular"
-        android:text="2.65 km"
-        android:textColor="@color/dark_teal"
-
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_address" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="24dp"
-
-        android:src="@drawable/ic_baseline_people_alt_24"
-        app:layout_constraintEnd_toStartOf="@+id/line"
-        app:layout_constraintHorizontal_bias="0.381"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/line" />
-
-    <TextView
-        android:id="@+id/num_of_passengers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="6dp"
-        android:textColor="@color/dark_teal"
-        android:textSize="18sp"
-        android:fontFamily="@font/outfit_regular"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
-
-    <ImageView
-        android:id="@+id/line"
-        android:layout_width="1dp"
-        android:layout_height="84dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/black_overlay"
-        app:layout_constraintEnd_toStartOf="@id/line2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/end_address" />
-
-    <ImageView
-        android:id="@+id/line2"
-        android:layout_width="1dp"
-        android:layout_height="84dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="133dp"
-        android:background="@color/black_overlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_address" />
-
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/dark_teal"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@id/line2"
-        app:layout_constraintStart_toEndOf="@id/line"
-        android:fontFamily="@font/outfit_regular"
-        app:layout_constraintTop_toTopOf="@id/num_of_passengers" />
-
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/outfit_semi_bold"
-        android:text="300 RSD"
-        android:textColor="@color/dark_teal"
-        android:textSize="24sp"
-        android:layout_marginTop="-2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/line2"
-        app:layout_constraintTop_toTopOf="@+id/duration" />
-
-    <Button
-        android:id="@+id/accept_btn"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
-        android:fontFamily="@font/outfit_semi_bold"
-        android:letterSpacing="0.3"
-        android:paddingVertical="16dp"
-        android:text="@string/accept"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/decline"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/white"
-        android:fontFamily="@font/outfit_semi_bold"
-        android:letterSpacing="0.3"
-        android:paddingVertical="16dp"
-        android:text="@string/decline"
-        android:textColor="@color/dark_teal"
+        android:layout_gravity="center"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:strokeColor="@color/dark_teal"
-        app:strokeWidth="2dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <!--    <ImageView-->
+        <!--        android:id="@+id/map"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="250dp"-->
+        <!--        android:scaleType="centerCrop"-->
+        <!--        android:src="@drawable/map"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"-->
+        <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+        <ImageView
+            android:id="@+id/start_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_baseline_circle_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginTop="16dp" />
+
+        <TextView
+            android:id="@+id/start_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-4dp"
+            android:fontFamily="@font/outfit_regular"
+            android:text="Bulevar Oslobodjenja 15"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@id/start_address_label"
+            app:layout_constraintTop_toTopOf="@id/start_address_label" />
+
+        <ImageView
+            android:id="@+id/dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/ic_baseline_circle_6"
+            app:layout_constraintEnd_toEndOf="@id/start_address_label"
+            app:layout_constraintStart_toStartOf="@id/start_address_label"
+            app:layout_constraintTop_toBottomOf="@id/start_address_label" />
+
+        <ImageView
+            android:id="@+id/dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/ic_baseline_circle_6"
+            app:layout_constraintEnd_toEndOf="@id/start_address_label"
+            app:layout_constraintStart_toStartOf="@id/start_address_label"
+            app:layout_constraintTop_toBottomOf="@id/dot1" />
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/dot3"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="-5dp"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:src="@drawable/ic_baseline_circle_6"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"/>-->
+
+
+        <ImageView
+            android:id="@+id/end_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-5dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/pin"
+            app:layout_constraintStart_toStartOf="@id/start_address_label"
+            app:layout_constraintTop_toBottomOf="@id/dot2" />
+
+        <TextView
+            android:id="@+id/end_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:fontFamily="@font/outfit_regular"
+            android:text="Bulevar cara Lazara 115"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@id/end_address_label"
+            app:layout_constraintTop_toTopOf="@id/end_address_label" />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/outfit_regular"
+            android:text="2.65 km"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/start_address" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_baseline_people_alt_24"
+            app:layout_constraintBottom_toBottomOf="@+id/line"
+            app:layout_constraintEnd_toStartOf="@id/line"
+            app:layout_constraintHorizontal_bias="0.381"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/line" />
+
+        <TextView
+            android:id="@+id/num_of_passengers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/outfit_regular"
+            android:textColor="@color/dark_teal"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/imageView3"
+            app:layout_constraintTop_toTopOf="@id/imageView3" />
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="1dp"
+            android:layout_height="84dp"
+            android:layout_marginTop="64dp"
+            android:background="@color/black_overlay"
+            app:layout_constraintEnd_toStartOf="@id/line2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/end_address" />
+
+        <ImageView
+            android:id="@+id/line2"
+            android:layout_width="1dp"
+            android:layout_height="84dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="133dp"
+            android:background="@color/black_overlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/end_address" />
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_regular"
+            android:textColor="@color/dark_teal"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@id/line2"
+            app:layout_constraintStart_toEndOf="@id/line"
+            app:layout_constraintTop_toTopOf="@id/num_of_passengers" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-2dp"
+            android:fontFamily="@font/outfit_semi_bold"
+            android:text="300 RSD"
+            android:textColor="@color/dark_teal"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/line2"
+            app:layout_constraintTop_toTopOf="@id/duration" />
+
+        <Button
+            android:id="@+id/accept_btn"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/outfit_semi_bold"
+            android:letterSpacing="0.3"
+            android:paddingVertical="16dp"
+            android:layout_marginTop="64dp"
+            android:text="@string/accept"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+        <Button
+            android:id="@+id/decline"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/outfit_semi_bold"
+            android:letterSpacing="0.3"
+            android:layout_marginTop="64dp"
+            android:paddingVertical="16dp"
+            android:text="@string/decline"
+            android:textColor="@color/dark_teal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line2"
+            app:strokeColor="@color/dark_teal"
+            app:strokeWidth="2dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

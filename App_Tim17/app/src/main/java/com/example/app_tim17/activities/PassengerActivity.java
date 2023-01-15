@@ -73,6 +73,10 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                 return true;
             }
             case R.id.action_logout: {
+                SharedPreferences sharedPreferences = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.remove("token");
+                edit.commit();
                 startActivity(new Intent(getApplicationContext(), UserLoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
                 return true;

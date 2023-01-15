@@ -59,6 +59,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView" />
 
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"

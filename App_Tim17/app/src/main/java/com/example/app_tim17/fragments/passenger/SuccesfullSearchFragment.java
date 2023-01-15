@@ -1,5 +1,7 @@
 package com.example.app_tim17.fragments.passenger;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,11 +10,25 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.model.request.VehicleRequest;
+import com.example.app_tim17.model.response.driver.DriverResponse;
+import com.example.app_tim17.model.response.ride.Ride;
+import com.example.app_tim17.model.response.vehicle.VehicleResponse;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.DriverService;
+import com.example.app_tim17.service.RideService;
+import com.example.app_tim17.service.TokenUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,28 +37,24 @@ import java.util.TimerTask;
  */
 public class SuccesfullSearchFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RetrofitService retrofitService;
+    private TokenUtils tokenUtils;
+    private DriverService driverService;
+    private String driverName;
+    private String driverImage;
+    private String vehicleModel;
+    private String vehicleLicensePlate;
+    private String driverPhoneNumber;
 
     public SuccesfullSearchFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SuccesfullSearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SuccesfullSearchFragment newInstance(String param1, String param2) {
         SuccesfullSearchFragment fragment = new SuccesfullSearchFragment();
         Bundle args = new Bundle();
@@ -66,13 +78,77 @@ public class SuccesfullSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
+
+        String driverId = getArguments().getString("driverId");
+        retrofitService = new RetrofitService();
+        driverService = retrofitService.getRetrofit().create(DriverService.class);
+        String token = "Bearer " + getCurrentToken();
+
+        Call<DriverResponse> call = driverService.getDriver(Long.valueOf(driverId), token);
+
+        call.enqueue(new Callback<DriverResponse>() {
+            @Override
+            public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
+                DriverResponse driver = response.body();
+                if (driver != null) {
+                    driverName = driver.getName() + " " + driver.getSurname();
+                    driverImage = driver.getProfilePicture(); // TODO
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DriverResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Oops, something went wrong", Toast.LENGTH_SHORT).show();
+                getChildFragmentManager().popBackStack(); // TODO check
+            }
+        });
+
+        Call<VehicleResponse> call2 = driverService.getDriversVehicle(Long.valueOf(driverId), token);
+
+        call2.enqueue(new Callback<VehicleResponse>() {
+            @Override
+            public void onResponse(Call<VehicleResponse> call, Response<VehicleResponse> response) {
+                VehicleResponse vehicle = response.body();
+                if (vehicle != null) {
+                    vehicleLicensePlate = vehicle.getLicenseNumber();
+                    vehicleModel = vehicle.getModel();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VehicleResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Oops, something went wrong", Toast.LENGTH_SHORT).show();
+                getChildFragmentManager().popBackStack(); // TODO check
+            }
+        });
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+                Bundle args = getArguments();
+                args.putString("driverName", driverName);
+                args.putString("licensePlate", vehicleLicensePlate);
+                args.putString("vehicleModel", vehicleModel);
+                args.putString("driverPhoneNumber", driverPhoneNumber);
+                args.putString("driverImage", driverImage);
+
+                PassengerCurrentRideFragment fragment = new PassengerCurrentRideFragment();
+                fragment.setArguments(args);
+
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.currentRide, new PassengerCurrentRideFragment());
+                fragmentTransaction.replace(R.id.currentRide, fragment);
+                fragmentTransaction.addToBackStack(null);// TODO for messages
                 fragmentTransaction.commit();}
         }, 4800);
+
+
     return v;
+    }
+
+    private String getCurrentToken() {
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
     }
 }

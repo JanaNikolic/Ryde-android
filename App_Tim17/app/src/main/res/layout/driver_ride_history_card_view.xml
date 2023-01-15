@@ -44,8 +44,8 @@
                     android:text="@string/start"
                     android:textColor="@color/dark_teal"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/time_start"
-                    app:layout_constraintStart_toStartOf="@+id/time_start" />
+                    app:layout_constraintBottom_toTopOf="@id/time_start"
+                    app:layout_constraintStart_toStartOf="@id/time_start" />
 
                 <TextView
                     android:id="@+id/time_start"
@@ -57,7 +57,7 @@
                     android:textColor="@color/dark_teal"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView" />
+                    app:layout_constraintStart_toEndOf="@id/imageView" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -67,8 +67,8 @@
                     android:text="@string/end"
                     android:textColor="@color/dark_teal"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/time_end"
-                    app:layout_constraintStart_toStartOf="@+id/time_end" />
+                    app:layout_constraintBottom_toTopOf="@id/time_end"
+                    app:layout_constraintStart_toStartOf="@id/time_end" />
 
                 <TextView
                     android:id="@+id/time_end"
@@ -80,7 +80,7 @@
                     android:textColor="@color/dark_teal"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/time_start" />
+                    app:layout_constraintStart_toEndOf="@id/time_start" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -90,8 +90,8 @@
                     android:text="@string/duration"
                     android:textColor="@color/dark_teal"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/duration"
-                    app:layout_constraintStart_toStartOf="@+id/duration" />
+                    app:layout_constraintBottom_toTopOf="@id/duration"
+                    app:layout_constraintStart_toStartOf="@id/duration" />
 
                 <TextView
                     android:id="@+id/duration"
@@ -103,7 +103,7 @@
                     android:textColor="@color/dark_teal"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/time_end" />
+                    app:layout_constraintStart_toEndOf="@id/time_end" />
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -113,7 +113,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="4dp"
                     android:src="@drawable/stops"
-                    app:layout_constraintStart_toEndOf="@+id/date"
+                    app:layout_constraintStart_toEndOf="@id/date"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
