@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.model.response.Chat;
+import com.example.app_tim17.model.response.chat.Chat;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;

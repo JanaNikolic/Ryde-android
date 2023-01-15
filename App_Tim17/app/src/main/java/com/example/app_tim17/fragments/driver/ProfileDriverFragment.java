@@ -63,14 +63,15 @@ public class ProfileDriverFragment extends Fragment {
 
         initializeComponents(view);
 
-        Button editProfile = (Button) view.findViewById(R.id.edit_profile);
+        Button editProfile = (Button) view.findViewById(R.id.reportBtn);
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
-                transaction.add(R.id.activity_driver_account, new ReviewDriverAndVehicleFragment()); // give your fragment container id in first parameter
+                transaction.add(R.id.fragment_driver_container, new ReviewDriverAndVehicleFragment()); // give your fragment container id in first parameter
+
                 transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                 transaction.commit();
             }
