@@ -6,8 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_overlay"
-    android:paddingBottom="24dp"
-    tools:context=".fragments.ReviewDriverAndVehicleFragment">
+    android:paddingBottom="80dp"
+    android:clickable="true"
+    tools:context=".fragments.passenger.ReviewDriverAndVehicleFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,7 +69,7 @@
             android:gravity="top"
             android:hint="@string/tell_us_what_you_think"
             android:inputType="textMultiLine"
-            android:lines="4"
+            android:lines="3"
             android:minWidth="250dp"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +111,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/note_input"
             android:inputType="textMultiLine"
-            android:lines="4"
+            android:lines="3"
             android:layout_marginBottom="16dp"
             android:hint="@string/tell_us_what_you_think"
             android:gravity="top"
@@ -150,7 +151,7 @@
             app:strokeWidth="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/submitBtn"
+            app:layout_constraintTop_toTopOf="@id/submitBtn"
             app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

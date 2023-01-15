@@ -21,7 +21,9 @@
         <FrameLayout
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/sheet"
-            android:layout_height="450dp"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:minHeight="450dp"
             android:layout_width="match_parent"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             android:background="@drawable/rounded_drawer"
