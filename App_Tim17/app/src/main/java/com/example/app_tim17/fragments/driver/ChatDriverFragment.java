@@ -1,4 +1,4 @@
-package com.example.app_tim17.fragments.passenger;
+package com.example.app_tim17.fragments.driver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.PassengerActivity;
+import com.example.app_tim17.activities.DriverActivity;
 import com.example.app_tim17.adapters.MessageListAdapter;
 import com.example.app_tim17.model.request.MessageRequest;
 import com.example.app_tim17.model.response.message.Message;
@@ -35,10 +35,9 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatFragment extends Fragment {
+public class ChatDriverFragment extends Fragment {
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
     private ArrayList<Message> messageList = new ArrayList<>();
@@ -58,7 +57,7 @@ public class ChatFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ChatFragment() {
+    public ChatDriverFragment() {
         // Required empty public constructor
     }
 
@@ -68,8 +67,8 @@ public class ChatFragment extends Fragment {
      * @return A new instance of fragment ChatDriverFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatFragment newInstance() {
-        ChatFragment fragment = new ChatFragment();
+    public static ChatDriverFragment newInstance() {
+        ChatDriverFragment fragment = new ChatDriverFragment();
         return fragment;
     }
 
@@ -86,7 +85,7 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragmen_chat_driver, container, false);
         tokenUtils = new TokenUtils();
         Bundle args = getArguments();
         Long userId = args.getLong("userId");
@@ -171,8 +170,8 @@ public class ChatFragment extends Fragment {
 
     public void sendSocketMessage(MessageRequest messageRequest) {
         Log.i("WebSocket", "Button was clicked");
-        PassengerActivity pa = (PassengerActivity) getActivity();
-        pa.sendEchoViaStomp(messageRequest);
+        DriverActivity da = (DriverActivity) getActivity();
+        da.sendEchoViaStomp(messageRequest);
     }
 
     @Override

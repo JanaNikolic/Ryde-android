@@ -1,4 +1,4 @@
-package com.example.app_tim17.fragments.passenger;
+package com.example.app_tim17.fragments.driver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,7 +17,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.PassengerActivity;
 import com.example.app_tim17.adapters.InboxList;
 import com.example.app_tim17.model.response.Chat;
 import com.example.app_tim17.model.response.ChatResponse;
@@ -36,10 +35,9 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link InboxPassengerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class InboxPassengerFragment extends Fragment {
+public class InboxDriverFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,16 +52,12 @@ public class InboxPassengerFragment extends Fragment {
     private InboxList inboxList;
     private List<Chat> mChatList;
     private Gson gson = new Gson();
-    public InboxPassengerFragment() {
+    public InboxDriverFragment() {
         // Required empty public constructor
     }
     // TODO: Rename and change types and number of parameters
-    public static InboxPassengerFragment newInstance(String param1, String param2) {
-        InboxPassengerFragment fragment = new InboxPassengerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+    public static InboxDriverFragment newInstance(String param1, String param2) {
+        InboxDriverFragment fragment = new InboxDriverFragment();
         return fragment;
     }
 
@@ -78,7 +72,7 @@ public class InboxPassengerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_inbox_passenger, container, false);
+        View view = inflater.inflate(R.layout.fragment_inbox_driver, container, false);
         tokenUtils = new TokenUtils();
 
         retrofitService = new RetrofitService();
@@ -89,11 +83,8 @@ public class InboxPassengerFragment extends Fragment {
         call.enqueue(new Callback<ChatResponse>() {
             @Override
             public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
-                Log.d("WTF", response.body().toString());
                 if (response.isSuccessful()) {
-                    Log.d("WTF", response.body().toString());
                     ChatResponse chatResponse = response.body();
-                    Log.d("WTF", chatResponse.toString());
                     mChatList = new ArrayList<>();
                     if (chatResponse != null) {
                         for (Chat chat : chatResponse.getChats()) {
@@ -116,7 +107,7 @@ public class InboxPassengerFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                ChatFragment chatFragment = ChatFragment.newInstance();
+                ChatDriverFragment chatFragment = ChatDriverFragment.newInstance();
                 Bundle args = new Bundle();
                 Chat chat = (Chat) inboxList.getItem(position);
                 args.putLong("userId", chat.getUser().getId());
@@ -137,7 +128,7 @@ public class InboxPassengerFragment extends Fragment {
 
         if (!fragmentPopped && manager.findFragmentByTag(fragmentTag) == null) { //fragment not in back stack, create it.
             FragmentTransaction ft = manager.beginTransaction();
-            ft.replace(R.id.fragment_passenger_container, fragment, fragmentTag);
+            ft.replace(R.id.fragment_driver_container, fragment, fragmentTag);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.addToBackStack(backStateName);
             ft.commit();

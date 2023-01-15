@@ -53,11 +53,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemViewType(int position) {
         Message message = (Message) mMessageList.get(position);
-        //SharedPreferences prefs= mContext.getSharedPreferences("com.example.app_tim17_preferences",Context.MODE_PRIVATE);
-        //String token = prefs.getString("token","");
+        SharedPreferences prefs= mContext.getSharedPreferences("com.example.app_tim17_preferences",Context.MODE_PRIVATE);
+        String token = prefs.getString("token","");
 
-        //if (message.getSenderId().equals(tokenUtils.getId(token))) {
-        if (message.getSenderId().equals(1009L)) {
+        if (message.getSenderId().equals(tokenUtils.getId(token))) {
             // If the current user is the sender of the message
             return VIEW_TYPE_MESSAGE_SENT;
         } else {

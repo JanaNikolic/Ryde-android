@@ -51,8 +51,6 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
     BottomNavigationView bottomNavigationView;
     ChatFragment fragment;
 
-    private RetrofitService retrofitService;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +61,6 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
 
-        retrofitService = new RetrofitService();
         mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
         connectStomp();
     }
@@ -222,14 +219,4 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
     }
-
-
-    public RetrofitService getRetrofitService() {
-        return retrofitService;
-    }
-
-    public void setRetrofitService(RetrofitService retrofitService) {
-        this.retrofitService = retrofitService;
-    }
-
 }
