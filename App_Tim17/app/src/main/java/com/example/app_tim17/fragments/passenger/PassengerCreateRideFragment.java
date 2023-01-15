@@ -239,7 +239,7 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
         }
         else if (view == luxCar) {
             selectedType = true;
-            rideRequest.setVehicleType("LUXURIOUS");
+            rideRequest.setVehicleType("LUXURY");
             standradCar.setImageResource(R.drawable.standard_car_not_selected);
             luxCar.setImageResource(R.drawable.electric_car_selected);
             van.setImageResource(R.drawable.van_not_selected);
@@ -260,13 +260,13 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                     } else {
                         location = new Location();
                         location.setAddress(departure.getEditableText().toString());
-                        location.setLatitude(null);
-                        location.setLongitude(null);
+                        location.setLatitude(46.0);
+                        location.setLongitude(46.0);
                         locationsForRide.setDeparture(location);
                         location = new Location();
                         location.setAddress(destination.getEditableText().toString());
-                        location.setLatitude(null);
-                        location.setLongitude(null);
+                        location.setLatitude(46.0);
+                        location.setLongitude(46.0);
                         locationsForRide.setDestination(location);
                         locationForRidelist.add(locationsForRide);
                         rideRequest.setLocations(locationForRidelist);
@@ -345,9 +345,6 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                     }
                     sendRequest(rideRequest);
 
-                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.currentRide, new SuccesfullSearchFragment());
-                    fragmentTransaction.commit();
                     break;
                 }
             }
@@ -372,11 +369,33 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                 Ride ride = response.body();
                 if (ride != null) {
                     Log.d("response", ride.toString());
+                    SuccesfullSearchFragment succesfullSearchFragment = new SuccesfullSearchFragment();
+                    Bundle args = new Bundle();
+
+                    List<LocationForRide> locs = ride.getLocations();
+                    for (LocationForRide l: locs ) {
+                        args.putString("startAddress", l.getDeparture().getAddress());
+                        args.putString("endAddress", l.getDestination().getAddress());
+                    }
+
+                    args.putString("driverId", ride.getDriver().getId().toString());
+                    args.putString("time", ride.getEstimatedTimeInMinutes().toString());
+
+
+                    args.putString("price", ride.getTotalCost().toString() + " RSD");
+                    args.putString("timeStart", ride.getStartTime());
+
+                    succesfullSearchFragment.setArguments(args);
+
+                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.currentRide, succesfullSearchFragment);
+                    fragmentTransaction.commit();
                 }
             }
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
-                Log.d("Opps", "SOmething went wrong!");
+                Log.d("Opps", "1Something went wrong!");
+//                onResume(); //TODO
                 call.cancel();
             }
         });

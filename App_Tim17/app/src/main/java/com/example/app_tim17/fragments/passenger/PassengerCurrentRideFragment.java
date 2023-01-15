@@ -1,5 +1,7 @@
 package com.example.app_tim17.fragments.passenger;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,9 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.app_tim17.R;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -22,7 +27,7 @@ public class PassengerCurrentRideFragment extends Fragment {
 
     TextView timer;
     CountDownTimer countDownTimer;
-    int time = 3 * 1000; //  TODO get form database
+    int time;
     int interval = 1000; // 1 second
 
     public PassengerCurrentRideFragment() {
@@ -45,6 +50,52 @@ public class PassengerCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
+
+        TextView startAddress = (TextView) view.findViewById(R.id.start_address);
+        TextView endAddress = (TextView) view.findViewById(R.id.end_address);
+        TextView startTime = (TextView) view.findViewById(R.id.start_time);
+        TextView price = (TextView) view.findViewById(R.id.ride_price);
+        TextView driverName = (TextView) view.findViewById(R.id.driver_name);
+        TextView licenseNumber = (TextView) view.findViewById(R.id.license_number_ride);
+        TextView model = (TextView) view.findViewById(R.id.model);
+        ShapeableImageView driverPicture = (ShapeableImageView) view.findViewById(R.id.profile_photo);
+
+        Button phone = (Button) view.findViewById(R.id.call_driver);
+        Button message = (Button) view.findViewById(R.id.message_driver);
+
+        Bundle args = getArguments();
+
+        String number = args.getString("driverPhoneNumber");; //TODO
+
+        driverName.setText(args.getString("driverName"));
+        licenseNumber.setText(args.getString("licensePlate"));
+        model.setText(args.getString("vehicleModel"));
+
+        time = Integer.parseInt(args.getString("time")) * 1000; //TODO 1000
+        startAddress.setText(args.getString("startAddress"));
+        endAddress.setText(args.getString("endAddress"));
+        price.setText(args.getString("price"));
+
+        startTime.setText(args.getString("timeStart").split("T")[1].split("\\.")[0]);
+
+
+//        args.getString("driverImage"); // TODO
+
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + number));
+                startActivity(intent);
+            }
+        });
+
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO open inbox chat
+            }
+        });
 
         timer = (TextView) view.findViewById(R.id.ride_timer);
 

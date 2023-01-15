@@ -49,7 +49,7 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sheetBehavior.setPeekHeight(300);
+//        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
@@ -81,5 +81,13 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         super.onResume();
         sheetBehavior.setPeekHeight(300);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        sheetBehavior.setPeekHeight(300);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 }

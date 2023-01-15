@@ -36,14 +36,23 @@
             android:layout_gravity="center|top"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_baseline_remove_24"/>
+<!--TODO-->
+<!--        <androidx.fragment.app.FragmentContainerView-->
+<!--            android:id="@+id/currentRide"-->
+<!--            android:name="com.example.app_tim17.fragments.passenger.PassengerCurrentRideFragment"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            tools:layout="@layout/fragment_passenger_current_ride">-->
 
-
+<!--        </androidx.fragment.app.FragmentContainerView>-->
+<!--        TODO debug-->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/currentRide"
             android:name="com.example.app_tim17.fragments.passenger.PassengerCreateRideFragment"
             android:layout_marginTop="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             tools:layout="@layout/fragment_passenger_create_ride">
 
         </androidx.fragment.app.FragmentContainerView>
