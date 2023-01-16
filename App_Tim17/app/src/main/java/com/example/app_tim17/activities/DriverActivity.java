@@ -89,7 +89,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.17:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
         connectStomp();
     }
 
@@ -221,7 +221,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
 
         compositeDisposable.add(dispTopic);
 
-        Disposable dispTopic2 = mStompClient.topic("/topic/ride/" + tokenUtils.getId(getCurrentToken()))
+        Disposable dispTopic2 = mStompClient.topic("/topic/driver/" + tokenUtils.getId(getCurrentToken()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {

@@ -116,12 +116,14 @@ public class DriverOnRouteFragment extends Fragment {
             public void onClick(View view) {
 
                 Bundle route = new Bundle();
-                route.putDouble("fromLat", finalRide.getLocations().get(0).getDeparture().getLatitude());
-                route.putDouble("fromLng", finalRide.getLocations().get(0).getDeparture().getLongitude());
-
-                route.putDouble("toLat", finalRide.getLocations().get(0).getDestination().getLatitude());
-                route.putDouble("toLng", finalRide.getLocations().get(0).getDestination().getLongitude());
-
+//                route.putDouble("fromLat", finalRide.getLocations().get(0).getDeparture().getLatitude());
+//                route.putDouble("fromLng", finalRide.getLocations().get(0).getDeparture().getLongitude());
+                route.putDouble("fromLat", 45.257430);
+                route.putDouble("fromLng", 19.840850);
+//                route.putDouble("toLat", finalRide.getLocations().get(0).getDestination().getLatitude());
+//                route.putDouble("toLng", finalRide.getLocations().get(0).getDestination().getLongitude());
+                route.putDouble("toLat", 45.241290);
+                route.putDouble("toLng", 19.847320);
                 DrawRouteFragment draw = DrawRouteFragment.newInstance();
                 draw.setArguments(route);
                 FragmentTransition.to(draw, getActivity(), false);

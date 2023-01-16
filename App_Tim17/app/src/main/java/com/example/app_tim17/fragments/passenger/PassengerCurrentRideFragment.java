@@ -1,6 +1,8 @@
 package com.example.app_tim17.fragments.passenger;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,16 +17,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.model.response.ride.Ride;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.TokenUtils;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
-public class PassengerCurrentRideFragment extends Fragment {
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import ua.naiksoftware.stomp.Stomp;
+import ua.naiksoftware.stomp.StompClient;
+import ua.naiksoftware.stomp.dto.StompHeader;
 
+public class PassengerCurrentRideFragment extends Fragment {
+    private CompositeDisposable compositeDisposable;
+    private StompClient mStompClient;
+    private RetrofitService retrofitService;
+    private TokenUtils tokenUtils;
+    Gson gson = new Gson();
+    String rideId;
     TextView timer;
     CountDownTimer countDownTimer;
     int time;
@@ -50,6 +72,11 @@ public class PassengerCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        retrofitService = new RetrofitService();
+        Bundle args = getArguments();
+        rideId = args.getString("rideId");
+        connectStomp();
 
         TextView startAddress = (TextView) view.findViewById(R.id.start_address);
         TextView endAddress = (TextView) view.findViewById(R.id.end_address);
@@ -63,10 +90,8 @@ public class PassengerCurrentRideFragment extends Fragment {
         Button phone = (Button) view.findViewById(R.id.call_driver);
         Button message = (Button) view.findViewById(R.id.message_driver);
 
-        Bundle args = getArguments();
 
         String number = args.getString("driverPhoneNumber");; //TODO
-
         driverName.setText(args.getString("driverName"));
         licenseNumber.setText(args.getString("licensePlate"));
         model.setText(args.getString("vehicleModel"));
@@ -77,7 +102,6 @@ public class PassengerCurrentRideFragment extends Fragment {
         price.setText(args.getString("price"));
 
         startTime.setText(args.getString("timeStart").split("T")[1].split("\\.")[0]);
-
 
 //        args.getString("driverImage"); // TODO
 
@@ -99,34 +123,93 @@ public class PassengerCurrentRideFragment extends Fragment {
 
         timer = (TextView) view.findViewById(R.id.ride_timer);
 
-        countDownTimer = new CountDownTimer(time, interval) {
-            public void onTick(long millisUntilFinished) {
-                timer.setText(getDateFromMillis(time - millisUntilFinished));
-            }
-
-            public void onFinish() {
-                timer.setText("FINISHED");
-                //TODO finished ride fragment
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.main_pass, new ReviewDriverAndVehicleFragment());
-
-                transaction.commit();
-
-                transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
-                transaction.commit();
-
-            }
-        };
-
-        countDownTimer.start();
+//        countDownTimer = new CountDownTimer(time, interval) {
+//            public void onTick(long millisUntilFinished) {
+//                timer.setText(getDateFromMillis(time - millisUntilFinished));
+//            }
+//
+//            public void onFinish() {
+//                timer.setText("FINISHED");
+//                //TODO finished ride fragment
+//                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.add(R.id.main_pass, new ReviewDriverAndVehicleFragment());
+//
+//                transaction.commit();
+//
+//                transaction = getParentFragmentManager().beginTransaction();
+//                transaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
+//                transaction.commit();
+//
+//            }
+//        };
+//
+//        countDownTimer.start();
 
         return view;
     }
+
+    public static final String LOGIN = "login";
+    public static final String PASSCODE = "passcode";
+
+    public void connectStomp() {
+
+        List<StompHeader> headers = new ArrayList<>();
+        headers.add(new StompHeader(LOGIN, "guest"));
+        headers.add(new StompHeader(PASSCODE, "guest"));
+        mStompClient.connect();
+        mStompClient.withClientHeartbeat(1000).withServerHeartbeat(1000);
+        resetSubscriptions();
+        Disposable dispTopic = mStompClient.topic("/topic/ride/" + rideId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(topicMessage -> {
+                    Ride ride = gson.fromJson(topicMessage.getPayload(), Ride.class);
+                    if (ride.getStatus().equals("ACTIVE")) {
+                        countDownTimer = new CountDownTimer(time, interval) {
+                            public void onTick(long millisUntilFinished) {
+                                Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT);
+                                timer.setText(getDateFromMillis(time - millisUntilFinished));
+                            }
+
+                            public void onFinish() {
+                                timer.setText("FINISHED");
+                            }
+                        };
+                        countDownTimer.start();
+                    } else if (ride.getStatus().equals("FINISHED")) {
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.add(R.id.main_pass, new ReviewDriverAndVehicleFragment());
+
+                        transaction.commit();
+
+                        transaction = getParentFragmentManager().beginTransaction();
+                        transaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
+                        transaction.commit();
+                    }
+                }, throwable -> {
+                    Log.e("STOMP", "Error on subscribe topic", throwable);
+                });
+
+        compositeDisposable.add(dispTopic);
+
+    }
+
+    private void resetSubscriptions() {
+        if (compositeDisposable != null) {
+            compositeDisposable.dispose();
+        }
+        compositeDisposable = new CompositeDisposable();
+    }
+
 
     public static String getDateFromMillis(long d) {
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         return df.format(d);
+    }
+
+    private String getCurrentToken() {
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
     }
 }
