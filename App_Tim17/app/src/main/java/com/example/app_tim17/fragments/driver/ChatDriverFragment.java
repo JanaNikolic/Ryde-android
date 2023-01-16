@@ -46,6 +46,7 @@ public class ChatDriverFragment extends Fragment {
     private TokenUtils tokenUtils;
     private RetrofitService retrofitService;
     CountDownTimer timer;
+    private String name;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -89,11 +90,11 @@ public class ChatDriverFragment extends Fragment {
         tokenUtils = new TokenUtils();
         Bundle args = getArguments();
         Long userId = args.getLong("userId");
-        String name = args.getString("userName");
+        name = args.getString("userName");
 
         retrofitService = new RetrofitService();
         messageService = retrofitService.getRetrofit().create(MessageService.class);
-        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
+        mMessageAdapter = new MessageListAdapter(getContext(), messageList, name);
 
         timer = new CountDownTimer(Long.MAX_VALUE, 2000) {
             @Override
@@ -161,7 +162,7 @@ public class ChatDriverFragment extends Fragment {
     public void loadMessages(View view) {
         mMessageRecycler = (RecyclerView) view.findViewById(R.id.recycler_gchat);
         mMessageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        mMessageAdapter = new MessageListAdapter(getContext(), messageList);
+        mMessageAdapter = new MessageListAdapter(getContext(), messageList, name);
         mMessageRecycler.setAdapter(mMessageAdapter);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setStackFromEnd(true);

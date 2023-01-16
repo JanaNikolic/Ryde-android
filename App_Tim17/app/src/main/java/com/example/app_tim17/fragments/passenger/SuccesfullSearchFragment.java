@@ -138,6 +138,7 @@ public class SuccesfullSearchFragment extends Fragment {
                             public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
                                 DriverResponse driver = response.body();
                                 if (driver != null) {
+                                    driverId = String.valueOf(driver.getId());
                                     driverName = driver.getName() + " " + driver.getSurname();
                                     driverImage = driver.getProfilePicture();
                                 }
@@ -179,6 +180,7 @@ public class SuccesfullSearchFragment extends Fragment {
                                 args.putString("driverPhoneNumber", driverPhoneNumber);
                                 args.putString("driverImage", driverImage);
                                 args.putString("rideId", rideId);
+                                args.putString("driverId", driverId);
                                 args.putString("time", ride.getEstimatedTimeInMinutes().toString());
 
                                 PassengerCurrentRideFragment fragment = new PassengerCurrentRideFragment();

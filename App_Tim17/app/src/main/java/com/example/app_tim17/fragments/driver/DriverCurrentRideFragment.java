@@ -1,7 +1,9 @@
 package com.example.app_tim17.fragments.driver;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.DrawRouteFragment;
+import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.PassengerCreateRideFragment;
 import com.example.app_tim17.fragments.passenger.ReviewDriverAndVehicleFragment;
 import com.example.app_tim17.model.response.ride.Ride;
@@ -144,6 +147,34 @@ public class DriverCurrentRideFragment extends Fragment {
 
             }
         });
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                TODO get passenger phone number
+//                Intent intent = new Intent(Intent.ACTION_DIAL);
+//                intent.setData(Uri.parse("tel:" + number));
+//                startActivity(intent);
+            }
+        });
+
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Bundle arg = new Bundle();
+
+
+                arg.putLong("userId", ride.getPassengers().get(0).getId());
+                arg.putString("userName", ride.getPassengers().get(0).getEmail());
+
+                ChatDriverFragment chatFragment = new ChatDriverFragment();
+                chatFragment.setArguments(arg);
+
+                transaction.add(R.id.currentRide, chatFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         timer = (TextView) view.findViewById(R.id.ride_timer);
 
@@ -155,10 +186,6 @@ public class DriverCurrentRideFragment extends Fragment {
             public void onFinish() {
                 timer.setText("FINISHED");
                 //TODO finished ride fragment
-//                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-//
-//                transaction.replace(R.id.currentRide, new NoActiveRideFragment());
-//                transaction.commit();
 
             }
         };

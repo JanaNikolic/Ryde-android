@@ -187,7 +187,7 @@ public class PassengerCurrentRideFragment extends Fragment {
                     if (ride.getStatus().equals("ACTIVE")) {
                         countDownTimer = new CountDownTimer(time, interval) {
                             public void onTick(long millisUntilFinished) {
-                                Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT);
+                                Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT).show();
                                 timer.setText(getDateFromMillis(time - millisUntilFinished));
                             }
 
