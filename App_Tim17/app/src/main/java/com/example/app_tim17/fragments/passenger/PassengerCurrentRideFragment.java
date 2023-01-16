@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
@@ -19,10 +18,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.fragments.driver.ChatDriverFragment;
+import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.tools.FragmentTransition;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.ShapeAppearanceModel;
+
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -70,7 +70,7 @@ public class PassengerCurrentRideFragment extends Fragment {
 
         Bundle args = getArguments();
 
-        String number = args.getString("driverPhoneNumber");; //TODO
+        String number = args.getString("driverPhoneNumber");
         Log.i("brtelefona", number);
 
         driverName.setText(args.getString("driverName"));
@@ -83,8 +83,13 @@ public class PassengerCurrentRideFragment extends Fragment {
         price.setText(args.getString("price"));
 
         startTime.setText(args.getString("timeStart").split("T")[1].split("\\.")[0]);
+        Bundle route = getArguments().getBundle("route");
 
-
+        if (route != null) {
+            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+            draw.setArguments(route);
+            FragmentTransition.to(draw, getActivity(), false);
+        }
 //        args.getString("driverImage"); // TODO
 
         phone.setOnClickListener(new View.OnClickListener() {
