@@ -93,14 +93,14 @@ public class SuccesfullSearchFragment extends Fragment {
                 if (driver != null) {
                     driverName = driver.getName() + " " + driver.getSurname();
                     driverImage = driver.getProfilePicture(); // TODO
-
+                    driverPhoneNumber = driver.getTelephoneNumber();
                 }
             }
 
             @Override
             public void onFailure(Call<DriverResponse> call, Throwable t) {
                 Toast.makeText(getContext(), "Oops, something went wrong", Toast.LENGTH_SHORT).show();
-                getChildFragmentManager().popBackStack(); // TODO check
+                getChildFragmentManager().popBackStack();
             }
         });
 
@@ -120,7 +120,7 @@ public class SuccesfullSearchFragment extends Fragment {
             @Override
             public void onFailure(Call<VehicleResponse> call, Throwable t) {
                 Toast.makeText(getContext(), "Oops, something went wrong", Toast.LENGTH_SHORT).show();
-                getChildFragmentManager().popBackStack(); // TODO check
+                getChildFragmentManager().popBackStack();
             }
         });
 
@@ -133,13 +133,14 @@ public class SuccesfullSearchFragment extends Fragment {
                 args.putString("vehicleModel", vehicleModel);
                 args.putString("driverPhoneNumber", driverPhoneNumber);
                 args.putString("driverImage", driverImage);
+                args.putLong("driverId", Long.parseLong(driverId));
 
                 PassengerCurrentRideFragment fragment = new PassengerCurrentRideFragment();
                 fragment.setArguments(args);
 
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.currentRide, fragment);
-                fragmentTransaction.addToBackStack(null);// TODO for messages
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();}
         }, 4800);
 
