@@ -20,10 +20,10 @@ public interface RideService {
     Call<Ride> createRide(@Header("Authorization") String token, @Body RideRequest rideRequest);
 
     @PUT("ride/{id}/accept")
-    Call<Ride> acceptRide(@Header("Authorization") String token, @Path("id") Long id, @Body Ride rideRequest);
+    Call<Ride> acceptRide(@Header("Authorization") String token, @Path("id") Long id);
 
     @PUT("ride/{id}/cancel")
-    Call<Ride> rejectRide(@Header("Authorization") String token, @Path("id") Long id, @Body Ride rideRequest);
+    Call<Ride> rejectRide(@Header("Authorization") String token, @Path("id") Long id);
 
     @GET("ride/driver/{driverId}/active")
     Call<Ride> getActiveRide(@Header("Authorization") String token, @Path("driverId") Long id);

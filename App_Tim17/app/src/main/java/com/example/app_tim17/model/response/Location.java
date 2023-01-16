@@ -1,5 +1,7 @@
 package com.example.app_tim17.model.response;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,9 +13,11 @@ public class Location {
     private String address;
     @SerializedName("latitude")
     @Expose
+    @Nullable
     private Double latitude;
     @SerializedName("longitude")
     @Expose
+    @Nullable
     private Double longitude;
 
     public Location() {

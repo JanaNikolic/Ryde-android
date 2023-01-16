@@ -74,7 +74,7 @@ public class DriverAcceptanceRideFragment extends Fragment {
             String priceStr = ride.getTotalCost() + " RSD";
             price.setText(priceStr);
 
-            priceStr = ride.getEstimatedTimeInMinutes()/100 + " min";
+            priceStr = ride.getEstimatedTimeInMinutes() + " min";
             duration.setText(priceStr);
         }
 
@@ -84,49 +84,51 @@ public class DriverAcceptanceRideFragment extends Fragment {
             public void onClick(View view) {
                 String token = "Bearer " + getCurrentToken();
 
-                Call<Ride> call = rideService.acceptRide(token, finalRide.getId(), finalRide); // TODO change ride and id
+                Call<Ride> call = rideService.acceptRide(token, finalRide.getId()); // TODO change ride and id
 
                 call.enqueue(new Callback<Ride>() {
                     @Override
                     public void onResponse(Call<Ride> call, Response<Ride> response) {
                         Ride ride = response.body();
+                        if (ride != null) {
 
-                        Bundle args = new Bundle();
-                        Bundle route = new Bundle();
+                            Bundle args = new Bundle();
+                            Bundle route = new Bundle();
 
-                        args.putString("ride", Utils.getGsonParser().toJson(ride));
+                            args.putString("ride", Utils.getGsonParser().toJson(ride));
 
-                        Bundle sentArgs = getArguments();
+                            Bundle sentArgs = getArguments();
 
-                        if (sentArgs != null && sentArgs.containsKey("currentLat") && sentArgs.containsKey("currentLng")) {
-                            // from driver accepting ride, his current location routing to the pickup location
-                            route.putDouble("fromLat", sentArgs.getDouble("currentLat"));
-                            route.putDouble("fromLng", sentArgs.getDouble("currentLng"));
-                            Log.i("prva", "prvi if");
-                            route.putDouble("toLat", ride.getLocations().get(0).getDeparture().getLatitude());
-                            route.putDouble("toLng", ride.getLocations().get(0).getDeparture().getLongitude());
-                        } else {
-                            Toast.makeText(view.getContext(), "Oops, something went wrong...", Toast.LENGTH_SHORT).show();
+                            if (sentArgs != null && sentArgs.containsKey("currentLat") && sentArgs.containsKey("currentLng")) {
+                                // from driver accepting ride, his current location routing to the pickup location
+                                route.putDouble("fromLat", sentArgs.getDouble("currentLat"));
+                                route.putDouble("fromLng", sentArgs.getDouble("currentLng"));
+                                Log.i("prva", "prvi if");
+                                route.putDouble("toLat", 45.257430);
+                                route.putDouble("toLng", 19.840850);
+                            } else {
+                                Toast.makeText(view.getContext(), "Oops, something went wrong...", Toast.LENGTH_SHORT).show();
+                            }
+
+                            Log.i("fromLat", String.valueOf(route.getDouble("fromLat")));
+                            Log.i("fromLng", String.valueOf(route.getDouble("fromLng")));
+                            Log.i("toLat", String.valueOf(route.getDouble("toLat")));
+                            Log.i("toLng", String.valueOf(route.getDouble("toLng")));
+
+
+                            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                            draw.setArguments(route);
+                            FragmentTransition.to(draw, getActivity(), false);
+
+                            DriverOnRouteFragment driverOnRouteFragment = new DriverOnRouteFragment();
+                            driverOnRouteFragment.setArguments(args);
+
+                            getParentFragmentManager().beginTransaction().remove(DriverAcceptanceRideFragment.this).commit();
+
+                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.currentRide, driverOnRouteFragment);
+                            fragmentTransaction.commit();
                         }
-
-                        Log.i("fromLat", String.valueOf(route.getDouble("fromLat")));
-                        Log.i("fromLng", String.valueOf(route.getDouble("fromLng")));
-                        Log.i("toLat", String.valueOf(route.getDouble("toLat")));
-                        Log.i("toLng", String.valueOf(route.getDouble("toLng")));
-
-
-                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
-                        draw.setArguments(route);
-                        FragmentTransition.to(draw, getActivity(), false);
-
-                        DriverOnRouteFragment driverOnRouteFragment = new DriverOnRouteFragment();
-                        driverOnRouteFragment.setArguments(args);
-
-                        getParentFragmentManager().beginTransaction().remove(DriverAcceptanceRideFragment.this).commit();
-
-                        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.currentRide, driverOnRouteFragment);
-                        fragmentTransaction.commit();
                     }
 
                     @Override
@@ -142,7 +144,7 @@ public class DriverAcceptanceRideFragment extends Fragment {
             public void onClick(View view) {
                 String token = "Bearer " + getCurrentToken();
 
-                Call<Ride> call = rideService.rejectRide(token, 1L, new Ride()); // TODO change ride and id
+                Call<Ride> call = rideService.rejectRide(token, finalRide.getId()); // TODO change ride and id
 
                 call.enqueue(new Callback<Ride>() {
                     @Override
