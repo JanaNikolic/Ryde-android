@@ -27,10 +27,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context mContext;
     private List<Message> mMessageList;
     private TokenUtils tokenUtils = new TokenUtils();
+    private String name;
 
-    public MessageListAdapter(Context context, List<Message> messageList) {
+    public MessageListAdapter(Context context, List<Message> messageList, String name) {
         mContext = context;
         mMessageList = messageList;
+        this.name = name;
 
     }
     @NonNull
@@ -120,7 +122,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             // Format the stored timestamp into a readable String using method.
             timeText.setText(message.getTimeOfSending().toString().substring(11, 16));
 
-            nameText.setText(message.getSenderId().toString());
+            nameText.setText(name);
 
             // Insert the profile image from the URL into the ImageView.
             profileImage.setImageResource(R.drawable.profile_picture);

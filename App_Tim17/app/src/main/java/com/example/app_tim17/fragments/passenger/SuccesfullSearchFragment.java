@@ -88,7 +88,7 @@ public class SuccesfullSearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
         rideId = getArguments().getString("rideId");
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
         retrofitService = new RetrofitService();
         connectStomp();
 
@@ -138,6 +138,7 @@ public class SuccesfullSearchFragment extends Fragment {
                             public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
                                 DriverResponse driver = response.body();
                                 if (driver != null) {
+                                    driverId = String.valueOf(driver.getId());
                                     driverName = driver.getName() + " " + driver.getSurname();
                                     driverImage = driver.getProfilePicture();
                                 }
@@ -179,6 +180,7 @@ public class SuccesfullSearchFragment extends Fragment {
                                 args.putString("driverPhoneNumber", driverPhoneNumber);
                                 args.putString("driverImage", driverImage);
                                 args.putString("rideId", rideId);
+                                args.putString("driverId", driverId);
                                 args.putString("time", ride.getEstimatedTimeInMinutes().toString());
 
                                 PassengerCurrentRideFragment fragment = new PassengerCurrentRideFragment();

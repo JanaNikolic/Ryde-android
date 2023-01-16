@@ -16,6 +16,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -78,11 +79,25 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
 
         Bundle args = getArguments();
 
+        double fromLat;
+        double fromLng;
+        double toLat;
+        double toLng;
+        
+        if (args != null) {
+             fromLat = args.getDouble("fromLat");
+             fromLng = args.getDouble("fromLng");
+             toLat = args.getDouble("toLat");
+             toLng = args.getDouble("toLng");
+        } else {
+            mMap.clear();
+//            mMap.setMyLocationEnabled(true);
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                    .target(new LatLng(45.253885, 19.847360)).zoom(10).build()));
+            return;
+        }
 
-        double fromLat = args.getDouble("fromLat");
-        double fromLng = args.getDouble("fromLng");
-        double toLat = args.getDouble("toLat");
-        double toLng = args.getDouble("toLng");
+        
 
 
         LatLng from = new LatLng(fromLat, fromLng);

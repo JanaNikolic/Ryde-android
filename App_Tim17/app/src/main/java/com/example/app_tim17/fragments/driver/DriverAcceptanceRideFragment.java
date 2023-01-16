@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.fragments.passenger.SuccesfullSearchFragment;
+import com.example.app_tim17.model.request.RejectionRequest;
 import com.example.app_tim17.model.response.Location;
 import com.example.app_tim17.model.response.ride.LocationForRide;
 import com.example.app_tim17.model.response.ride.Ride;
@@ -144,7 +145,7 @@ public class DriverAcceptanceRideFragment extends Fragment {
             public void onClick(View view) {
                 String token = "Bearer " + getCurrentToken();
 
-                Call<Ride> call = rideService.rejectRide(token, finalRide.getId()); // TODO change ride and id
+                Call<Ride> call = rideService.rejectRide(token, finalRide.getId(), new RejectionRequest("djsd")); // TODO change ride and id
 
                 call.enqueue(new Callback<Ride>() {
                     @Override

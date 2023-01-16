@@ -73,7 +73,7 @@ public class PassengerCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
         retrofitService = new RetrofitService();
         Bundle args = getArguments();
         rideId = args.getString("rideId");
@@ -187,7 +187,7 @@ public class PassengerCurrentRideFragment extends Fragment {
                     if (ride.getStatus().equals("ACTIVE")) {
                         countDownTimer = new CountDownTimer(time, interval) {
                             public void onTick(long millisUntilFinished) {
-                                Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT);
+                                Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT).show();
                                 timer.setText(getDateFromMillis(time - millisUntilFinished));
                             }
 
