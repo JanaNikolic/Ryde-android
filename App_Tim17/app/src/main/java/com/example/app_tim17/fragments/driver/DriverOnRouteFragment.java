@@ -105,7 +105,7 @@ public class DriverOnRouteFragment extends Fragment {
             String priceStr = ride.getTotalCost() + " RSD";
             price.setText(priceStr);
 
-            priceStr = (float) ride.getEstimatedTimeInMinutes()/100 + "min";
+            priceStr =  ride.getEstimatedTimeInMinutes() + "min";
             duration.setText(priceStr);
         }
 
@@ -128,7 +128,7 @@ public class DriverOnRouteFragment extends Fragment {
 
                 String token = "Bearer " + getCurrentToken();
 
-                Call<Ride> call = rideService.acceptRide(token, finalRide.getId(), finalRide);
+                Call<Ride> call = rideService.acceptRide(token, finalRide.getId());
 
 
                 call.enqueue(new Callback<Ride>() {

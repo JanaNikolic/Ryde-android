@@ -138,8 +138,6 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         resetSubscriptions();
 
 
-
-
         Disposable dispLifecycle = mStompClient.lifecycle()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -170,7 +168,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Log.d("STOMP", "Received " + topicMessage.getPayload());
-                    Toast.makeText(getApplicationContext(), "you got a message!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You got a message!", Toast.LENGTH_LONG).show();
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });
