@@ -1,11 +1,12 @@
 package com.example.app_tim17.fragments.passenger;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
@@ -17,8 +18,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.DrawRouteFragment;
+import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.tools.FragmentTransition;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.ShapeAppearanceModel;
+
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -27,6 +31,7 @@ public class PassengerCurrentRideFragment extends Fragment {
 
     TextView timer;
     CountDownTimer countDownTimer;
+    private TokenUtils tokenUtils;
     int time;
     int interval = 1000; // 1 second
 
@@ -65,20 +70,26 @@ public class PassengerCurrentRideFragment extends Fragment {
 
         Bundle args = getArguments();
 
-        String number = args.getString("driverPhoneNumber");; //TODO
+        String number = args.getString("driverPhoneNumber");
+        Log.i("brtelefona", number);
 
         driverName.setText(args.getString("driverName"));
         licenseNumber.setText(args.getString("licensePlate"));
         model.setText(args.getString("vehicleModel"));
 
-        time = Integer.parseInt(args.getString("time")) * 1000; //TODO 1000
+        time = Integer.parseInt(args.getString("time")) * 1000 * 60;
         startAddress.setText(args.getString("startAddress"));
         endAddress.setText(args.getString("endAddress"));
         price.setText(args.getString("price"));
 
         startTime.setText(args.getString("timeStart").split("T")[1].split("\\.")[0]);
+        Bundle route = getArguments().getBundle("route");
 
-
+        if (route != null) {
+            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+            draw.setArguments(route);
+            FragmentTransition.to(draw, getActivity(), false);
+        }
 //        args.getString("driverImage"); // TODO
 
         phone.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +104,19 @@ public class PassengerCurrentRideFragment extends Fragment {
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO open inbox chat
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Bundle arg = new Bundle();
+
+
+                arg.putLong("userId", args.getLong("driverId"));
+                arg.putString("userName", args.getString("driverName"));
+
+                ChatFragment chatPassengerFragment = new ChatFragment();
+                chatPassengerFragment.setArguments(arg);
+
+                transaction.add(R.id.currentRide, chatPassengerFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
@@ -128,5 +151,10 @@ public class PassengerCurrentRideFragment extends Fragment {
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         return df.format(d);
+    }
+
+    private String getCurrentToken() {
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
     }
 }

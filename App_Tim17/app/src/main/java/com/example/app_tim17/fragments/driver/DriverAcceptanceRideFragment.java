@@ -74,7 +74,7 @@ public class DriverAcceptanceRideFragment extends Fragment {
             String priceStr = ride.getTotalCost() + " RSD";
             price.setText(priceStr);
 
-            priceStr = ride.getEstimatedTimeInMinutes() + "min";
+            priceStr = ride.getEstimatedTimeInMinutes() + " min";
             duration.setText(priceStr);
         }
 
