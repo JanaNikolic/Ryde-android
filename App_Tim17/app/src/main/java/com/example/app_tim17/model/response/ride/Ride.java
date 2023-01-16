@@ -1,6 +1,8 @@
 package com.example.app_tim17.model.response.ride;
 
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
@@ -38,6 +40,7 @@ public class Ride {
     private Boolean babyTransport;
     @SerializedName("petTransport")
     @Expose
+    @Nullable
     private Boolean petTransport;
     @SerializedName("rejection")
     @Expose

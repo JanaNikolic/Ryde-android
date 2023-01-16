@@ -3,6 +3,7 @@ package com.example.app_tim17.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -19,7 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.MapsFragment;
 import com.example.app_tim17.fragments.driver.ChatDriverFragment;
+import com.example.app_tim17.fragments.driver.DriverAcceptanceRideFragment;
 import com.example.app_tim17.fragments.driver.HistoryDriverFragment;
 import com.example.app_tim17.fragments.driver.InboxDriverFragment;
 import com.example.app_tim17.fragments.driver.MainDriverFragment;
@@ -27,19 +30,28 @@ import com.example.app_tim17.fragments.driver.ProfileDriverFragment;
 import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
 import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.response.ride.Ride;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.tools.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.reactivex.CompletableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tech.gusavila92.websocketclient.WebSocketClient;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
@@ -50,23 +62,34 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
     Menu menu;
     private StompClient mStompClient;
     private TokenUtils tokenUtils;
+    private RetrofitService retrofitService;
+    private RideService rideService;
     private Disposable mRestPingDisposable;
     private CompositeDisposable compositeDisposable;
     private Gson mGson = new GsonBuilder().create();
-    private WebSocketClient webSocketClient;
-    ChatDriverFragment fragment;
+    MainDriverFragment mainFragment;
+    Bundle finalArgs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
-        fragment = (ChatDriverFragment) getSupportFragmentManager().findFragmentByTag("ChatDriverFragment");
         tokenUtils = new TokenUtils();
         bottomNavigationView = findViewById(R.id.nav_view_driver);
         bottomNavigationView.setSelectedItemId(R.id.home_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mainFragment = (MainDriverFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_driver_container);
+            }
+        }, 1000);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+
+        retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
+
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.17:8080/example-endpoint/websocket");
         connectStomp();
     }
 
@@ -161,9 +184,6 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
 
         resetSubscriptions();
 
-
-
-
         Disposable dispLifecycle = mStompClient.lifecycle()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -200,6 +220,18 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 });
 
         compositeDisposable.add(dispTopic);
+
+        Disposable dispTopic2 = mStompClient.topic("/topic/ride/" + tokenUtils.getId(getCurrentToken()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(topicMessage -> {
+                    Log.d("STOMP", "Received " + topicMessage.getPayload());
+                    mainFragment.openAcceptanceRide();
+                }, throwable -> {
+                    Log.e("STOMP", "Error on subscribe topic", throwable);
+                });
+
+        compositeDisposable.add(dispTopic2);
     }
 
     public void sendEchoViaStomp(MessageRequest message) {

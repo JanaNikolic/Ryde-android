@@ -5,11 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.MapsFragment;
@@ -42,6 +45,7 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
     private RetrofitService retrofitService;
     private RideService rideService;
     private TokenUtils tokenUtils;
+    Fragment fragment;
 
     private BottomSheetBehavior sheetBehavior;
 
@@ -78,58 +82,111 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
         sheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.sheet));
         sheetBehavior.setPeekHeight(300);
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        Fragment fragment = new MapsFragment();
+        fragment = new MapsFragment();
 
         // Open fragment
-        getChildFragmentManager()
-                .beginTransaction().replace(R.id.map_container,fragment)
-                .commit();
+        replaceFragment(fragment);
 
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Bundle args = fragment.getArguments();
-                if (args == null)
-                    args = new Bundle();
-
-                retrofitService = new RetrofitService();
-                rideService = retrofitService.getRetrofit().create(RideService.class);
-                String token = "Bearer " + getCurrentToken();
-
-
-                tokenUtils = new TokenUtils();
-                Call<Ride> call = rideService.getActiveRide(token, tokenUtils.getId(getCurrentToken()));
-
-                Bundle finalArgs = args;
-                call.enqueue(new Callback<Ride>() {
-                    @Override
-                    public void onResponse(Call<Ride> call, Response<Ride> response) {
-                        Ride ride = response.body();
-
-
-
-                        if (ride != null) {
-                            finalArgs.putString("ride", Utils.getGsonParser().toJson(ride));
-                            DriverAcceptanceRideFragment acceptanceRideFragment = new DriverAcceptanceRideFragment();
-                            acceptanceRideFragment.setArguments(finalArgs);
-
-                            getChildFragmentManager().beginTransaction()
-                                    .add(R.id.map_container, acceptanceRideFragment)
-                                    .commit();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Ride> call, Throwable t) {
-                        call.cancel();
-                    }
-                });
-            }
-        }, 5000);
+//        new Timer().schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                Bundle args = fragment.getArguments();
+//                if (args == null)
+//                    args = new Bundle();
+//
+//                retrofitService = new RetrofitService();
+//                rideService = retrofitService.getRetrofit().create(RideService.class);
+//                String token = "Bearer " + getCurrentToken();
+//
+//
+//                tokenUtils = new TokenUtils();
+//                Call<Ride> call = rideService.getActiveRide(token, tokenUtils.getId(getCurrentToken()));
+//
+//                Bundle finalArgs = args;
+//                call.enqueue(new Callback<Ride>() {
+//                    @Override
+//                    public void onResponse(Call<Ride> call, Response<Ride> response) {
+//                        Ride ride = response.body();
+//
+//
+//
+//                        if (ride != null) {
+//                            finalArgs.putString("ride", Utils.getGsonParser().toJson(ride));
+//                            DriverAcceptanceRideFragment acceptanceRideFragment = new DriverAcceptanceRideFragment();
+//                            acceptanceRideFragment.setArguments(finalArgs);
+//
+//                            getChildFragmentManager().beginTransaction()
+//                                    .add(R.id.map_container, acceptanceRideFragment)
+//                                    .commit();
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<Ride> call, Throwable t) {
+//                        call.cancel();
+//                    }
+//                });
+//            }
+//        }, 5000);
 
         return view;
     }
+
+    public void openAcceptanceRide() {
+        Toast.makeText(getContext(), "NEW RIDE", Toast.LENGTH_SHORT).show();
+        Bundle args = fragment.getArguments();
+        if (args == null)
+            args = new Bundle();
+
+        retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
+        String token = "Bearer " + getCurrentToken();
+
+        tokenUtils = new TokenUtils();
+        Call<Ride> call = rideService.getActiveRide(token, tokenUtils.getId(getCurrentToken()));
+
+        Bundle finalArgs = args;
+        call.enqueue(new Callback<Ride>() {
+            @Override
+            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                Ride ride = response.body();
+
+                if (ride != null) {
+                    finalArgs.putString("ride", Utils.getGsonParser().toJson(ride));
+                    DriverAcceptanceRideFragment acceptanceRideFragment = new DriverAcceptanceRideFragment();
+                    acceptanceRideFragment.setArguments(finalArgs);
+
+                    getChildFragmentManager().beginTransaction()
+                            .add(R.id.map_container, acceptanceRideFragment)
+                            .commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Ride> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+
+    private void replaceFragment(Fragment fragment) {
+        String backStateName = fragment.getClass().getName();
+        String fragmentTag = backStateName;
+
+        FragmentManager manager = getChildFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
+
+        if (!fragmentPopped && manager.findFragmentByTag(fragmentTag) == null) { //fragment not in back stack, create it.
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(R.id.map_container, fragment, fragmentTag);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.addToBackStack(backStateName);
+            ft.commit();
+        }
+    }
+
 
     private String getCurrentToken() {
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
