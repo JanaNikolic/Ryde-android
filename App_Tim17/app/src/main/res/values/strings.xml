@@ -8,9 +8,10 @@
     <string name="passengeraccountactivity">PassengerAccountActivity</string>
     <string name="user_name">User name</string>
     <string name="login">Login</string>
-    <string name="phone_number">Phone number</string>
+    <string name="phone_number">Phone Number</string>
     <string name="registration">Registration</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Pasword</string>
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="register">Register</string>
@@ -49,6 +50,8 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="search">SEARCH</string>
+    <string name="next">NEXT</string>
+    <string name="no_ride">Waiting for ryde...</string>
     <string-array name="streets">
         <item>Vuka Karadzica</item>
         <item>Strazilovska 5</item>
@@ -61,5 +64,52 @@
     <string name="panic">Panic</string>
     <string name="driver_phone">Driver\'s phone</string>
     <string name="timer">Timer</string>
-    <string name="order">Order</string>
+    <string name="ride_info">Ride information:</string>
+    <string name="edit_review">Edit review</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="reason_for_declining">Reason for declining</string>
+    <string name="submit">Submit</string>
+    <string name="full_name">Full Name</string>
+    <string name="send_a_message">Send a message</string>
+    <string name="report_inconsistency">Report inconsistency</string>
+    <string name="send_driver_message">Send message to driver</string>
+    <string name="rate_driver">Rate your driver</string>
+    <string name="enjoyed_ride">We hope you enjoyed your ride with us today</string>
+    <string name="rate_vehicle">Rate vehicle</string>
+    <string name="later">Later</string>
+    <string name="tell_us_what_you_think">Tell us what you think</string>
+
+    <string name="location_disabled_message">Your Locations seems to be disabled, do you want to enable it?</string>
+    <string name="oops">Ooops</string>
+    <string name="sure">Sure</string>
+    <string name="no">No</string>
+    <string name="pref_sync_title">Allow Sync</string>
+    <string name="pref_sync_summ">Allow app to sync data automatically, when wifi is avalible</string>
+    <string name="pref_syncConnectionType">Sync interval</string>
+    <string name="pref_radiusConnectionType">Radius lookup</string>
+    <string name="pref_sync_list">pref_sync_list</string>
+    <string name="pref_radius">pref_radius</string>
+    <string name="pref_sync">pref_sync</string>
+    <string name="notif_on_sync_key">notif_on_sync</string>
+    <string name="turn_notif_on">Stop notification</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_new">New</string>
+    <string name="autosync_problem">Automatic Sync problem</string>
+    <string name="no_internet">Bad news, no internet connection</string>
+    <string name="autosync_warning">Automatic Sync warning</string>
+    <string name="connect_to_wifi">Please connect to wifi to sync data</string>
+    <string name="autosync">Automatic Sync</string>
+    <string name="good_news_sync">Good news, everything is sync now.</string>
+    <string name="new_comments">New comments</string>
+    <string name="new_">New</string>
+    <string name="standard">STANDARD</string>
+    <string name="luxurious">LUXURIOUS</string>
+    <string name="van">VAN</string>
+    <string name="turn_wifi_on">Turn wifi on</string>
+    <string name="new_ride_info">New ryde info</string>
+    <string name="end_ryde">END RYDE</string>
 </resources>

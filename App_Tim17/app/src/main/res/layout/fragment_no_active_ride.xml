@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.passenger.PassengerCurrentRideFragment"
+    android:id="@+id/CreateRideFrame">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_medium"
+            android:textSize="26sp"
+            android:text="@string/no_ride"
+            android:textColor="@color/teal"
+            android:layout_marginBottom="-20dp"
+            android:gravity="center|top"
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="350sp"
+            android:src="@drawable/waiting2" />
+    </LinearLayout>
+
+</FrameLayout>

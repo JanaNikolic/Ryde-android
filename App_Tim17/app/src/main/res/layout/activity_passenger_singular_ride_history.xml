@@ -36,10 +36,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Price"
-        app:layout_constraintBottom_toTopOf="@+id/priceSingular"
-        app:layout_constraintEnd_toEndOf="@+id/priceSingular"
+        app:layout_constraintBottom_toTopOf="@id/priceSingular"
+        app:layout_constraintEnd_toEndOf="@id/priceSingular"
         app:layout_constraintHorizontal_bias="0.441"
-        app:layout_constraintStart_toStartOf="@+id/priceSingular" />
+        app:layout_constraintStart_toStartOf="@id/priceSingular" />
 
     <TextView
         android:id="@+id/dateSingleText"
@@ -47,9 +47,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Date"
-        app:layout_constraintBottom_toTopOf="@+id/distanceSingle"
-        app:layout_constraintEnd_toEndOf="@+id/distanceSingle"
-        app:layout_constraintStart_toStartOf="@+id/distanceSingle" />
+        app:layout_constraintBottom_toTopOf="@id/distanceSingle"
+        app:layout_constraintEnd_toEndOf="@id/distanceSingle"
+        app:layout_constraintStart_toStartOf="@id/distanceSingle" />
 
     <TextView
         android:id="@+id/durationSingleText"
@@ -57,10 +57,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="31dp"
         android:text="Duration"
-        app:layout_constraintBottom_toTopOf="@+id/durationSingle"
-        app:layout_constraintEnd_toEndOf="@+id/durationSingle"
-        app:layout_constraintStart_toStartOf="@+id/durationSingle"
-        app:layout_constraintTop_toBottomOf="@+id/mapPassengerRide" />
+        app:layout_constraintBottom_toTopOf="@id/durationSingle"
+        app:layout_constraintEnd_toEndOf="@id/durationSingle"
+        app:layout_constraintStart_toStartOf="@id/durationSingle"
+        app:layout_constraintTop_toBottomOf="@id/mapPassengerRide" />
 
     <TextView
         android:id="@+id/priceSingular"
@@ -72,10 +72,10 @@
         android:textColor="@color/teal"
         android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/distanceSingle"
+        app:layout_constraintEnd_toStartOf="@id/distanceSingle"
         app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintStart_toEndOf="@+id/durationSingle"
-        app:layout_constraintTop_toBottomOf="@+id/mapPassengerRide" />
+        app:layout_constraintStart_toEndOf="@id/durationSingle"
+        app:layout_constraintTop_toBottomOf="@id/mapPassengerRide" />
 
     <TextView
         android:id="@+id/durationSingle"
