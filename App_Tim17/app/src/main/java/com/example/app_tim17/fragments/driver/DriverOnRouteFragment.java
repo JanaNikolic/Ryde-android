@@ -134,13 +134,17 @@ public class DriverOnRouteFragment extends Fragment {
                 call.enqueue(new Callback<Ride>() {
                     @Override
                     public void onResponse(Call<Ride> call, Response<Ride> response) {
+                        Ride ride = response.body();
 
+                        if (ride != null) {
+                            sentArgs.putString("ride", Utils.getGsonParser().toJson(ride));
 
-                        DriverCurrentRideFragment currentRideFragment = new DriverCurrentRideFragment();
-                        currentRideFragment.setArguments(sentArgs);
-                        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.currentRide, currentRideFragment);
-                        fragmentTransaction.commit();
+                            DriverCurrentRideFragment currentRideFragment = new DriverCurrentRideFragment();
+                            currentRideFragment.setArguments(sentArgs);
+                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.currentRide, currentRideFragment);
+                            fragmentTransaction.commit();
+                        }
                     }
 
                     @Override

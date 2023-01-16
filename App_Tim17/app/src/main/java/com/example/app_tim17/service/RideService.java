@@ -27,4 +27,7 @@ public interface RideService {
 
     @GET("ride/driver/{driverId}/active")
     Call<Ride> getActiveRide(@Header("Authorization") String token, @Path("driverId") Long id);
+
+    @PUT("ride/{id}/end")
+    Call<Ride> endRide(@Header("Authorization") String token, @Path("id") Long id);
 }

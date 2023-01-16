@@ -373,17 +373,17 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                     Bundle args = new Bundle();
                     Bundle route = new Bundle();
 
-                    route.putDouble("fromLat", ride.getLocations().get(0).getDeparture().getLongitude());
-                    route.putDouble("fromLng", ride.getLocations().get(0).getDeparture().getLongitude());
-
-                    route.putDouble("toLat", ride.getLocations().get(0).getDestination().getLongitude());
-                    route.putDouble("toLng", ride.getLocations().get(0).getDestination().getLongitude());
-
-//                    route.putDouble("fromLat", 45.259570);
-//                    route.putDouble("fromLng", 19.849290);
+//                    route.putDouble("fromLat", ride.getLocations().get(0).getDeparture().getLongitude());
+//                    route.putDouble("fromLng", ride.getLocations().get(0).getDeparture().getLongitude());
 //
-//                    route.putDouble("toLat", 45.243650);
-//                    route.putDouble("toLng", 19.840560);
+//                    route.putDouble("toLat", ride.getLocations().get(0).getDestination().getLongitude());
+//                    route.putDouble("toLng", ride.getLocations().get(0).getDestination().getLongitude());
+
+                    route.putDouble("fromLat", 45.259570);
+                    route.putDouble("fromLng", 19.849290);
+
+                    route.putDouble("toLat", 45.243650);
+                    route.putDouble("toLng", 19.840560);
 
                     args.putBundle("route", route);
 

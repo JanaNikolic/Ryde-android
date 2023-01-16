@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".fragments.PassengerCurrentRideFragment">-->
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,236 +7,242 @@
     android:paddingBottom="64dp"
     tools:context=".fragments.driver.DriverCurrentRideFragment">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="18dp"
-        android:fontFamily="@font/outfit_medium"
-        android:text="00:02:15"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/start_address_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
-        android:src="@drawable/ic_baseline_circle_16"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/start_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="-4dp"
-        android:fontFamily="@font/outfit_regular"
-        android:text="Bulevar Oslobodjenja 15"
-        android:textColor="@color/dark_teal"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@id/start_address_label"
-        app:layout_constraintTop_toTopOf="@id/start_address_label" />
-
-    <ImageView
-        android:id="@+id/dot1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_circle_6"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="@id/start_address_label"
-        app:layout_constraintStart_toStartOf="@id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@id/start_address_label" />
-
-    <ImageView
-        android:id="@+id/dot2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="4dp"
-        android:src="@drawable/ic_baseline_circle_6"
-        app:layout_constraintEnd_toEndOf="@id/start_address_label"
-        app:layout_constraintStart_toStartOf="@id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@id/dot1" />
-
-
-    <ImageView
-        android:id="@+id/end_address_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="-5dp"
-        android:src="@drawable/pin"
-        app:layout_constraintStart_toStartOf="@id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@id/dot2" />
-
-    <TextView
-        android:id="@+id/end_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/outfit_regular"
-        android:text="Bulevar cara Lazara 115"
-        android:textColor="@color/dark_teal"
-        android:textSize="20sp"
-        android:layout_marginStart="11dp"
-        app:layout_constraintStart_toEndOf="@id/end_address_label"
-        app:layout_constraintTop_toTopOf="@id/end_address_label" />
-
-    <TextView
-        android:id="@+id/start_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
-        android:fontFamily="@font/outfit_regular"
-        android:text="15:30"
-        android:textColor="@color/dark_teal"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_address" />
-
-    <ImageView
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/black_overlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/end_address" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/shapeableImageView2"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/profile_picture"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line"
-        app:shapeAppearanceOverlay="@style/Circular" />
-
-    <TextView
-        android:id="@+id/driver_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/outfit_regular"
-        android:text="@string/full_name"
-        android:textColor="@color/dark_teal"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line" />
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contact_driver"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shapeableImageView2">
+        android:paddingTop="16dp"
+        android:paddingBottom="4dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="330dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/message_input"
-            android:hint="@string/send_a_message"
-            android:paddingStart="16dp"
-            android:textColor="@color/dark_teal"
-            android:fontFamily="@font/outfit_regular"
-            app:layout_constraintStart_toStartOf="parent"
+        <TextView
+            android:id="@+id/ride_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="18dp"
+            android:fontFamily="@font/outfit_medium"
+            android:text="00:00:00"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/start_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_baseline_circle_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ride_timer" />
+
+        <TextView
+            android:id="@+id/start_address"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-4dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/outfit_regular"
+            android:maxLines="1"
+            android:text="Bulevar Oslobodjenja 15"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@id/start_address_label"
+            app:layout_constraintTop_toTopOf="@id/start_address_label" />
+
+        <ImageView
+            android:id="@+id/dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_baseline_circle_6"
+            app:layout_constraintEnd_toEndOf="@id/start_address_label"
+            app:layout_constraintStart_toStartOf="@id/start_address_label"
+            app:layout_constraintTop_toBottomOf="@id/start_address_label" />
+
+        <ImageView
+            android:id="@+id/dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_baseline_circle_6"
+            app:layout_constraintEnd_toEndOf="@id/start_address_label"
+            app:layout_constraintStart_toStartOf="@id/start_address_label"
+            app:layout_constraintTop_toBottomOf="@id/dot1" />
+
+
+        <ImageView
+            android:id="@+id/end_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/pin"
+            app:layout_constraintStart_toStartOf="@id/start_address_label"
+            app:layout_constraintTop_toBottomOf="@id/dot2" />
+
+        <TextView
+            android:id="@+id/end_address"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/outfit_regular"
+            android:maxLines="1"
+            android:text="Bulevar cara Lazara 115"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@id/end_address_label"
+            app:layout_constraintTop_toTopOf="@id/end_address_label" />
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="18dp"
+            android:fontFamily="@font/outfit_regular"
+            android:text="15:30"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/start_address" />
+
+        <TextView
+            android:id="@+id/ride_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_semi_bold"
+            android:text="540 RSD"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/line"
+            app:layout_constraintEnd_toEndOf="@id/start_time"
+            app:layout_constraintTop_toBottomOf="@+id/end_address" />
+
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/black_overlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/end_address" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/profile_picture"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line"
+            app:shapeAppearanceOverlay="@style/Circular" />
+
+        <TextView
+            android:id="@+id/pass_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/outfit_regular"
+            android:text="@string/full_name"
+            android:textColor="@color/dark_teal"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/profile_picture"
+            app:layout_constraintStart_toEndOf="@id/profile_picture"
+            app:layout_constraintTop_toTopOf="@id/profile_picture" />
+
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/message_input"
+            app:layout_constraintBottom_toTopOf="@id/line2"
+            app:layout_constraintEnd_toStartOf="@id/imageView6"
+            app:layout_constraintTop_toBottomOf="@id/line" />
+
         <Button
-            android:id="@+id/send_message"
+            android:id="@+id/message_pass"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/ic_baseline_send_dark_teal_24"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/editText"
+            android:background="@drawable/ic_baseline_message_24"
+            app:layout_constraintBottom_toBottomOf="@id/imageView5"
+            app:layout_constraintEnd_toEndOf="@id/imageView5"
+            app:layout_constraintStart_toStartOf="@id/imageView5"
+            app:layout_constraintTop_toTopOf="@id/imageView5" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/message_input"
+            app:layout_constraintBottom_toTopOf="@id/line2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editText" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="@drawable/ic_baseline_dark_teal_phone_24"
-        app:layout_constraintBottom_toBottomOf="@id/contact_driver"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/contact_driver"
-        app:layout_constraintTop_toTopOf="@id/contact_driver" />
-
-    <ImageView
-        android:id="@+id/line2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/black_overlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contact_driver" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/panic_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/panic_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/panic"
-        android:fontFamily="@font/outfit_bold"
-        android:textSize="15sp"
-        android:letterSpacing="0.3"
-        android:textColor="@color/dark_teal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line2" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/send_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panic_btn">
-
-        <EditText
-            android:id="@+id/note_content"
-            android:layout_width="330dp"
-            android:layout_height="64dp"
-            android:background="@drawable/note_input"
-            android:fontFamily="@font/outfit_regular"
-            android:hint="@string/send_a_message"
-            android:paddingStart="16dp"
-            android:gravity="bottom"
-            android:paddingBottom="8dp"
-            android:textColor="@color/dark_teal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/line" />
 
         <Button
-            android:id="@+id/send_note_btn"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/ic_baseline_send_dark_teal_24"
-            app:layout_constraintBottom_toBottomOf="@id/note_content"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:id="@+id/call_pass"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_baseline_dark_teal_phone_24"
+            app:layout_constraintBottom_toBottomOf="@id/imageView6"
 
+            app:layout_constraintEnd_toEndOf="@id/imageView6"
+            app:layout_constraintStart_toStartOf="@id/imageView6"
+            app:layout_constraintTop_toTopOf="@id/imageView6" />
+
+
+        <ImageView
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/black_overlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_picture" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/panic_btn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/panic_button"
+            android:fontFamily="@font/outfit_bold"
+            android:letterSpacing="0.3"
+            android:text="@string/panic"
+            android:textColor="@color/dark_teal"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line2" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/end_btn"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/rounded_corner_teal"
+            android:fontFamily="@font/outfit_bold"
+            android:letterSpacing="0.3"
+            android:text="@string/end_ryde"
+            android:textColor="@color/dark_teal"
+
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/panic_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
