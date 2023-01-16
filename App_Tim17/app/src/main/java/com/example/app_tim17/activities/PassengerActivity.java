@@ -47,7 +47,6 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
     private Disposable mRestPingDisposable;
     private CompositeDisposable compositeDisposable;
     private Gson mGson = new GsonBuilder().create();
-    private WebSocketClient webSocketClient;
     BottomNavigationView bottomNavigationView;
     ChatFragment fragment;
 

@@ -15,11 +15,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.fragments.passenger.PassengerCreateRideFragment;
 import com.example.app_tim17.fragments.passenger.ReviewDriverAndVehicleFragment;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.RideService;
+import com.example.app_tim17.tools.FragmentTransition;
 import com.example.app_tim17.tools.Utils;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -111,7 +113,7 @@ public class DriverCurrentRideFragment extends Fragment {
             String text = ride.getTotalCost() + " RSD";
             price.setText(text);
             passName.setText(ride.getPassengers().get(0).getEmail());
-            time = ride.getEstimatedTimeInMinutes();
+            time = ride.getEstimatedTimeInMinutes() * 1000 * 60;
         }
 
         end.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +128,9 @@ public class DriverCurrentRideFragment extends Fragment {
                 call.enqueue(new Callback<Ride>() {
                     @Override
                     public void onResponse(Call<Ride> call, Response<Ride> response) {
+                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                        FragmentTransition.to(draw, getActivity(), false);
+
                         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
                         fragmentTransaction.commit();
@@ -150,14 +155,10 @@ public class DriverCurrentRideFragment extends Fragment {
             public void onFinish() {
                 timer.setText("FINISHED");
                 //TODO finished ride fragment
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.main_pass, new ReviewDriverAndVehicleFragment());
-
-                transaction.commit();
-
-                transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
-                transaction.commit();
+//                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+//
+//                transaction.replace(R.id.currentRide, new NoActiveRideFragment());
+//                transaction.commit();
 
             }
         };

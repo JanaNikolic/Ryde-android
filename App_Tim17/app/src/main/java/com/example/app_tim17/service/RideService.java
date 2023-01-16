@@ -30,4 +30,7 @@ public interface RideService {
 
     @PUT("ride/{id}/end")
     Call<Ride> endRide(@Header("Authorization") String token, @Path("id") Long id);
+
+    @PUT("ride/{id}/start")
+    Call<Ride> startRide(@Header("Authorization") String token, @Path("id") Long id);
 }

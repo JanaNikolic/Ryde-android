@@ -221,7 +221,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
 
         compositeDisposable.add(dispTopic);
 
-        Disposable dispTopic2 = mStompClient.topic("/topic/ride/" + tokenUtils.getId(getCurrentToken()))
+        Disposable dispTopic2 = mStompClient.topic("/topic/driver/" + tokenUtils.getId(getCurrentToken()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {

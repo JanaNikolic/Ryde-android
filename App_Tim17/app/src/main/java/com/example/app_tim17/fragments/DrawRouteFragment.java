@@ -78,11 +78,24 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
 
         Bundle args = getArguments();
 
+        double fromLat;
+        double fromLng;
+        double toLat;
+        double toLng;
+        
+        if (args != null) {
+             fromLat = args.getDouble("fromLat");
+             fromLng = args.getDouble("fromLng");
+             toLat = args.getDouble("toLat");
+             toLng = args.getDouble("toLng");
+        } else {
+            mMap.clear();
+//            mMap.setMyLocationEnabled(true);
+//            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            return;
+        }
 
-        double fromLat = args.getDouble("fromLat");
-        double fromLng = args.getDouble("fromLng");
-        double toLat = args.getDouble("toLat");
-        double toLng = args.getDouble("toLng");
+        
 
 
         LatLng from = new LatLng(fromLat, fromLng);

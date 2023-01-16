@@ -164,10 +164,11 @@
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/message_input"
             app:layout_constraintBottom_toTopOf="@id/line2"
             app:layout_constraintEnd_toStartOf="@id/imageView6"
-            app:layout_constraintTop_toBottomOf="@id/line" />
+            app:layout_constraintTop_toBottomOf="@+id/pass_name" />
 
         <Button
             android:id="@+id/message_pass"
@@ -184,10 +185,11 @@
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/message_input"
             app:layout_constraintBottom_toTopOf="@id/line2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line" />
+            app:layout_constraintTop_toBottomOf="@+id/pass_name" />
 
         <Button
             android:id="@+id/call_pass"
@@ -205,10 +207,10 @@
             android:id="@+id/line2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:background="@color/black_overlay"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_picture" />
 
