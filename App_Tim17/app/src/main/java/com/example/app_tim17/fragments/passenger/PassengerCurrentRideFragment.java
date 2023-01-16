@@ -92,7 +92,7 @@ public class PassengerCurrentRideFragment extends Fragment {
         Button message = (Button) view.findViewById(R.id.message_driver);
 
         String number = args.getString("driverPhoneNumber");
-        Log.i("brtelefona", number);
+        //Log.i("brtelefona", number);
 
         driverName.setText(args.getString("driverName"));
         licenseNumber.setText(args.getString("licensePlate"));
