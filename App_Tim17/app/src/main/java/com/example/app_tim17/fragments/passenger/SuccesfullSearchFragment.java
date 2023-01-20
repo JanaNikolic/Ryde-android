@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -61,7 +63,8 @@ public class SuccesfullSearchFragment extends Fragment {
     private String driverPhoneNumber;
     private Disposable mRestPingDisposable;
     private CompositeDisposable compositeDisposable;
-    private String rideId, driverId, token;
+    private String token;
+    private Long driverId, rideId;
     Gson gson = new Gson();
 
     public SuccesfullSearchFragment() {
@@ -86,13 +89,13 @@ public class SuccesfullSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
-        rideId = getArguments().getString("rideId");
+        rideId = getArguments().getLong("rideId");
 
         mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
         retrofitService = new RetrofitService();
         connectStomp();
 
-        driverId = getArguments().getString("driverId");
+        driverId = getArguments().getLong("driverId");
         driverService = retrofitService.getRetrofit().create(DriverService.class);
         token = "Bearer " + getCurrentToken();
 
@@ -131,14 +134,14 @@ public class SuccesfullSearchFragment extends Fragment {
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                     } else {
-                        Call<DriverResponse> call = driverService.getDriver(Long.valueOf(driverId), token);
+                        Call<DriverResponse> call = driverService.getDriver(driverId, token);
 
                         call.enqueue(new Callback<DriverResponse>() {
                             @Override
                             public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
                                 DriverResponse driver = response.body();
                                 if (driver != null) {
-                                    driverId = String.valueOf(driver.getId());
+                                    driverId = driver.getId();
                                     driverName = driver.getName() + " " + driver.getSurname();
                                     driverImage = driver.getProfilePicture();
                                 }
@@ -179,8 +182,8 @@ public class SuccesfullSearchFragment extends Fragment {
                                 args.putString("vehicleModel", vehicleModel);
                                 args.putString("driverPhoneNumber", driverPhoneNumber);
                                 args.putString("driverImage", driverImage);
-                                args.putString("rideId", rideId);
-                                args.putString("driverId", driverId);
+                                args.putLong("rideId", rideId);
+                                args.putLong("driverId", driverId);
                                 args.putString("time", ride.getEstimatedTimeInMinutes().toString());
 
                                 PassengerCurrentRideFragment fragment = new PassengerCurrentRideFragment();

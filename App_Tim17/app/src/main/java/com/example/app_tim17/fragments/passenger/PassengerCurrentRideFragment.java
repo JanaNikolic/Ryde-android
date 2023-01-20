@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -47,7 +49,7 @@ public class PassengerCurrentRideFragment extends Fragment {
     private RetrofitService retrofitService;
     private TokenUtils tokenUtils;
     Gson gson = new Gson();
-    String rideId;
+    private Long rideId;
     TextView timer;
     CountDownTimer countDownTimer;
     int time;
@@ -76,7 +78,7 @@ public class PassengerCurrentRideFragment extends Fragment {
         mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
         retrofitService = new RetrofitService();
         Bundle args = getArguments();
-        rideId = args.getString("rideId");
+        rideId = args.getLong("rideId");
         connectStomp();
 
         TextView startAddress = (TextView) view.findViewById(R.id.start_address);
@@ -92,7 +94,6 @@ public class PassengerCurrentRideFragment extends Fragment {
         Button message = (Button) view.findViewById(R.id.message_driver);
 
         String number = args.getString("driverPhoneNumber");
-        //Log.i("brtelefona", number);
 
         driverName.setText(args.getString("driverName"));
         licenseNumber.setText(args.getString("licensePlate"));
@@ -231,5 +232,20 @@ public class PassengerCurrentRideFragment extends Fragment {
     private String getCurrentToken() {
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
     }
 }

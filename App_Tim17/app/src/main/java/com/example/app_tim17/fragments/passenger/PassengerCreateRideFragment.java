@@ -393,9 +393,9 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                         args.putString("endAddress", l.getDestination().getAddress());
                     }
 
-                    args.putString("driverId", ride.getDriver().getId().toString());
+                    args.putLong("driverId", ride.getDriver().getId());
                     args.putString("time", ride.getEstimatedTimeInMinutes().toString());
-                    args.putString("rideId", ride.getId().toString());
+                    args.putLong("rideId", ride.getId());
 
                     args.putString("price", ride.getTotalCost().toString() + " RSD");
                     args.putString("timeStart", ride.getStartTime());
