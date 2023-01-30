@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.EditProfileFragment;
 import com.example.app_tim17.fragments.UserInfoFragment;
+import com.example.app_tim17.fragments.driver.DriverStatisticsFragment;
 import com.example.app_tim17.model.response.PassengerResponse;
 import com.example.app_tim17.model.response.UserResponse;
 import com.example.app_tim17.model.response.driver.DriverResponse;
@@ -85,7 +86,8 @@ public class ProfilePassengerFragment extends Fragment {
         });
 
         Button favBtn = (Button) view.findViewById(R.id.favRouteBtn);
-        Button edit = (Button) view.findViewById(R.id.reportBtn);
+        Button edit = (Button) view.findViewById(R.id.editBtn);
+        Button report = (Button) view.findViewById(R.id.reportBtn);
 
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,23 +111,22 @@ public class ProfilePassengerFragment extends Fragment {
                 args.putString("phoneNumber", passenger.getTelephoneNumber());
                 args.putString("email", passenger.getEmail());
                 editProfileFragment.setArguments(args);
-                transaction.add(R.id.fragment_passenger_container, editProfileFragment); // give your fragment container id in first parameter
+                transaction.add(R.id.fragment_passenger_container, editProfileFragment);
 
-                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
 
-//        edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-//                transaction.add(R.id.fragment_passenger_container, new PassengerReportFragment());
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-//            }
-//        });
-
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_passenger_container, new DriverStatisticsFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
         return view;
     }
 

@@ -78,10 +78,10 @@ public class ProfileDriverFragment extends Fragment {
         thisMonthEnd = lastDay.toString();
         initializeComponents(view);
 
-        Button editProfile = (Button) view.findViewById(R.id.reportBtn);
+        Button edit = (Button) view.findViewById(R.id.editBtn);
+        Button report = (Button) view.findViewById(R.id.reportBtn);
 
-
-        editProfile.setOnClickListener(new View.OnClickListener() {
+        edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -96,6 +96,16 @@ public class ProfileDriverFragment extends Fragment {
                 transaction.add(R.id.fragment_driver_container, editProfileFragment); // give your fragment container id in first parameter
 
                 transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+            }
+        });
+
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_driver_container, new DriverStatisticsFragment());
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });

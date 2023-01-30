@@ -118,7 +118,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 } else {
                     text.setText(R.string.offline);
                     text.setTextColor(getResources().getColor(R.color.white));
-                    endWorkingHour();
+                    if (workingHour != null) endWorkingHour();
                 }
             }
         });
@@ -133,7 +133,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 return true;
             }
             case R.id.action_logout: {
-                endWorkingHour();
+                if (workingHour != null) endWorkingHour();
                 SharedPreferences sharedPreferences = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.remove("token");
@@ -256,7 +256,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         mStompClient.disconnect();
         if (compositeDisposable != null) compositeDisposable.dispose();
         super.onDestroy();
-        endWorkingHour();
+        if (workingHour != null) endWorkingHour();
     }
 
     private String getCurrentToken() {
