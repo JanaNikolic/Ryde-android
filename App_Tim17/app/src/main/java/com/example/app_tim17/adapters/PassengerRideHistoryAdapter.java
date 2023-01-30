@@ -1,0 +1,113 @@
+package com.example.app_tim17.adapters;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.RideInfoFragment;
+
+import java.util.List;
+
+public class PassengerRideHistoryAdapter extends RecyclerView.Adapter<PassengerRideHistoryAdapter.ViewHolder>{
+    private List<String> dates;
+    private List<String> startTimes;
+    private List<String> endTimes;
+    private List<String> durations;
+    private List<String> prices;
+    private List<String> numOfPassengers;
+    //    private int[] rating;
+    private List<String> startAddresses;
+    private List<String> endAddresses;
+    private List<String> roadLengths;
+    private Context context;
+
+    public PassengerRideHistoryAdapter(Context context, List<String> date, List<String> startTime, List<String> endTime,
+                                       List<String> duration, List<String> price, List<String> numOfPassengers,
+                                       List<String> startAddress, List<String> endAddress, List<String> roadLength) {
+        super();
+        this.context = context;
+        this.dates = date;
+        this.startTimes = startTime;
+        this.endTimes = endTime;
+        this.durations = duration;
+        this.prices = price;
+        this.numOfPassengers = numOfPassengers;
+//        this.rating = rating;
+        this.startAddresses = startAddress;
+        this.endAddresses = endAddress;
+        this.roadLengths = roadLength;
+    }
+    @NonNull
+    @Override
+    public PassengerRideHistoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drive_history_view, parent, false);
+        return new PassengerRideHistoryAdapter.ViewHolder(view);
+    }
+    @Override
+    public void onBindViewHolder(@NonNull PassengerRideHistoryAdapter.ViewHolder holder, int position) {
+
+        holder.dateTextView.setText(dates.get(position));
+        holder.startTimeTextView.setText(startTimes.get(position));
+        holder.endTimeTextView.setText(endTimes.get(position));
+        holder.durationTextView.setText(durations.get(position));
+        holder.priceTextView.setText(prices.get(position));
+        holder.numOfPassengersTextView.setText(numOfPassengers.get(position));
+        holder.startAddressTextView.setText(startAddresses.get(position));
+        holder.endAddressTextView.setText(endAddresses.get(position));
+        holder.roadLengthTextView.setText(roadLengths.get(position) + " km");
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                RideInfoFragment fragment = new RideInfoFragment();
+                FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
+
+    }
+
+    @Override
+    public int getItemCount() {
+        // this method is used for showing number of card items in recycler view
+        return startTimes.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView dateTextView;
+        private final TextView startTimeTextView;
+        private final TextView endTimeTextView;
+        private final TextView durationTextView;
+        private final TextView priceTextView;
+        private final TextView numOfPassengersTextView;
+        private final TextView startAddressTextView;
+        private final TextView endAddressTextView;
+        private final TextView roadLengthTextView;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            dateTextView = itemView.findViewById(R.id.date);
+            startTimeTextView = itemView.findViewById(R.id.time_start);
+            endTimeTextView = itemView.findViewById(R.id.time_end);
+            durationTextView = itemView.findViewById(R.id.duration);
+            priceTextView = itemView.findViewById(R.id.price);
+            numOfPassengersTextView = itemView.findViewById(R.id.num_of_passengers);
+            startAddressTextView = itemView.findViewById(R.id.start_address);
+            endAddressTextView = itemView.findViewById(R.id.end_address);
+            roadLengthTextView = itemView.findViewById(R.id.road_length);
+        }
+    }
+
+}
