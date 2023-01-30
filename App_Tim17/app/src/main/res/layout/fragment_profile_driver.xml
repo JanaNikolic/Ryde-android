@@ -90,43 +90,28 @@
 
                     <ImageView
                         android:id="@+id/car_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:layout_marginTop="5dp"
                         android:src="@drawable/ic_baseline_directions_car_24" />
+
 
                     <TextView
                         android:id="@+id/car_model"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/car_icon"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginBottom="8dp"
                         android:layout_toEndOf="@id/car_icon"
                         android:paddingHorizontal="10dp"
                         android:textSize="20sp" />
 
                     <ImageView
-                        android:id="@+id/color_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_below="@id/car_icon"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/ic_baseline_color_lens_24" />
-
-                    <TextView
-                        android:id="@+id/car_color"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/color_icon"
-                        android:layout_toEndOf="@id/color_icon"
-                        android:includeFontPadding="false"
-                        android:paddingHorizontal="10dp"
-                        android:textSize="20sp" />
-
-                    <ImageView
                         android:id="@+id/license_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_below="@id/color_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@id/car_icon"
                         android:layout_marginTop="5dp"
                         android:src="@drawable/license_plate"
                         app:tint="@color/white" />
@@ -135,22 +120,14 @@
                         android:id="@+id/license_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
                         android:layout_alignBottom="@id/license_icon"
                         android:layout_toEndOf="@id/license_icon"
                         android:includeFontPadding="false"
                         android:paddingHorizontal="10dp"
                         android:textSize="20sp" />
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/car_pic"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginHorizontal="20dp"
-                        android:src="@drawable/car_picture"
 
-                        app:shapeAppearanceOverlay="@style/Circular" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -204,7 +181,6 @@
             android:textColor="@color/teal"
             android:text="STATISTICS"
             />
-
         <com.google.android.material.card.MaterialCardView
             android:clickable="true"
             android:layout_height="250dp"
@@ -234,7 +210,6 @@
                 android:id="@+id/money_amount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="4.790"
                 android:layout_marginBottom="30dp"
                 android:textColor="@color/teal"
                 android:gravity="center"
@@ -289,7 +264,6 @@
                     android:id="@+id/kilometers"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="47,2"
                     android:layout_marginBottom="30dp"
                     android:textColor="@color/teal"
                     android:gravity="center"
@@ -301,14 +275,68 @@
                     android:text="km"
                     android:textColor="@color/teal"
                     android:gravity="center"
-                    app:layout_constraintBottom_toTopOf="@id/this_week"
+                    app:layout_constraintBottom_toTopOf="@id/this_month_2"
                     android:textSize="26sp"/>
                 <TextView
-                    android:id="@+id/this_week"
+                    android:id="@+id/this_month_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/teal"
-                    android:text="This Week"
+                    android:text="This Month"
+                    android:fontFamily="@font/outfit_bold"
+                    android:textSize="24sp"
+                    android:paddingVertical="20dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="250dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginBottom="40dp"
+            app:cardCornerRadius="15dp"
+            app:cardBackgroundColor="#fece2f"
+            app:cardElevation="10dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/rides"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_bold"
+                    android:gravity="center"
+                    android:paddingVertical="20dp"
+                    android:text="Rides"
+                    android:textColor="@color/teal"
+                    android:textSize="24sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/number_of_rides"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    android:textSize="60sp"/>
+                <TextView
+                    android:id="@+id/num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="@id/this_month_3"
+                    android:textSize="26sp"/>
+                <TextView
+                    android:id="@+id/this_month_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/teal"
+                    android:text="This Month"
                     android:fontFamily="@font/outfit_bold"
                     android:textSize="24sp"
                     android:paddingVertical="20dp"

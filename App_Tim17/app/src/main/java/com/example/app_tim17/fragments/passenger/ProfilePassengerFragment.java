@@ -1,5 +1,7 @@
 package com.example.app_tim17.fragments.passenger;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,7 +13,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.EditProfileFragment;
 import com.example.app_tim17.fragments.UserInfoFragment;
+import com.example.app_tim17.model.response.PassengerResponse;
+import com.example.app_tim17.model.response.UserResponse;
+import com.example.app_tim17.model.response.driver.DriverResponse;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.DriverService;
+import com.example.app_tim17.service.PassengerService;
+import com.example.app_tim17.service.TokenUtils;
+
+import java.time.LocalDate;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,35 +35,18 @@ import com.example.app_tim17.fragments.UserInfoFragment;
  * create an instance of this fragment.
  */
 public class ProfilePassengerFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private PassengerService passengerService;
+    private TokenUtils tokenUtils;
+    private String thisMonthStart;
+    private String thisMonthEnd;
+    private UserResponse passenger;
 
     public ProfilePassengerFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfilePassengerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ProfilePassengerFragment newInstance(String param1, String param2) {
         ProfilePassengerFragment fragment = new ProfilePassengerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -55,8 +54,6 @@ public class ProfilePassengerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -66,8 +63,29 @@ public class ProfilePassengerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_passenger, container, false);
 
+        tokenUtils = new TokenUtils();
+        RetrofitService retrofitService = new RetrofitService();
+        passengerService = retrofitService.getRetrofit().create(PassengerService.class);
+        LocalDate firstDay = LocalDate.now().withDayOfMonth(1);
+        LocalDate lastDay = LocalDate.now().plusMonths(1).withDayOfMonth(1);
+        thisMonthStart = firstDay.toString();
+        thisMonthEnd = lastDay.toString();
+
+        Call<PassengerResponse> call = passengerService.getPassenger("Bearer " + getCurrentToken(), TokenUtils.getId(getCurrentToken()));
+
+        call.enqueue(new Callback<PassengerResponse>() {
+            @Override
+            public void onResponse(Call<PassengerResponse> call, Response<PassengerResponse> response) {
+                passenger = response.body();
+            }
+            @Override
+            public void onFailure(Call<PassengerResponse> call, Throwable t) {
+                call.cancel();
+            }
+        });
+
         Button favBtn = (Button) view.findViewById(R.id.favRouteBtn);
-        Button statBtn = (Button) view.findViewById(R.id.reportBtn);
+        Button edit = (Button) view.findViewById(R.id.reportBtn);
 
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,16 +97,40 @@ public class ProfilePassengerFragment extends Fragment {
             }
         });
 
-        statBtn.setOnClickListener(new View.OnClickListener() {
+        edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment_passenger_container, new PassengerReportFragment());
-                transaction.addToBackStack(null);
+                EditProfileFragment editProfileFragment = new EditProfileFragment();
+                Bundle args = new Bundle();
+                args.putString("name", passenger.getName());
+                args.putString("surname", passenger.getSurname());
+                args.putString("address", passenger.getAddress());
+                args.putString("phoneNumber", passenger.getTelephoneNumber());
+                args.putString("email", passenger.getEmail());
+                editProfileFragment.setArguments(args);
+                transaction.add(R.id.fragment_passenger_container, editProfileFragment); // give your fragment container id in first parameter
+
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                 transaction.commit();
             }
         });
 
+//        edit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+//                transaction.add(R.id.fragment_passenger_container, new PassengerReportFragment());
+//                transaction.addToBackStack(null);
+//                transaction.commit();
+//            }
+//        });
+
         return view;
+    }
+
+    private String getCurrentToken() {
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
     }
 }

@@ -134,7 +134,7 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void openAcceptanceRide() {
-        Toast.makeText(getContext(), "NEW RIDE", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "NEW RIDE", Toast.LENGTH_SHORT).show();
         Bundle args = fragment.getArguments();
         if (args == null)
             args = new Bundle();

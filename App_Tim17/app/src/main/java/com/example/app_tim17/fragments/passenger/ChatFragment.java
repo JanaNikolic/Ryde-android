@@ -110,7 +110,6 @@ public class ChatFragment extends Fragment {
                         if (messagesResponse != null) {
                             for (Message message : messagesResponse.getMessages()) {
                                 newMessageList.add(message);
-                                Log.d("Message", "one message");
                             }
                             if (newMessageList.size() > mMessageAdapter.getItemCount()) {
                                 messageList = newMessageList;
