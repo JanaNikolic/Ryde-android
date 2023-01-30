@@ -26,7 +26,7 @@
                 android:background="@color/teal">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/profile_pic"
+                    android:id="@+id/profile_pic_pass"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_centerVertical="true"
@@ -39,12 +39,12 @@
                     app:strokeWidth="3dp" />
 
                 <TextView
-                    android:id="@+id/fullname_field"
+                    android:id="@+id/fullname_field_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/profile_pic"
+                    android:layout_toRightOf="@+id/profile_pic_pass"
                     android:fontFamily="sans-serif-black"
                     android:includeFontPadding="false"
                     android:text="Taimoor Sikander"
@@ -52,12 +52,12 @@
                     android:textSize="25sp" />
 
                 <TextView
-                    android:id="@+id/username_field"
+                    android:id="@+id/email_field_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fullname_field"
+                    android:layout_below="@id/fullname_field_pass"
                     android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/profile_pic"
+                    android:layout_toRightOf="@+id/profile_pic_pass"
                     android:includeFontPadding="false"
                     android:text="taimoor_sikander"
                     android:textSize="18sp" />
@@ -89,7 +89,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-100dp"
+                android:layout_marginTop="-40dp"
                 android:paddingHorizontal="30dp"
                 android:paddingTop="40dp" />
 
@@ -100,63 +100,50 @@
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="20dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/full_name_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Full Name"
-                    app:boxBackgroundColor="@android:color/transparent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_drive_file_rename_outline_24"
-                        android:drawablePadding="10dp"
-                        android:textSize="18sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/email_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="E-MAIL"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/full_name_profile_pass"
+                    android:layout_height="match_parent"
                     app:boxBackgroundColor="@android:color/transparent"
-                    app:boxStrokeColor="@color/yellow">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_alternate_email_24"
-                        android:drawablePadding="10dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/phone_number_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Phone Number"
-                    app:boxBackgroundColor="@android:color/transparent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_phone_enabled_24"
-                        android:drawablePadding="10dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
+                    android:textAlignment="viewEnd"
+                    android:drawableStart="@drawable/ic_baseline_drive_file_rename_outline_24"
+                    android:drawablePadding="20dp"
+                    android:textSize="22sp"
+                    android:paddingVertical="10dp"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:paddingVertical="10dp"
+                    android:id="@+id/email_profile_pass"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:textAlignment="viewEnd"
+                    android:drawableStart="@drawable/ic_baseline_alternate_email_24"
+                    android:drawablePadding="20dp"
+                    android:textSize="22sp"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:paddingVertical="10dp"
+                    android:id="@+id/phone_num_profile_pass"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:textAlignment="viewEnd"
+                    android:drawableStart="@drawable/ic_baseline_phone_enabled_24"
+                    android:drawablePadding="20dp"
+                    android:textSize="22sp"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:paddingVertical="10dp"
                     android:id="@+id/address_profile"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundColor="@android:color/transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/address"
-                    app:boxBackgroundColor="@android:color/transparent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_address_24"
-                        android:drawablePadding="10dp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:textAlignment="viewEnd"
+                    android:drawableStart="@drawable/ic_baseline_address_24"
+                    android:drawablePadding="20dp"
+                    android:textSize="22sp"
+                    />
 
             </LinearLayout>
             <TextView

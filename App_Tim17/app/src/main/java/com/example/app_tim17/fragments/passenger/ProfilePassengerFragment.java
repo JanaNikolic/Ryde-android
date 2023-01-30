@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.EditProfileFragment;
@@ -70,6 +72,7 @@ public class ProfilePassengerFragment extends Fragment {
         LocalDate lastDay = LocalDate.now().plusMonths(1).withDayOfMonth(1);
         thisMonthStart = firstDay.toString();
         thisMonthEnd = lastDay.toString();
+        initializeComponents(view);
 
         Call<PassengerResponse> call = passengerService.getPassenger("Bearer " + getCurrentToken(), TokenUtils.getId(getCurrentToken()));
 
@@ -127,6 +130,46 @@ public class ProfilePassengerFragment extends Fragment {
 //        });
 
         return view;
+    }
+    private void initializeComponents(View view) {
+
+        TextView fullName = view.findViewById(R.id.full_name_profile_pass);
+        ImageView profilePic = view.findViewById(R.id.profile_pic_pass);
+        TextView email = view.findViewById(R.id.email_profile_pass);
+        TextView phoneNumber = view.findViewById(R.id.phone_num_profile_pass);
+        TextView address = view.findViewById(R.id.address_profile);
+        TextView fullname = view.findViewById(R.id.fullname_field_pass);
+        TextView emailfield = view.findViewById(R.id.email_field_pass);
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+        Long id = tokenUtils.getId(token);
+        Call<PassengerResponse> call = passengerService.getPassenger("Bearer " + token, id);
+
+        call.enqueue(new Callback<PassengerResponse>() {
+            @Override
+            public void onResponse(Call<PassengerResponse> call, Response<PassengerResponse> response) {
+
+//                Log.d("TAG",response.code()+"");
+
+                passenger = response.body();
+                System.out.println(response);
+                if (passenger != null) {
+                    System.out.println("zakar");
+                    String fullNameStr = passenger.getName() + " " + passenger.getSurname();
+                    fullName.setText(fullNameStr);
+                    fullname.setText(fullNameStr);
+                    address.setText(passenger.getAddress());
+                    email.setText(passenger.getEmail());
+                    emailfield.setText(passenger.getEmail());
+                    phoneNumber.setText(passenger.getTelephoneNumber());
+                }
+                System.out.println("zakar");
+            }
+            @Override
+            public void onFailure(Call<PassengerResponse> call, Throwable t) {
+                call.cancel();
+            }
+        });
     }
 
     private String getCurrentToken() {
