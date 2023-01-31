@@ -3,6 +3,8 @@ package com.example.app_tim17.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.example.app_tim17.model.response.chat.Chat;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -27,6 +30,7 @@ public class InboxList extends ArrayAdapter{
     private List<String> Times = new ArrayList<>();
     private List<String> Messages = new ArrayList<>();
     private List<String> Types = new ArrayList<>();
+    private List<String> ProfilePictures = new ArrayList<>();
     private Activity context;
 
     public InboxList(Activity context, List<Chat> inbox) {
@@ -37,6 +41,7 @@ public class InboxList extends ArrayAdapter{
             this.Times.add(chat.getLastMessage().getTimeOfSending().substring(11, 16));
             this.Messages.add(chat.getLastMessage().getMessage());
             this.Types.add(chat.getLastMessage().getType());
+            this.ProfilePictures.add(chat.getUser().getProfilePicture());
         }
     }
 
@@ -61,7 +66,14 @@ public class InboxList extends ArrayAdapter{
         }
         userName.setText(UserNames.get(position));
         time.setText(Times.get(position));
-        profilePicture.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.profile_picture, null));
+        if (ProfilePictures.get(position) == null || ProfilePictures.get(position).equals("")) {
+            profilePicture.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.profile_picture, null));
+        } else {
+            Log.d("profilePic", ProfilePictures.get(position));
+            byte[] decodedString = Base64.getDecoder().decode(ProfilePictures.get(position));
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            profilePicture.setImageBitmap(decodedByte);
+        }
         message.setText(Messages.get(position));
 
         return  row;

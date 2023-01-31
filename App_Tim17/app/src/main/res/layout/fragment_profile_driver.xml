@@ -23,6 +23,7 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile_pic"
+                android:scaleType="centerCrop"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="30dp"
@@ -31,7 +32,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:shapeAppearanceOverlay="@style/Circular"
                 app:strokeColor="@color/yellow"
-                app:strokeWidth="3dp"
+                app:strokeWidth="2dp"
+                android:longClickable="true"
                 android:padding="3dp"/>
             <TextView
                 android:id="@+id/fullname_field"

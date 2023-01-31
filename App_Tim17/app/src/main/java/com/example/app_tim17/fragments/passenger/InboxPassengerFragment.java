@@ -88,16 +88,12 @@ public class InboxPassengerFragment extends Fragment {
         call.enqueue(new Callback<ChatResponse>() {
             @Override
             public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
-                Log.d("WTF", response.body().toString());
                 if (response.isSuccessful()) {
-                    Log.d("WTF", response.body().toString());
                     ChatResponse chatResponse = response.body();
-                    Log.d("WTF", chatResponse.toString());
                     mChatList = new ArrayList<>();
                     if (chatResponse != null) {
                         for (Chat chat : chatResponse.getChats()) {
                             mChatList.add(chat);
-                            Log.d("Message", "one message");
                         }
                         inboxList = new InboxList(getActivity(), mChatList);
                         listView.setAdapter(inboxList);
