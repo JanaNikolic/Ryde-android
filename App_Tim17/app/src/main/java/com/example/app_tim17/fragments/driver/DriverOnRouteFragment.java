@@ -124,9 +124,9 @@ public class DriverOnRouteFragment extends Fragment {
 //                route.putDouble("toLng", finalRide.getLocations().get(0).getDestination().getLongitude());
                 route.putDouble("toLat", 45.241290);
                 route.putDouble("toLng", 19.847320);
-                DrawRouteFragment draw = DrawRouteFragment.newInstance();
-                draw.setArguments(route);
-                FragmentTransition.to(draw, getActivity(), false);
+//                DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//                draw.setArguments(route);
+//                FragmentTransition.to(draw, getActivity(), false);
 
                 String token = "Bearer " + getCurrentToken();
 

@@ -122,8 +122,8 @@ public class DriverCurrentRideFragment extends Fragment {
                 call.enqueue(new Callback<Ride>() {
                     @Override
                     public void onResponse(Call<Ride> call, Response<Ride> response) {
-                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
-                        FragmentTransition.to(draw, getActivity(), false);
+//                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//                        FragmentTransition.to(draw, getActivity(), false);
                         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
                         fragmentTransaction.commit();
@@ -147,8 +147,8 @@ public class DriverCurrentRideFragment extends Fragment {
                 call.enqueue(new Callback<Ride>() {
                     @Override
                     public void onResponse(Call<Ride> call, Response<Ride> response) {
-                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
-                        FragmentTransition.to(draw, getActivity(), false);
+//                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//                        FragmentTransition.to(draw, getActivity(), false);
                         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
                         fragmentTransaction.commit();

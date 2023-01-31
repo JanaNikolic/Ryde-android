@@ -215,11 +215,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/start_address" />
 
                 <ImageView
+                    android:id="@+id/message"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="end"
                     android:layout_marginTop="8dp"
-                    android:onClick="ShowMessages"
                     android:src="@drawable/ic_baseline_message_24"
                     app:layout_constraintStart_toStartOf="@+id/imageView3"
                     app:layout_constraintTop_toBottomOf="@+id/end_address" />

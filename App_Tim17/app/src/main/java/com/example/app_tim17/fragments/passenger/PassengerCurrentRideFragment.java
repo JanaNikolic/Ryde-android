@@ -86,7 +86,7 @@ public class PassengerCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
         retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
         Bundle args = getArguments();
@@ -120,9 +120,9 @@ public class PassengerCurrentRideFragment extends Fragment {
         Bundle route = getArguments().getBundle("route");
 
         if (route != null) {
-            DrawRouteFragment draw = DrawRouteFragment.newInstance();
-            draw.setArguments(route);
-            FragmentTransition.to(draw, getActivity(), false);
+//            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//            draw.setArguments(route);
+//            FragmentTransition.to(draw, getActivity(), false);
         }
 //        args.getString("driverImage"); // TODO
 
@@ -241,8 +241,8 @@ public class PassengerCurrentRideFragment extends Fragment {
         call.enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
-                DrawRouteFragment draw = DrawRouteFragment.newInstance();
-                FragmentTransition.to(draw, getActivity(), false);
+//                DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//                FragmentTransition.to(draw, getActivity(), false);
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.currentRide, new PassengerCreateRideFragment()  );
                 fragmentTransaction.commit();

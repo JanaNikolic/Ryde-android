@@ -54,11 +54,14 @@ public class Ride {
     @SerializedName("scheduledTime")
     @Expose
     private String scheduledTime;
+    @SerializedName("distance")
+    @Expose
+    private double distance;
 
     public Ride() {
     }
 
-    public Ride(Long id, String startTime, String endTime, Integer totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Integer estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, @Nullable Boolean petTransport, RejectionResponse rejectionResponse, List<LocationForRide> locations, String status, String scheduledTime) {
+    public Ride(Long id, String startTime, String endTime, Integer totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Integer estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, @Nullable Boolean petTransport, RejectionResponse rejectionResponse, List<LocationForRide> locations, String status, String scheduledTime, double distance) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -73,6 +76,7 @@ public class Ride {
         this.locations = locations;
         this.status = status;
         this.scheduledTime = scheduledTime;
+        this.distance = distance;
     }
 
     public Long getId() {
@@ -187,4 +191,11 @@ public class Ride {
         this.scheduledTime = scheduledTime;
     }
 
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
 }

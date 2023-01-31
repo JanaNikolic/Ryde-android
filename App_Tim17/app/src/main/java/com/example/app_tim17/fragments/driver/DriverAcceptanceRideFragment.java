@@ -77,6 +77,8 @@ public class DriverAcceptanceRideFragment extends Fragment {
 
             priceStr = ride.getEstimatedTimeInMinutes() + " min";
             duration.setText(priceStr);
+
+            distance.setText(ride.getDistance()/1000 + " km");
         }
 
         Ride finalRide = ride;
@@ -117,9 +119,9 @@ public class DriverAcceptanceRideFragment extends Fragment {
                             Log.i("toLng", String.valueOf(route.getDouble("toLng")));
 
 
-                            DrawRouteFragment draw = DrawRouteFragment.newInstance();
-                            draw.setArguments(route);
-                            FragmentTransition.to(draw, getActivity(), false);
+//                            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//                            draw.setArguments(route);
+//                            FragmentTransition.to(draw, getActivity(), false);
 
                             DriverOnRouteFragment driverOnRouteFragment = new DriverOnRouteFragment();
                             driverOnRouteFragment.setArguments(args);
