@@ -137,17 +137,17 @@ public class RideResponse {
     @SerializedName("totalCount")
     @Expose
     private Long totalCount;
-    @SerializedName("rides")
+    @SerializedName("results")
     @Expose
-    private List<Ride> rides = new ArrayList<Ride>();
+    private List<Ride> results = new ArrayList<Ride>();
 
     public RideResponse() {
     }
 
-    public RideResponse(Long totalCount, List<Ride> rides) {
+    public RideResponse(Long totalCount, List<Ride> results) {
         super();
         this.totalCount = totalCount;
-        this.rides = rides;
+        this.results = results;
     }
 
     public Long getTotalCount() {
@@ -159,11 +159,11 @@ public class RideResponse {
     }
 
     public List<Ride> getRides() {
-        return rides;
+        return results;
     }
 
-    public void setRides(List<Ride> rides) {
-        this.rides = rides;
+    public void setRides(List<Ride> results) {
+        this.results = results;
     }
 
 }

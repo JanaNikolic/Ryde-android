@@ -133,12 +133,17 @@ public class HistoryPassengerFragment extends Fragment {
                     endAddresses = new ArrayList<>();
                     endAddresses = new ArrayList<>();
                     roadLengths = new ArrayList<>();
-                    if (rideResponse != null) {
+                    if (rideResponse.getRides() != null) {
                         for (Ride ride : rideResponse.getRides()) {
                             dates.add(ride.getStartTime().split("T")[0]);
                             startTimes.add(ride.getStartTime().split("T")[1].split("\\.")[0]);
                             System.out.println(startTimes);
-                            endTimes.add(ride.getEndTime().split("T")[1].split("\\.")[0]);
+                            if(ride.getEndTime()== null){
+                                endTimes.add("Not finished");
+                            }
+                            else {
+                                endTimes.add(ride.getEndTime().split("T")[1].split("\\.")[0]);
+                            }
                             durations.add(String.valueOf(ride.getEstimatedTimeInMinutes())+" min");
                             totalCosts.add(String.valueOf(ride.getTotalCost())+" rsd");
                             numOfPassengers.add(String.valueOf(ride.getPassengers().size()));
