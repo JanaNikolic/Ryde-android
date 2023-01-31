@@ -11,7 +11,7 @@ public class MessagesResponse implements Serializable {
     @SerializedName("count")
     @Expose
     private Integer count;
-    @SerializedName("messages")
+    @SerializedName("results")
     @Expose
     private List<Message> messages = new ArrayList<Message>();
 

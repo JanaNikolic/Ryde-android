@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imvCircular"
         app:shapeAppearanceOverlay="@style/Circular"
-        app:strokeColor="@color/yellow"
         app:strokeWidth="3dp" />
 
 

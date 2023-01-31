@@ -6,7 +6,7 @@ import com.example.app_tim17.model.WorkingHour;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class WorkingHourResponse {
+public class WorkingHourPage {
 
     @SerializedName("totalCount")
     @Expose
@@ -15,10 +15,10 @@ public class WorkingHourResponse {
     @Expose
     private List<WorkingHour> results = null;
 
-    public WorkingHourResponse() {
+    public WorkingHourPage() {
     }
 
-    public WorkingHourResponse(Long totalCount, List<WorkingHour> results) {
+    public WorkingHourPage(Long totalCount, List<WorkingHour> results) {
         super();
         this.totalCount = totalCount;
         this.results = results;

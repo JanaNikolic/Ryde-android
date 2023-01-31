@@ -17,7 +17,12 @@ import com.example.app_tim17.R;
 import com.example.app_tim17.model.response.message.Message;
 import com.example.app_tim17.service.TokenUtils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -74,10 +79,18 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
-                ((SentMessageHolder) holder).bind(message);
+                try {
+                    ((SentMessageHolder) holder).bind(message);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
-                ((ReceivedMessageHolder) holder).bind(message);
+                try {
+                    ((ReceivedMessageHolder) holder).bind(message);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -87,44 +100,50 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private class SentMessageHolder extends RecyclerView.ViewHolder {
-        TextView messageText, timeText;
+        TextView messageText, timeText, dateText;
 
         SentMessageHolder(View itemView) {
             super(itemView);
-
+            dateText = (TextView) itemView.findViewById(R.id.text_gchat_date_me);
             messageText = (TextView) itemView.findViewById(R.id.text_gchat_message_me);
             timeText = (TextView) itemView.findViewById(R.id.text_gchat_timestamp_me);
         }
 
-        void bind(Message message) {
+        void bind(Message message) throws ParseException {
             messageText.setText(message.getMessage());
-            // Format the stored timestamp into a readable String using method.
+            DateFormat originalFormat = new SimpleDateFormat("YYYY-MM-dd", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("MMMM dd");
+            Date date = originalFormat.parse(message.getTimeOfSending().split("T")[0]);
+            String formattedDate = targetFormat.format(date);
+            dateText.setText(formattedDate);
             timeText.setText(message.getTimeOfSending().toString().substring(11, 16));
         }
     }
 
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
-        TextView messageText, timeText, nameText;
+        TextView messageText, timeText, nameText, dateText;
         ImageView profileImage;
 
         ReceivedMessageHolder(View itemView) {
             super(itemView);
-
+            dateText = (TextView) itemView.findViewById(R.id.text_gchat_date_other);
             messageText = (TextView) itemView.findViewById(R.id.text_gchat_message_other);
             timeText = (TextView) itemView.findViewById(R.id.text_gchat_timestamp_other);
             nameText = (TextView) itemView.findViewById(R.id.text_gchat_user_other);
             profileImage = (ImageView) itemView.findViewById(R.id.image_gchat_profile_other);
         }
 
-        void bind(Message message) {
+        void bind(Message message) throws ParseException {
             messageText.setText(message.getMessage());
 
-            // Format the stored timestamp into a readable String using method.
+            DateFormat originalFormat = new SimpleDateFormat("YYYY-MM-dd", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("MMMM dd");
+            Date date = originalFormat.parse(message.getTimeOfSending().split("T")[0]);
+            String formattedDate = targetFormat.format(date);
+            dateText.setText(formattedDate);
             timeText.setText(message.getTimeOfSending().toString().substring(11, 16));
 
             nameText.setText(name);
-
-            // Insert the profile image from the URL into the ImageView.
             profileImage.setImageResource(R.drawable.profile_picture);
         }
     }

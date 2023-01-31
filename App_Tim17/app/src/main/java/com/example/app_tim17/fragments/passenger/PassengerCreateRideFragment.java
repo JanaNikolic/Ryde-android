@@ -324,15 +324,9 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                     break;
                 }
                 default: {
-                    String token = getCurrentToken();
-                    String email = tokenUtils.getEmail(token);
-                    Long id = tokenUtils.getId(token);
-
-                    passengers.add(new PassengerRequest(id, email));
-                    rideRequest.setPassengers(passengers);
+                    rideRequest.setPassengers(new ArrayList<>());
 
                     Log.d("ride", rideRequest.toString());
-                    position = 0;
                     stepView.done(true);
                     stepView.go(2, true);
 
@@ -409,8 +403,8 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
             }
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
-                Log.d("Opps", "1Something went wrong!");
-//                onResume(); //TODO
+                Log.d("Oops", "Something went wrong!");
+                Toast.makeText(getActivity(), "There are currently no active drivers! Try again later.", Toast.LENGTH_SHORT).show();
                 call.cancel();
             }
         });

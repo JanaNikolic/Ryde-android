@@ -12,17 +12,15 @@ public class WorkingHour {
     private Long id;
     @SerializedName("start")
     @Expose
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime start;
+    private String start;
     @SerializedName("end")
     @Expose
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime end;
+    private String end;
 
     public WorkingHour() {
     }
 
-    public WorkingHour(Long id, LocalDateTime start, LocalDateTime end) {
+    public WorkingHour(Long id, String start, String end) {
         super();
         this.id = id;
         this.start = start;
@@ -37,19 +35,19 @@ public class WorkingHour {
         this.id = id;
     }
 
-    public LocalDateTime getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

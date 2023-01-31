@@ -20,18 +20,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.ChangePasswordFragment;
 import com.example.app_tim17.fragments.MapsFragment;
 import com.example.app_tim17.fragments.driver.ChatDriverFragment;
 import com.example.app_tim17.fragments.driver.DriverAcceptanceRideFragment;
+import com.example.app_tim17.fragments.driver.DriverStatisticsFragment;
 import com.example.app_tim17.fragments.driver.HistoryDriverFragment;
 import com.example.app_tim17.fragments.driver.InboxDriverFragment;
 import com.example.app_tim17.fragments.driver.MainDriverFragment;
 import com.example.app_tim17.fragments.driver.ProfileDriverFragment;
 import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
+import com.example.app_tim17.model.WorkingHour;
+import com.example.app_tim17.model.request.EndWorkingHour;
 import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.request.StartWorkingHour;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
 import com.example.app_tim17.tools.Utils;
@@ -39,6 +45,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -64,11 +72,11 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
     private TokenUtils tokenUtils;
     private RetrofitService retrofitService;
     private RideService rideService;
-    private Disposable mRestPingDisposable;
+    private DriverService driverService;
     private CompositeDisposable compositeDisposable;
     private Gson mGson = new GsonBuilder().create();
     MainDriverFragment mainFragment;
-    Bundle finalArgs;
+    private WorkingHour workingHour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +84,8 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         setContentView(R.layout.activity_driver);
         tokenUtils = new TokenUtils();
         bottomNavigationView = findViewById(R.id.nav_view_driver);
-        bottomNavigationView.setSelectedItemId(R.id.home_driver);
         bottomNavigationView.setOnItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.home_driver);
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -85,12 +93,12 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
             }
         }, 1000);
 
-
         retrofitService = new RetrofitService();
-        rideService = retrofitService.getRetrofit().create(RideService.class);
+        driverService = retrofitService.getRetrofit().create(DriverService.class);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
         connectStomp();
+        startWorkingHour();
     }
 
     @Override
@@ -107,12 +115,12 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
             public void onClick(View view) {
                 if (toggle.isChecked()) {
                     text.setText(R.string.online);
-
                     text.setTextColor(getResources().getColor(R.color.yellow));
+                    startWorkingHour();
                 } else {
                     text.setText(R.string.offline);
-
                     text.setTextColor(getResources().getColor(R.color.white));
+                    if (workingHour != null) endWorkingHour();
                 }
             }
         });
@@ -127,6 +135,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 return true;
             }
             case R.id.action_logout: {
+                if (workingHour != null) endWorkingHour();
                 SharedPreferences sharedPreferences = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.remove("token");
@@ -135,6 +144,12 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 startActivity(new Intent(getApplicationContext(), UserLoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
                 return true;
+            }
+            case R.id.change_password: {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_driver_container, new ChangePasswordFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
             default:
                 return super.onOptionsItemSelected(item);
@@ -151,21 +166,26 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_driver_container, InboxDriverFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Inbox");
                 return true;
             case R.id.home_driver:
                 transaction.setReorderingAllowed(true);
+                transaction.addToBackStack(null);
                 transaction.replace(R.id.fragment_driver_container, MainDriverFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Ryde");
                 return true;
             case R.id.history_driver:
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_driver_container, HistoryDriverFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("History");
                 return true;
             case R.id.profile_driver:
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_driver_container, ProfileDriverFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Profile");
                 return true;
         }
         return false;
@@ -184,29 +204,6 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
 
         resetSubscriptions();
 
-        Disposable dispLifecycle = mStompClient.lifecycle()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(lifecycleEvent -> {
-                    switch (lifecycleEvent.getType()) {
-                        case OPENED:
-                            Toast.makeText(getApplicationContext(), "Stomp connection opened", Toast.LENGTH_SHORT).show();
-                            break;
-                        case ERROR:
-                            Log.e("STOMP", "Stomp connection error", lifecycleEvent.getException());
-                            Toast.makeText(getApplicationContext(), "Stomp connection error", Toast.LENGTH_SHORT).show();
-                            break;
-                        case CLOSED:
-                            Toast.makeText(getApplicationContext(), "Stomp connection closed", Toast.LENGTH_SHORT).show();
-                            resetSubscriptions();
-                            break;
-                        case FAILED_SERVER_HEARTBEAT:
-                            Toast.makeText(getApplicationContext(), "Stomp failed server heartbeat", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                });
-
-        compositeDisposable.add(dispLifecycle);
 
         // Receive greetings
         Disposable dispTopic = mStompClient.topic("/socket-publisher/" + tokenUtils.getId(getCurrentToken()))
@@ -235,7 +232,6 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
     }
 
     public void sendEchoViaStomp(MessageRequest message) {
-//        if (!mStompClient.isConnected()) return;
         compositeDisposable.add(mStompClient.send("/topic/hello-msg-mapping", mGson.toJson(message))
                 .compose(applySchedulers())
                 .subscribe(() -> {
@@ -266,17 +262,48 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+
     @Override
     protected void onDestroy() {
         mStompClient.disconnect();
-
-        if (mRestPingDisposable != null) mRestPingDisposable.dispose();
         if (compositeDisposable != null) compositeDisposable.dispose();
         super.onDestroy();
+        if (workingHour != null) endWorkingHour();
     }
 
     private String getCurrentToken() {
         SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
+    }
+
+    private void startWorkingHour() {
+        Call<WorkingHour> call = driverService.startShift("Bearer " + getCurrentToken(), TokenUtils.getId(getCurrentToken()), new StartWorkingHour(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))));
+        call.enqueue(new Callback<WorkingHour>() {
+            @Override
+            public void onResponse(Call<WorkingHour> call, Response<WorkingHour> response) {
+                workingHour = response.body();
+                Toast.makeText(getApplicationContext(), "Started shift!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<WorkingHour> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    private void endWorkingHour() {
+        Call<WorkingHour> call = driverService.endShift("Bearer " + getCurrentToken(), workingHour.getId(), new EndWorkingHour(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))));
+        call.enqueue(new Callback<WorkingHour>() {
+            @Override
+            public void onResponse(Call<WorkingHour> call, Response<WorkingHour> response) {
+                Toast.makeText(getApplicationContext(), "Ended shift!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<WorkingHour> call, Throwable t) {
+                call.cancel();
+            }
+        });
     }
 }

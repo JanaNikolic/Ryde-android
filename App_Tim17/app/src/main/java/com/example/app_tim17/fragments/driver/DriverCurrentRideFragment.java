@@ -21,6 +21,7 @@ import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.PassengerCreateRideFragment;
 import com.example.app_tim17.fragments.passenger.ReviewDriverAndVehicleFragment;
+import com.example.app_tim17.model.request.PanicRequest;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.RideService;
@@ -61,15 +62,6 @@ public class DriverCurrentRideFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DriverCurrentRideFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DriverCurrentRideFragment newInstance(String param1, String param2) {
         DriverCurrentRideFragment fragment = new DriverCurrentRideFragment();
         Bundle args = new Bundle();
@@ -93,6 +85,8 @@ public class DriverCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_driver_current_ride, container, false);
+        retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
 
         TextView startAddress = (TextView) view.findViewById(R.id.start_address);
         TextView endAddress = (TextView) view.findViewById(R.id.end_address);
@@ -104,7 +98,7 @@ public class DriverCurrentRideFragment extends Fragment {
         Button phone = (Button) view.findViewById(R.id.call_pass);
         Button message = (Button) view.findViewById(R.id.message_pass);
         Button end = (Button) view.findViewById(R.id.end_btn);
-
+        Button panic = (Button) view.findViewById(R.id.panic_btn);
         Bundle args = getArguments();
 
         Ride ride = Utils.getGsonParser().fromJson(args.getString("ride"), Ride.class);
@@ -122,10 +116,7 @@ public class DriverCurrentRideFragment extends Fragment {
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                retrofitService = new RetrofitService();
-                rideService = retrofitService.getRetrofit().create(RideService.class);
                 String token = "Bearer " + getCurrentToken();
-
                 Call<Ride> call = rideService.endRide(token, ride.getId());
 
                 call.enqueue(new Callback<Ride>() {
@@ -133,7 +124,6 @@ public class DriverCurrentRideFragment extends Fragment {
                     public void onResponse(Call<Ride> call, Response<Ride> response) {
                         DrawRouteFragment draw = DrawRouteFragment.newInstance();
                         FragmentTransition.to(draw, getActivity(), false);
-
                         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
                         fragmentTransaction.commit();
@@ -145,6 +135,30 @@ public class DriverCurrentRideFragment extends Fragment {
                     }
                 });
 
+            }
+        });
+
+        panic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String token = "Bearer " + getCurrentToken();
+                Call<Ride> call = rideService.panic(token, ride.getId(), new PanicRequest());
+
+                call.enqueue(new Callback<Ride>() {
+                    @Override
+                    public void onResponse(Call<Ride> call, Response<Ride> response) {
+                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                        FragmentTransition.to(draw, getActivity(), false);
+                        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
+                        fragmentTransaction.commit();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ride> call, Throwable t) {
+                        call.cancel();
+                    }
+                });
             }
         });
         phone.setOnClickListener(new View.OnClickListener() {

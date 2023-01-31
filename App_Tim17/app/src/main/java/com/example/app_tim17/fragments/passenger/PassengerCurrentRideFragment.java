@@ -22,23 +22,32 @@ import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.DrawRouteFragment;
+import com.example.app_tim17.fragments.driver.NoActiveRideFragment;
+import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.request.PanicRequest;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
 import com.example.app_tim17.tools.FragmentTransition;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
+import io.reactivex.CompletableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompHeader;
@@ -47,6 +56,8 @@ public class PassengerCurrentRideFragment extends Fragment {
     private CompositeDisposable compositeDisposable;
     private StompClient mStompClient;
     private RetrofitService retrofitService;
+    private Gson mGson = new GsonBuilder().create();
+    private RideService rideService;
     private TokenUtils tokenUtils;
     Gson gson = new Gson();
     private Long rideId;
@@ -75,8 +86,9 @@ public class PassengerCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
         retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
         Bundle args = getArguments();
         rideId = args.getLong("rideId");
         connectStomp();
@@ -92,7 +104,7 @@ public class PassengerCurrentRideFragment extends Fragment {
 
         Button phone = (Button) view.findViewById(R.id.call_driver);
         Button message = (Button) view.findViewById(R.id.message_driver);
-
+        Button panic = (Button) view.findViewById(R.id.panic_btn);
         String number = args.getString("driverPhoneNumber");
 
         driverName.setText(args.getString("driverName"));
@@ -120,6 +132,13 @@ public class PassengerCurrentRideFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + number));
                 startActivity(intent);
+            }
+        });
+
+        panic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendPanic();
             }
         });
 
@@ -213,6 +232,34 @@ public class PassengerCurrentRideFragment extends Fragment {
 
         compositeDisposable.add(dispTopic);
 
+    }
+
+    public void sendPanic() {
+        String token = "Bearer " + getCurrentToken();
+        Call<Ride> call = rideService.panic(token, rideId, new PanicRequest());
+
+        call.enqueue(new Callback<Ride>() {
+            @Override
+            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                FragmentTransition.to(draw, getActivity(), false);
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.currentRide, new PassengerCreateRideFragment()  );
+                fragmentTransaction.commit();
+            }
+
+            @Override
+            public void onFailure(Call<Ride> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    protected CompletableTransformer applySchedulers() {
+        return upstream -> upstream
+                .unsubscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private void resetSubscriptions() {
