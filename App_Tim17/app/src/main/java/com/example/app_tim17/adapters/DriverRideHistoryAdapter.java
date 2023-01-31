@@ -1,6 +1,7 @@
 package com.example.app_tim17.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,35 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.RideInfoFragment;
+import com.example.app_tim17.model.response.ride.Ride;
+import com.example.app_tim17.tools.Utils;
+
+import java.util.List;
 
 public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHistoryAdapter.ViewHolder> {
-    private String[] dates;
-    private String[] startTimes;
-    private String[] endTimes;
-    private String[] durations;
-    private String[] prices;
-    private String[] numOfPassengers;
-//    private int[] rating;
-    private String[] startAddresses;
-    private String[] endAddresses;
-    private String[] roadLengths;
+    private List<Ride> rides;
     private Context context;
+    private Ride ride;
 
-    public DriverRideHistoryAdapter(Context context, String[] date, String[] startTime, String[] endTime,
-                                    String[] duration, String[] price, String[] numOfPassengers,
-                                    String[] startAddress, String[] endAddress, String[] roadLength) {
+    public DriverRideHistoryAdapter(Context context, List<Ride> rides) {
         super();
         this.context = context;
-        this.dates = date;
-        this.startTimes = startTime;
-        this.endTimes = endTime;
-        this.durations = duration;
-        this.prices = price;
-        this.numOfPassengers = numOfPassengers;
-//        this.rating = rating;
-        this.startAddresses = startAddress;
-        this.endAddresses = endAddress;
-        this.roadLengths = roadLength;
+        this.rides = rides;
     }
     @NonNull
     @Override
@@ -53,21 +39,28 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.dateTextView.setText(dates[position]);
-        holder.startTimeTextView.setText(startTimes[position]);
-        holder.endTimeTextView.setText(endTimes[position]);
-        holder.durationTextView.setText(durations[position]);
-        holder.priceTextView.setText(prices[position]);
-        holder.numOfPassengersTextView.setText(numOfPassengers[position]);
-        holder.startAddressTextView.setText(startAddresses[position]);
-        holder.endAddressTextView.setText(endAddresses[position]);
-        holder.roadLengthTextView.setText(roadLengths[position] + " km");
+        ride = rides.get(position);
+
+        holder.dateTextView.setText(ride.getStartTime().split("T")[0]);
+        holder.startTimeTextView.setText(ride.getStartTime().split("T")[1].substring(0, 5));
+        holder.endTimeTextView.setText(ride.getEndTime().split("T")[1].substring(0, 5));
+        holder.durationTextView.setText(ride.getEstimatedTimeInMinutes() + " min");
+        holder.priceTextView.setText(ride.getTotalCost() + " RSD");
+//        holder.numOfPassengersTextView.setText();
+        holder.startAddressTextView.setText(ride.getLocations().get(0).getDeparture().getAddress());
+        holder.endAddressTextView.setText(ride.getLocations().get(0).getDestination().getAddress());
+        holder.roadLengthTextView.setText(" km"); //TODO add length
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 RideInfoFragment fragment = new RideInfoFragment();
+
+                Bundle args = new Bundle();
+                args.putString("ride", Utils.getGsonParser().toJson(ride));
+                fragment.setArguments(args);
+
                 FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
                 transaction.commit();
@@ -80,7 +73,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
     @Override
     public int getItemCount() {
         // this method is used for showing number of card items in recycler view
-        return 6;
+        return rides.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

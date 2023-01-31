@@ -1,6 +1,5 @@
 package com.example.app_tim17.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,11 +19,8 @@ import com.example.app_tim17.R;
 import com.example.app_tim17.model.request.LoginRequest;
 import com.example.app_tim17.model.response.LoginResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
-import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.TokenUtils;
 import com.example.app_tim17.service.UserService;
-
-import org.json.JSONException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,6 +66,7 @@ public class UserLoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             LoginResponse token = response.body();
+
                             if (token != null) {
                                 SharedPreferences sharedPreferences = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor edit = sharedPreferences.edit();
@@ -92,7 +89,8 @@ public class UserLoginActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(UserLoginActivity.this, "...", Toast.LENGTH_SHORT).show();
                                 }
-
+                            } else {
+                                Toast.makeText(UserLoginActivity.this, "Email or password not valid", Toast.LENGTH_SHORT).show();
                             }
                         }
 

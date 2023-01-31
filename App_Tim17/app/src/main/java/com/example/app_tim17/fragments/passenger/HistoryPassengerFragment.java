@@ -84,7 +84,7 @@ public class HistoryPassengerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history_passenger, container, false);
         recyclerView = view.findViewById(R.id.pass_history_cards);
         recyclerView.setHasFixedSize(true);
-        rideHistoryAdapter = new DriverRideHistoryAdapter(getContext(), dates, startTime, endTime, duration, price, numOfPassengers, startAddress, endAddress,roadLength);
+//        rideHistoryAdapter = new DriverRideHistoryAdapter(getContext(), dates, startTime, endTime, duration, price, numOfPassengers, startAddress, endAddress,roadLength);
 
         linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
