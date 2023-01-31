@@ -2,11 +2,8 @@ package com.example.app_tim17.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,19 +17,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.activities.PassengerRegisterActivity;
-import com.example.app_tim17.activities.UserLoginActivity;
-import com.example.app_tim17.fragments.passenger.ReviewDriverAndVehicleFragment;
-import com.example.app_tim17.model.request.DocumentRequest;
 import com.example.app_tim17.model.request.DriverUpdateRequest;
 import com.example.app_tim17.model.request.PassengerUpdateRequest;
-import com.example.app_tim17.model.request.UserRequest;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.PassengerService;
 import com.example.app_tim17.service.TokenUtils;
-
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -101,6 +91,9 @@ public class EditProfileFragment extends Fragment {
                         public void onResponse(Call<PassengerUpdateRequest> call, Response<PassengerUpdateRequest> response) {
                             PassengerUpdateRequest user = response.body();
                             Toast.makeText(getContext(), "Successfully updated!", Toast.LENGTH_SHORT).show();
+                            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                            transaction.remove(EditProfileFragment.this);
+                            transaction.commit();
                         }
 
                         @Override
@@ -110,10 +103,10 @@ public class EditProfileFragment extends Fragment {
                         }
                     });
                 } else {
-                    Call<String> passengerUpdate = driverService.driverUpdateRequest(getCurrentToken(),
+                    Call<String> driverUpdate = driverService.driverUpdateRequest(getCurrentToken(),
                             new DriverUpdateRequest(name.getEditableText().toString(), surname.getEditableText().toString(), null,
                                     phoneNumber.getEditableText().toString(),  email.getEditableText().toString(), address.getEditableText().toString(), null));
-                    passengerUpdate.enqueue(new Callback<String>() {
+                    driverUpdate.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
                             String answer = response.body();

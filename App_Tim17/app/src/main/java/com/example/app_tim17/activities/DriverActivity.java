@@ -20,9 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.ChangePasswordFragment;
 import com.example.app_tim17.fragments.MapsFragment;
 import com.example.app_tim17.fragments.driver.ChatDriverFragment;
 import com.example.app_tim17.fragments.driver.DriverAcceptanceRideFragment;
+import com.example.app_tim17.fragments.driver.DriverStatisticsFragment;
 import com.example.app_tim17.fragments.driver.HistoryDriverFragment;
 import com.example.app_tim17.fragments.driver.InboxDriverFragment;
 import com.example.app_tim17.fragments.driver.MainDriverFragment;
@@ -143,6 +145,12 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 this.finish();
                 return true;
             }
+            case R.id.change_password: {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_driver_container, new ChangePasswordFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -158,22 +166,26 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_driver_container, InboxDriverFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Inbox");
                 return true;
             case R.id.home_driver:
                 transaction.setReorderingAllowed(true);
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.fragment_driver_container, MainDriverFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Ryde");
                 return true;
             case R.id.history_driver:
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_driver_container, HistoryDriverFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("History");
                 return true;
             case R.id.profile_driver:
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_driver_container, ProfileDriverFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Profile");
                 return true;
         }
         return false;

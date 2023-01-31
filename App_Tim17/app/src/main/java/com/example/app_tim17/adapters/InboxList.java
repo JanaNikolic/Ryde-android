@@ -52,7 +52,6 @@ public class InboxList extends ArrayAdapter{
         TextView time = (TextView) row.findViewById(R.id.time);
         TextView message = (TextView) row.findViewById(R.id.message);
         ShapeableImageView profilePicture = (ShapeableImageView) row.findViewById(R.id.profile_pic);
-        Log.d("TAG", Types.get(position));
         if (Types.get(position).equals("SUPPORT")) {
             image.setStrokeColor(ColorStateList.valueOf(Color.BLUE));
         } else if (Types.get(position).equals("RIDE")) {

@@ -13,4 +13,10 @@
         android:icon="@drawable/ic_baseline_more_vert_24"
         app:showAsAction="never"
         />
+    <item
+        android:title="Change password"
+        android:id="@+id/change_password"
+        android:orderInCategory="150"
+        app:showAsAction="never"
+        />
 </menu>
