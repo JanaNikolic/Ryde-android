@@ -1,6 +1,7 @@
 package com.example.app_tim17.service;
 
 import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.request.PanicRequest;
 import com.example.app_tim17.model.request.RejectionRequest;
 import com.example.app_tim17.model.request.RideRequest;
 import com.example.app_tim17.model.response.message.Message;
@@ -34,4 +35,7 @@ public interface RideService {
 
     @PUT("ride/{id}/start")
     Call<Ride> startRide(@Header("Authorization") String token, @Path("id") Long id);
+
+    @PUT("ride/{id}/panic")
+    Call<Ride> panic(@Header("Authorization") String token, @Path("id") Long id, @Body PanicRequest request);
 }

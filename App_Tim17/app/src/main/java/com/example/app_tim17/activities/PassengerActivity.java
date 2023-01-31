@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.ChangePasswordFragment;
+import com.example.app_tim17.fragments.driver.DriverStatisticsFragment;
 import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
 import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
@@ -60,7 +62,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
         connectStomp();
     }
 
@@ -78,6 +80,13 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                 edit.commit();
                 startActivity(new Intent(getApplicationContext(), UserLoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
+                return true;
+            }
+            case R.id.change_password: {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_passenger_container, new ChangePasswordFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
                 return true;
             }
             default:
@@ -103,21 +112,25 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_passenger_container, InboxPassengerFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Inbox");
                 return true;
             case R.id.home:
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_passenger_container, MainPassengerFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Ryde");
                 return true;
             case R.id.history:
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_passenger_container, HistoryPassengerFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("History");
                 return true;
             case R.id.profile:
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_passenger_container, ProfilePassengerFragment.class, null);
                 transaction.commit();
+                getSupportActionBar().setTitle("Profile");
                 return true;
         }
         return false;

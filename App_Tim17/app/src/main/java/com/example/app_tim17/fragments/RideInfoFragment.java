@@ -83,7 +83,7 @@ public class RideInfoFragment extends Fragment {
         endTime.setText(ride.getEndTime().split("T")[1].substring(0, 5));
         price.setText(String.format("%d RSD", ride.getTotalCost()));
 
-        Call<PassengerResponse> call = passengerService.getPassenger(passengerRideResponse.getId(), "Bearer " + getCurrentToken());
+        Call<PassengerResponse> call = passengerService.getPassenger("Bearer " + getCurrentToken(), passengerRideResponse.getId());
 
         call.enqueue(new Callback<PassengerResponse>() {
             @Override
