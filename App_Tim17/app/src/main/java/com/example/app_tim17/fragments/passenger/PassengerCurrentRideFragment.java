@@ -120,9 +120,9 @@ public class PassengerCurrentRideFragment extends Fragment {
         Bundle route = getArguments().getBundle("route");
 
         if (route != null) {
-//            DrawRouteFragment draw = DrawRouteFragment.newInstance();
-//            draw.setArguments(route);
-//            FragmentTransition.to(draw, getActivity(), false);
+            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+            draw.setArguments(route);
+            FragmentTransition.to(draw, getActivity(), false);
         }
 //        args.getString("driverImage"); // TODO
 
@@ -241,8 +241,8 @@ public class PassengerCurrentRideFragment extends Fragment {
         call.enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
-//                DrawRouteFragment draw = DrawRouteFragment.newInstance();
-//                FragmentTransition.to(draw, getActivity(), false);
+                DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                FragmentTransition.to(draw, getActivity(), false);
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.currentRide, new PassengerCreateRideFragment()  );
                 fragmentTransaction.commit();

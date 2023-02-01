@@ -85,20 +85,12 @@ public class RideInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ride_info, container, false);
 
         DrawRouteFragment fragment = new DrawRouteFragment();
-//        Bundle args = new Bundle();
+        Bundle args = new Bundle();
 
+        args.putString("fromAddress", ride.getLocations().get(0).getDeparture().getAddress());
+        args.putString("toAddress", ride.getLocations().get(0).getDestination().getAddress());
 
-//        args.putDouble("fromLat", ride.getLocations().get(0).getDeparture().getLatitude());
-//        args.putDouble("fromLng", ride.getLocations().get(0).getDeparture().getLongitude());
-//        args.putDouble("toLat", ride.getLocations().get(0).getDestination().getLatitude());
-//        args.putDouble("toLng", ride.getLocations().get(0).getDestination().getLongitude());
-//
-//        Log.i("fromLat", String.valueOf(ride.getLocations().get(0).getDeparture().getLatitude()));
-//        Log.i("fromLng", String.valueOf(ride.getLocations().get(0).getDeparture().getLongitude()));
-//        Log.i("toLat", String.valueOf(ride.getLocations().get(0).getDestination().getLatitude()));
-//        Log.i("toLng", String.valueOf(ride.getLocations().get(0).getDestination().getLongitude()));
-
-//        fragment.setArguments(args);
+        fragment.setArguments(args);
         FragmentManager manager = getChildFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         ft.replace(R.id.map_container, fragment);
@@ -136,14 +128,9 @@ public class RideInfoFragment extends Fragment {
                 driverReviewCard = (CardView) inflater.inflate(R.layout.review_card, container, false);
 
                 if (passenger != null) {
-                    Log.i("jeeeeeeees", "");
-                    if (rideReviews != null) {
-                        Log.i("jeeeeeeees", "reviews not null");
+                    if (rideReviews != null && rideReviews.getVehicleReview().size() != 0 && rideReviews.getDriverReview().size() != 0) {
                         for (DriverReview driverReview: rideReviews.getDriverReview()) {
-                            Log.i("jeeeeeeees", "for petlja");
-
                             if (Objects.equals(passenger.getId(), driverReview.getPassenger().getId())) {
-                                Log.i("jeeeeeeees", "if pass ...");
 
                                 TextView passInfo = driverReviewCard.findViewById(R.id.review_passenger);
                                 passInfo.setText(String.format("%s %s", passenger.getName(), passenger.getSurname()));

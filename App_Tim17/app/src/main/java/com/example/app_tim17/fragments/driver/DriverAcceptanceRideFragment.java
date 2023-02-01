@@ -22,9 +22,11 @@ import com.example.app_tim17.model.request.RejectionRequest;
 import com.example.app_tim17.model.response.Location;
 import com.example.app_tim17.model.response.ride.LocationForRide;
 import com.example.app_tim17.model.response.ride.Ride;
+import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.RideService;
+import com.example.app_tim17.service.TokenUtils;
 import com.example.app_tim17.tools.FragmentTransition;
 import com.example.app_tim17.tools.Utils;
 
@@ -39,6 +41,8 @@ import retrofit2.Retrofit;
 public class DriverAcceptanceRideFragment extends Fragment {
     private RetrofitService retrofitService;
     private RideService rideService;
+    private DriverService driverService;
+    private String vehicleAddress;
 
     public DriverAcceptanceRideFragment() {
         super(R.layout.fragment_driver_acceptance_ride);
@@ -47,6 +51,7 @@ public class DriverAcceptanceRideFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -64,6 +69,30 @@ public class DriverAcceptanceRideFragment extends Fragment {
         Button reject = view.findViewById(R.id.decline);
         retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
+        driverService = retrofitService.getRetrofit().create(DriverService.class);
+        String token = getCurrentToken();
+
+        TokenUtils tokenUtils = new TokenUtils();
+
+        Long id = tokenUtils.getId(token);
+
+        Call<VehicleResponse> call = driverService.getDriversVehicle(id,"Bearer " + token);
+
+        call.enqueue(new Callback<VehicleResponse>() {
+            @Override
+            public void onResponse(Call<VehicleResponse> call, Response<VehicleResponse> response) {
+                VehicleResponse vehicleResponse = response.body();
+
+                if (vehicleResponse != null) {
+                    vehicleAddress = vehicleResponse.getCurrentLocation().getAddress();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VehicleResponse> call, Throwable t) {
+
+            }
+        });
 
         Bundle args = getArguments();
         Ride ride = null;
@@ -100,28 +129,13 @@ public class DriverAcceptanceRideFragment extends Fragment {
 
                             args.putString("ride", Utils.getGsonParser().toJson(ride));
 
-                            Bundle sentArgs = getArguments();
+                            Log.i("vehicle adresa", vehicleAddress);
+                            route.putString("fromAddress", vehicleAddress);
+                            route.putString("toAddress", ride.getLocations().get(0).getDeparture().getAddress());
 
-                            if (sentArgs != null && sentArgs.containsKey("currentLat") && sentArgs.containsKey("currentLng")) {
-                                // from driver accepting ride, his current location routing to the pickup location
-                                route.putDouble("fromLat", sentArgs.getDouble("currentLat"));
-                                route.putDouble("fromLng", sentArgs.getDouble("currentLng"));
-                                Log.i("prva", "prvi if");
-                                route.putDouble("toLat", 45.257430);
-                                route.putDouble("toLng", 19.840850);
-                            } else {
-                                Toast.makeText(view.getContext(), "Oops, something went wrong...", Toast.LENGTH_SHORT).show();
-                            }
-
-                            Log.i("fromLat", String.valueOf(route.getDouble("fromLat")));
-                            Log.i("fromLng", String.valueOf(route.getDouble("fromLng")));
-                            Log.i("toLat", String.valueOf(route.getDouble("toLat")));
-                            Log.i("toLng", String.valueOf(route.getDouble("toLng")));
-
-
-//                            DrawRouteFragment draw = DrawRouteFragment.newInstance();
-//                            draw.setArguments(route);
-//                            FragmentTransition.to(draw, getActivity(), false);
+                            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                            draw.setArguments(route);
+                            FragmentTransition.to(draw, getActivity(), false);
 
                             DriverOnRouteFragment driverOnRouteFragment = new DriverOnRouteFragment();
                             driverOnRouteFragment.setArguments(args);
