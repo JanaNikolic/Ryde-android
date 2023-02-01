@@ -32,6 +32,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.model.request.PassengerRequest;
 import com.example.app_tim17.model.request.RideRequest;
 import com.example.app_tim17.model.response.Location;
@@ -43,6 +44,7 @@ import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.MessageService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.tools.FragmentTransition;
 import com.shuhart.stepview.StepView;
 
 import java.util.ArrayList;
@@ -271,6 +273,15 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                         locationForRidelist.add(locationsForRide);
                         rideRequest.setLocations(locationForRidelist);
 
+                        Bundle route = new Bundle();
+
+                        route.putString("fromAddress", departure.getEditableText().toString());
+                        route.putString("toAddress", destination.getEditableText().toString());
+
+                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                        draw.setArguments(route);
+                        FragmentTransition.to(draw, getActivity(), false);
+
                         position = 1;
                         stepView.done(false);
                         buttonNext.setText("Next");
@@ -367,11 +378,6 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                     Bundle args = new Bundle();
                     Bundle route = new Bundle();
 
-//                    route.putDouble("fromLat", 45.259570);
-//                    route.putDouble("fromLng", 19.849290);
-//
-//                    route.putDouble("toLat", 45.243650);
-//                    route.putDouble("toLng", 19.840560);
                     route.putString("fromAddress", ride.getLocations().get(0).getDeparture().getAddress());
                     route.putString("toAddress", ride.getLocations().get(0).getDestination().getAddress());
 

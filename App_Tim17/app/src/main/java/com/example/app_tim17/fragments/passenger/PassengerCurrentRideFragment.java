@@ -119,11 +119,11 @@ public class PassengerCurrentRideFragment extends Fragment {
         startTime.setText(args.getString("timeStart").split("T")[1].split("\\.")[0]);
         Bundle route = getArguments().getBundle("route");
 
-        if (route != null) {
-            DrawRouteFragment draw = DrawRouteFragment.newInstance();
-            draw.setArguments(route);
-            FragmentTransition.to(draw, getActivity(), false);
-        }
+//        if (route != null) { TODO remove
+//            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//            draw.setArguments(route);
+//            FragmentTransition.to(draw, getActivity(), false);
+//        }
 //        args.getString("driverImage"); // TODO
 
         phone.setOnClickListener(new View.OnClickListener() {
