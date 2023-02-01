@@ -1,4 +1,4 @@
-package Adapters;
+package com.example.app_tim17.adapters;
 
 
 import android.app.Activity;
@@ -30,7 +30,7 @@ public class FavoriteRouteAdapter extends ArrayAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view=convertView;
+        View view = convertView;
         LayoutInflater inflater = context.getLayoutInflater();
         if(convertView==null)
             view = inflater.inflate(R.layout.fav_route_adapt, null, true);

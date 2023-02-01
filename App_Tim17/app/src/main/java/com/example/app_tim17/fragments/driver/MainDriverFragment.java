@@ -87,6 +87,12 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
         // Open fragment
         replaceFragment(fragment);
 
+        FragmentManager manager = getChildFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.replace(R.id.currentRide, new NoActiveRideFragment(), NoActiveRideFragment.class.getName());
+        ft.addToBackStack(null);
+        ft.commit();
+
 //        new Timer().schedule(new TimerTask() {
 //            @Override
 //            public void run() {

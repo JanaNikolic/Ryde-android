@@ -103,7 +103,7 @@ public class InboxPassengerFragment extends Fragment {
             @Override
             public void onFailure(Call<ChatResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(getContext(), "NOT WORKING", Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(), "NOT WORKING", Toast.LENGTH_SHORT);
             }
         });
 

@@ -46,7 +46,9 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,9 +63,8 @@ public class ProfileDriverFragment extends Fragment {
 
     private DriverService driverService;
     private TokenUtils tokenUtils;
-    private String thisMonthStart;
-    private String thisMonthEnd;
-    private UserResponse driver;
+    private String thisMonthStart, thisMonthEnd, thisWeekStart, thisWeekEnd, thisDay;
+    private UserResponse driver = new UserResponse();
     private ShapeableImageView profilePic;
 
 
@@ -95,7 +96,9 @@ public class ProfileDriverFragment extends Fragment {
         LocalDate lastDay = LocalDate.now().plusMonths(1).withDayOfMonth(1);
         thisMonthStart = firstDay.toString();
         thisMonthEnd = lastDay.toString();
-        initializeComponents(view);
+        thisWeekStart = LocalDate.now().with(DayOfWeek.MONDAY).toString();
+        thisWeekEnd = LocalDate.now().with(DayOfWeek.SUNDAY).toString();
+        thisDay = LocalDate.now().toString();
 
 
         profilePic = (ShapeableImageView) view.findViewById(R.id.profile_pic);
@@ -138,6 +141,8 @@ public class ProfileDriverFragment extends Fragment {
                 transaction.commit();
             }
         });
+
+        initializeComponents(view);
         return view;
     }
 
@@ -150,9 +155,15 @@ public class ProfileDriverFragment extends Fragment {
         TextView fullname = view.findViewById(R.id.fullname_field);
         TextView emailfield = view.findViewById(R.id.email_field);
 
-        TextView numberOfRides = (TextView) view.findViewById(R.id.number_of_rides);
-        TextView moneyAmount = (TextView) view.findViewById(R.id.money_amount);
-        TextView kilometers = (TextView) view.findViewById(R.id.kilometers);
+        TextView numberOfRidesDay = (TextView) view.findViewById(R.id.number_of_rides_day);
+        TextView numberOfRidesWeek = (TextView) view.findViewById(R.id.number_of_rides_week);
+        TextView numberOfRidesMonth = (TextView) view.findViewById(R.id.number_of_rides_month);
+        TextView moneyAmountDay = (TextView) view.findViewById(R.id.money_amount_day);
+        TextView moneyAmountWeek = (TextView) view.findViewById(R.id.money_amount_week);
+        TextView moneyAmountMonth = (TextView) view.findViewById(R.id.money_amount_month);
+        TextView workingHoursDay = (TextView) view.findViewById(R.id.kilometers_day);
+        TextView workingHoursWeek = (TextView) view.findViewById(R.id.kilometers_week);
+        TextView workingHoursMonth = (TextView) view.findViewById(R.id.kilometers_month);
 
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
@@ -162,11 +173,18 @@ public class ProfileDriverFragment extends Fragment {
 
         Call<VehicleResponse> callVehicle = driverService.getDriversVehicle(id, "Bearer " + token);
 
-        Call<RideStatisticsResponse> rideCount = driverService.getRideCount(id, "Bearer " + token, thisMonthStart, thisMonthEnd);
+        Call<RideStatisticsResponse> rideCountDay = driverService.getRideCount(id, "Bearer " + token, thisDay, thisDay);
+        Call<RideStatisticsResponse> rideCountWeek = driverService.getRideCount(id, "Bearer " + token, thisWeekStart, thisWeekEnd);
+        Call<RideStatisticsResponse> rideCountMonth = driverService.getRideCount(id, "Bearer " + token, thisMonthStart, thisMonthEnd);
 
-        Call<MoneyStatisticsResponse> moneyCount = driverService.getMoneyCount(id, "Bearer " + token, thisMonthStart, thisMonthEnd);
+        Call<MoneyStatisticsResponse> moneyCountDay = driverService.getMoneyCount(id, "Bearer " + token, thisDay, thisDay);
+        Call<MoneyStatisticsResponse> moneyCountWeek = driverService.getMoneyCount(id, "Bearer " + token, thisWeekStart, thisWeekEnd);
+        Call<MoneyStatisticsResponse> moneyCountMonth = driverService.getMoneyCount(id, "Bearer " + token, thisMonthStart, thisMonthEnd);
 
-        Call<DistanceStatisticsResponse> distanceCount = driverService.getDistanceCount(id, "Bearer " + token, thisMonthStart, thisMonthEnd);
+        Call<Long> hoursCountDay = driverService.getWorkingHours("Bearer " + token, thisDay, thisDay);
+        Call<Long> hoursCountWeek = driverService.getWorkingHours("Bearer " + token, thisWeekStart, thisWeekEnd);
+        Call<Long> hoursCountMonth = driverService.getWorkingHours("Bearer " + token, thisMonthStart, thisMonthEnd);
+
 
         callVehicle.enqueue(new Callback<VehicleResponse>() {
             @Override
@@ -207,51 +225,144 @@ public class ProfileDriverFragment extends Fragment {
             }
         });
 
-        rideCount.enqueue(new Callback<RideStatisticsResponse>() {
+        rideCountDay.enqueue(new Callback<RideStatisticsResponse>() {
             @Override
             public void onResponse(Call<RideStatisticsResponse> call, Response<RideStatisticsResponse> response) {
                 RideStatisticsResponse stats = response.body();
 
                 if (stats != null) {
-                    numberOfRides.setText(stats.getTotalCount().toString());
+                    numberOfRidesDay.setText(stats.getTotalCount().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<RideStatisticsResponse> call, Throwable t) {
-                rideCount.cancel();
+                rideCountDay.cancel();
             }
         });
 
-        moneyCount.enqueue(new Callback<MoneyStatisticsResponse>() {
+        rideCountWeek.enqueue(new Callback<RideStatisticsResponse>() {
+            @Override
+            public void onResponse(Call<RideStatisticsResponse> call, Response<RideStatisticsResponse> response) {
+                RideStatisticsResponse stats = response.body();
+
+                if (stats != null) {
+                    numberOfRidesWeek.setText(stats.getTotalCount().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RideStatisticsResponse> call, Throwable t) {
+                rideCountWeek.cancel();
+            }
+        });
+
+        rideCountMonth.enqueue(new Callback<RideStatisticsResponse>() {
+            @Override
+            public void onResponse(Call<RideStatisticsResponse> call, Response<RideStatisticsResponse> response) {
+                RideStatisticsResponse stats = response.body();
+
+                if (stats != null) {
+                    numberOfRidesMonth.setText(stats.getTotalCount().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RideStatisticsResponse> call, Throwable t) {
+                rideCountMonth.cancel();
+            }
+        });
+
+        moneyCountDay.enqueue(new Callback<MoneyStatisticsResponse>() {
             @Override
             public void onResponse(Call<MoneyStatisticsResponse> call, Response<MoneyStatisticsResponse> response) {
                 MoneyStatisticsResponse stats = response.body();
-
-                if (stats != null) {
-                    moneyAmount.setText(Float.toString(stats.getTotalCount()));
-                }
+                if (stats != null) moneyAmountDay.setText(Float.toString(stats.getTotalCount()));
             }
 
             @Override
             public void onFailure(Call<MoneyStatisticsResponse> call, Throwable t) {
-                moneyCount.cancel();
+                moneyCountDay.cancel();
             }
         });
 
-        distanceCount.enqueue(new Callback<DistanceStatisticsResponse>() {
+        moneyCountWeek.enqueue(new Callback<MoneyStatisticsResponse>() {
             @Override
-            public void onResponse(Call<DistanceStatisticsResponse> call, Response<DistanceStatisticsResponse> response) {
-                DistanceStatisticsResponse stats = response.body();
+            public void onResponse(Call<MoneyStatisticsResponse> call, Response<MoneyStatisticsResponse> response) {
+                MoneyStatisticsResponse stats = response.body();
+                if (stats != null) moneyAmountWeek.setText(Float.toString(stats.getTotalCount()));
+            }
 
-                if (stats != null) {
-                    kilometers.setText(Float.toString(stats.getTotalCount()));
+            @Override
+            public void onFailure(Call<MoneyStatisticsResponse> call, Throwable t) {
+                moneyCountWeek.cancel();
+            }
+        });
+
+        moneyCountMonth.enqueue(new Callback<MoneyStatisticsResponse>() {
+            @Override
+            public void onResponse(Call<MoneyStatisticsResponse> call, Response<MoneyStatisticsResponse> response) {
+                MoneyStatisticsResponse stats = response.body();
+                if (stats != null) moneyAmountMonth.setText(Float.toString(stats.getTotalCount()));
+            }
+
+            @Override
+            public void onFailure(Call<MoneyStatisticsResponse> call, Throwable t) {
+                moneyCountMonth.cancel();
+            }
+        });
+
+        hoursCountDay.enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                Long stat = response.body();
+                if (stat != null) {
+                    int hoursandminutes = stat.intValue();
+                    int hours = hoursandminutes / 60;
+                    int minutes = hoursandminutes%60;
+                    workingHoursDay.setText(hours + "h" + minutes + "min");
                 }
             }
 
             @Override
-            public void onFailure(Call<DistanceStatisticsResponse> call, Throwable t) {
-                distanceCount.cancel();
+            public void onFailure(Call<Long> call, Throwable t) {
+                hoursCountDay.cancel();
+            }
+        });
+
+        hoursCountWeek.enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                Long stat = response.body();
+                if (stat != null) {
+                    int hoursandminutes = stat.intValue();
+                    int hours = hoursandminutes / 60;
+                    int minutes = hoursandminutes%60;
+                    workingHoursWeek.setText(hours + "h" + minutes + "min");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                hoursCountWeek.cancel();
+            }
+        });
+
+        hoursCountMonth.enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                Long stat = response.body();
+                if (stat != null) {
+                    int hoursandminutes = stat.intValue();
+                    int hours = hoursandminutes / 60;
+                    int minutes = hoursandminutes%60;
+                    workingHoursMonth.setText(hours + "h" + minutes + "min");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                hoursCountMonth.cancel();
             }
         });
     }

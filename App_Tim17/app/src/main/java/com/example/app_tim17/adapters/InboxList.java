@@ -56,13 +56,17 @@ public class InboxList extends ArrayAdapter{
         TextView userName = (TextView) row.findViewById(R.id.username);
         TextView time = (TextView) row.findViewById(R.id.time);
         TextView message = (TextView) row.findViewById(R.id.message);
+        TextView type = (TextView) row.findViewById(R.id.type);
+
         ShapeableImageView profilePicture = (ShapeableImageView) row.findViewById(R.id.profile_pic);
         if (Types.get(position).equals("SUPPORT")) {
             image.setStrokeColor(ColorStateList.valueOf(Color.BLUE));
-        } else if (Types.get(position).equals("RIDE")) {
-            image.setStrokeColor(ColorStateList.valueOf(Color.GREEN));
+            type.setText(Types.get(position));
+            type.setTextColor(ColorStateList.valueOf(Color.BLUE));
         } else {
-            image.setStrokeColor(ColorStateList.valueOf(Color.RED));
+            image.setStrokeColor(ColorStateList.valueOf(Color.GREEN));
+            type.setText(Types.get(position));
+            type.setTextColor(ColorStateList.valueOf(Color.GREEN));
         }
         userName.setText(UserNames.get(position));
         time.setText(Times.get(position));

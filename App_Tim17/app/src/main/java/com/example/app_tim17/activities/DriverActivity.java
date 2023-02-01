@@ -96,7 +96,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         retrofitService = new RetrofitService();
         driverService = retrofitService.getRetrofit().create(DriverService.class);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.86.110:8080/example-endpoint/websocket");
         connectStomp();
         startWorkingHour();
     }
@@ -170,7 +170,6 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 return true;
             case R.id.home_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.addToBackStack(null);
                 transaction.replace(R.id.fragment_driver_container, MainDriverFragment.class, null);
                 transaction.commit();
                 getSupportActionBar().setTitle("Ryde");
@@ -259,7 +258,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                     acceptanceRideFragment.setArguments(finalArgs);
 
                     getSupportFragmentManager().beginTransaction()
-                            .add(R.id.map_container, acceptanceRideFragment)
+                            .replace(R.id.map_container, acceptanceRideFragment)
                             .commitAllowingStateLoss();
                 }
             }
