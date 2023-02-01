@@ -36,6 +36,9 @@ public interface RideService {
     @PUT("ride/{id}/start")
     Call<Ride> startRide(@Header("Authorization") String token, @Path("id") Long id);
 
+    @PUT("ride/{id}/withdraw")
+    Call<Ride> withdrawRide(@Header("Authorization") String token, @Path("id") Long id);
+
     @PUT("ride/{id}/panic")
     Call<Ride> panic(@Header("Authorization") String token, @Path("id") Long id, @Body PanicRequest request);
 }

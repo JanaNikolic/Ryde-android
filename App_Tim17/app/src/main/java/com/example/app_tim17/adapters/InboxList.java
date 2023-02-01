@@ -40,7 +40,7 @@ public class InboxList extends ArrayAdapter{
             this.UserNames.add(chat.getUser().getName() + " " + chat.getUser().getSurname());
             this.Times.add(chat.getLastMessage().getTimeOfSending().substring(11, 16));
             this.Messages.add(chat.getLastMessage().getMessage());
-            this.Types.add(chat.getLastMessage().getType());
+            this.Types.add(chat.getType());
             this.ProfilePictures.add(chat.getUser().getProfilePicture());
         }
     }
