@@ -40,6 +40,10 @@ public interface DriverService {
     Call<MoneyStatisticsResponse> getMoneyCount(@Path("id") Long id, @Header("Authorization") String token,
                                                 @Query("startDate") String startDate, @Query("endDate") String endDate);
 
+    @GET("driver/workingHours")
+    Call<Long> getWorkingHours(@Header("Authorization") String token,
+                                                @Query("startDate") String startDate, @Query("endDate") String endDate);
+
     @POST("driver/updateRequest")
     Call<String> driverUpdateRequest(@Header("Authorization") String token, @Body DriverUpdateRequest updateRequest);
 
@@ -48,4 +52,6 @@ public interface DriverService {
 
     @PUT("driver/working-hour/{id}")
     Call<WorkingHour> endShift(@Header("Authorization") String token, @Path("id") Long id, @Body EndWorkingHour workingHour);
+
+
 }

@@ -39,11 +39,9 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/currentRide"
-                android:name="com.example.app_tim17.fragments.driver.NoActiveRideFragment"
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout="@layout/fragment_no_active_ride" />
+                android:layout_height="match_parent" />
 
         </FrameLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -220,11 +220,11 @@ public class DriverStatisticsFragment extends Fragment {
             DataPoint v = new DataPoint(x, y);
             dp[i] = v;
         }
-        if (size > 5 && size < 11) {
+        if (size > 6 && size < 11) {
             graphEarnings.getGridLabelRenderer().setNumHorizontalLabels(size / 2);
             graphDistance.getGridLabelRenderer().setNumHorizontalLabels(size / 2);
             graphRides.getGridLabelRenderer().setNumHorizontalLabels(size / 2);
-        } else if (size > 10 && size < 20) {
+        } else if (size > 11 && size < 20) {
             graphEarnings.getGridLabelRenderer().setNumHorizontalLabels(size / 3);
             graphDistance.getGridLabelRenderer().setNumHorizontalLabels(size / 3);
             graphRides.getGridLabelRenderer().setNumHorizontalLabels(size / 3);

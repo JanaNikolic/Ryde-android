@@ -175,6 +175,7 @@ public class PassengerRegisterActivity extends AppCompatActivity {
                 if (validName && validAddress && validSurname && validEmail && validPassword && validPhoneNumber && password.getEditableText().toString().equals(confirmPasword.getEditableText().toString())) {
                     register();
                 } else {
+                    Toast.makeText(PassengerRegisterActivity.this, "Invalid form", Toast.LENGTH_SHORT).show();
                 }
             }
         });

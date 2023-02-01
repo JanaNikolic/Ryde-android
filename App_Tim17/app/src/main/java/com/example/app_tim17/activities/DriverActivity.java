@@ -96,7 +96,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         retrofitService = new RetrofitService();
         driverService = retrofitService.getRetrofit().create(DriverService.class);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.86.110:8080/example-endpoint/websocket");
         connectStomp();
         startWorkingHour();
     }
@@ -170,7 +170,6 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 return true;
             case R.id.home_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.addToBackStack(null);
                 transaction.replace(R.id.fragment_driver_container, MainDriverFragment.class, null);
                 transaction.commit();
                 getSupportActionBar().setTitle("Ryde");
@@ -223,13 +222,54 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Log.d("STOMP", "Received " + topicMessage.getPayload());
-                    mainFragment.openAcceptanceRide();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setReorderingAllowed(true);
+                    transaction.addToBackStack(null);
+                    transaction.replace(R.id.fragment_driver_container, MainDriverFragment.class, null);
+                    transaction.commit();
+                    getSupportActionBar().setTitle("Ryde");
+                    openAcceptanceRide();
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });
 
         compositeDisposable.add(dispTopic2);
     }
+
+    public void openAcceptanceRide() {
+        Toast.makeText(getApplicationContext(), "NEW RIDE", Toast.LENGTH_SHORT).show();
+
+        retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
+        String token = "Bearer " + getCurrentToken();
+
+        tokenUtils = new TokenUtils();
+        Call<Ride> call = rideService.getActiveRide(token, tokenUtils.getId(getCurrentToken()));
+
+        Bundle finalArgs = new Bundle();
+        call.enqueue(new Callback<Ride>() {
+            @Override
+            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                Ride ride = response.body();
+
+                if (ride != null) {
+                    finalArgs.putString("ride", Utils.getGsonParser().toJson(ride));
+                    DriverAcceptanceRideFragment acceptanceRideFragment = new DriverAcceptanceRideFragment();
+                    acceptanceRideFragment.setArguments(finalArgs);
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.map_container, acceptanceRideFragment)
+                            .commitAllowingStateLoss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Ride> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
 
     public void sendEchoViaStomp(MessageRequest message) {
         compositeDisposable.add(mStompClient.send("/topic/hello-msg-mapping", mGson.toJson(message))

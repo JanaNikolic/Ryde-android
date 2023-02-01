@@ -180,6 +180,8 @@ public class DriverCurrentRideFragment extends Fragment {
 
                 arg.putLong("userId", ride.getPassengers().get(0).getId());
                 arg.putString("userName", ride.getPassengers().get(0).getEmail());
+                arg.putString("type", "RIDE");
+                arg.putLong("ride", ride.getId());
 
                 ChatDriverFragment chatFragment = new ChatDriverFragment();
                 chatFragment.setArguments(arg);

@@ -26,11 +26,12 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/profile_pic"
                     android:layout_width="100dp"
+                    android:longClickable="true"
+                    android:scaleType="centerCrop"
                     android:layout_height="100dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="30dp"
                     android:padding="3dp"
-                    android:src="@drawable/profile_picture"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:shapeAppearanceOverlay="@style/Circular"
                     app:strokeColor="@color/yellow"

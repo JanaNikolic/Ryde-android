@@ -123,10 +123,7 @@ public class DriverAcceptanceRideFragment extends Fragment {
 
                             DriverOnRouteFragment driverOnRouteFragment = new DriverOnRouteFragment();
                             driverOnRouteFragment.setArguments(args);
-
-                            getParentFragmentManager().beginTransaction().remove(DriverAcceptanceRideFragment.this).commit();
-
-                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                            FragmentTransaction fragmentTransaction = getParentFragmentManager().findFragmentById(R.id.fragment_driver_container).getChildFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.currentRide, driverOnRouteFragment);
                             fragmentTransaction.commit();
                         }
