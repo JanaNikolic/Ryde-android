@@ -117,4 +117,12 @@
     <string name="change_password">Change Password</string>
     <string name="reset_code">Reset code</string>
     <string name="send_reset_code">Send reset code</string>
+    <string name="this_day">This Day</string>
+    <string name="rides">Rides</string>
+    <string name="this_month">This Month</string>
+    <string name="kilometers_driven">Kilometers Driven</string>
+    <string name="this_week">This Week</string>
+    <string name="money_earned">Money Earned</string>
+    <string name="today">Today</string>
+    <string name="working_hours">Working Hours</string>
 </resources>

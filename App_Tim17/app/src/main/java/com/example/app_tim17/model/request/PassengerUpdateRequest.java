@@ -1,5 +1,6 @@
 package com.example.app_tim17.model.request;
 
+import com.example.app_tim17.model.response.UserResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -34,6 +35,15 @@ public class PassengerUpdateRequest {
         this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
+    }
+
+    public PassengerUpdateRequest(UserResponse passenger) {
+        this.name = passenger.getName();
+        this.surname = passenger.getSurname();
+        this.profilePicture = passenger.getProfilePicture();
+        this.telephoneNumber = passenger.getTelephoneNumber();
+        this.email = passenger.getEmail();
+        this.address = passenger.getAddress();
     }
 
     public String getName() {

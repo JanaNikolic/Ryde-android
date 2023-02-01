@@ -151,6 +151,8 @@ public class PassengerCurrentRideFragment extends Fragment {
 
                 arg.putLong("userId", args.getLong("driverId"));
                 arg.putString("userName", args.getString("driverName"));
+                arg.putString("type", "RIDE");
+                arg.putLong("ride", rideId);
 
                 ChatFragment chatPassengerFragment = new ChatFragment();
                 chatPassengerFragment.setArguments(arg);

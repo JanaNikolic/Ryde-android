@@ -62,6 +62,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
 
+
         mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
         connectStomp();
     }
@@ -175,7 +176,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         compositeDisposable.add(dispLifecycle);
 
         // Receive greetings
-        Disposable dispTopic = mStompClient.topic("/socket-publisher/" + tokenUtils.getId(getCurrentToken()))
+        Disposable dispTopic = mStompClient.topic("/socket-publisher/" + TokenUtils.getId(getCurrentToken()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
@@ -193,10 +194,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         compositeDisposable.add(mStompClient.send("/topic/hello-msg-mapping", mGson.toJson(message))
                 .compose(applySchedulers())
                 .subscribe(() -> {
-                    Log.d("STOMP", "STOMP echo send successfully");
-                    Toast.makeText(getApplicationContext(), "Sent message", Toast.LENGTH_LONG).show();
                 }, throwable -> {
-                    Log.e("STOMP", "Error send STOMP echo", throwable);
                     Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG);
 
                 }));

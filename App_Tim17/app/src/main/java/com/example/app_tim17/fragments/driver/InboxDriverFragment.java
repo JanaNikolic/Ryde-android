@@ -111,6 +111,7 @@ public class InboxDriverFragment extends Fragment {
                 Chat chat = (Chat) inboxList.getItem(position);
                 args.putLong("userId", chat.getUser().getId());
                 args.putString("userName", chat.getUser().getName() + " " + chat.getUser().getSurname());
+                args.putString("type", chat.getType());
                 chatFragment.setArguments(args);
                 replaceFragment(chatFragment);
             }

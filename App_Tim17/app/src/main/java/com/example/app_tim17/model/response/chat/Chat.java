@@ -14,11 +14,15 @@ public class Chat implements Serializable {
     @SerializedName("lastMessage")
     @Expose
     private Message lastMessage;
+    @SerializedName("type")
+    @Expose
+    private String type;
 
-    public Chat(UserResponse user, Message lastMessage) {
+    public Chat(UserResponse user, Message lastMessage, String type) {
         super();
         this.user = user;
         this.lastMessage = lastMessage;
+        this.type = type;
     }
 
     public Chat() {
@@ -39,5 +43,13 @@ public class Chat implements Serializable {
 
     public void setLastMessage(Message lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
