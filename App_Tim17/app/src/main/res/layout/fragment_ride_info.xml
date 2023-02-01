@@ -24,16 +24,14 @@
         tools:layout_editor_absoluteX="2dp"
         tools:layout_editor_absoluteY="1dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/map"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map_container"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        tools:layout="@layout/fragment_maps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
@@ -125,7 +123,7 @@
 
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/map" />
+        app:layout_constraintTop_toBottomOf="@id/map_container" />
 
 
     <TextView
@@ -146,8 +144,8 @@
         android:layout_height="64dp"
         android:background="@color/black_overlay"
         android:layout_marginTop="18dp"
-        app:layout_constraintEnd_toEndOf="@id/map"
-        app:layout_constraintStart_toStartOf="@id/map"
+        app:layout_constraintEnd_toEndOf="@id/map_container"
+        app:layout_constraintStart_toStartOf="@id/map_container"
         app:layout_constraintTop_toBottomOf="@id/end_address" />
 
 
@@ -184,7 +182,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@id/line"
         app:layout_constraintEnd_toStartOf="@id/line"
-        app:layout_constraintStart_toStartOf="@id/map"
+        app:layout_constraintStart_toStartOf="@id/map_container"
         app:layout_constraintTop_toBottomOf="@id/end_address" />
 
 
@@ -197,7 +195,7 @@
         android:textColor="@color/dark_teal"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="@id/line"
-        app:layout_constraintEnd_toEndOf="@id/map"
+        app:layout_constraintEnd_toEndOf="@id/map_container"
         app:layout_constraintStart_toEndOf="@id/line"
         app:layout_constraintTop_toBottomOf="@id/end_address" />
 

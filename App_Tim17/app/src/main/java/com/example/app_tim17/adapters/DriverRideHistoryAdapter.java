@@ -115,7 +115,8 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
 
         ride = rides.get(position);
         holder.ride = ride;
-        holder.dateTextView.setText(ride.getStartTime().split("T")[0]);
+        String date = ride.getStartTime().split("T")[0];
+        holder.dateTextView.setText(date.split("-")[0] + "\n" + date.split("-")[1] + "-" + date.split("-")[2]);
         holder.startTimeTextView.setText(ride.getStartTime().split("T")[1].substring(0, 5));
         holder.endTimeTextView.setText(ride.getEndTime().split("T")[1].substring(0, 5));
         holder.durationTextView.setText(ride.getEstimatedTimeInMinutes() + " min");

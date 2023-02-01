@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
@@ -82,6 +83,27 @@ public class RideInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_ride_info, container, false);
+
+        DrawRouteFragment fragment = new DrawRouteFragment();
+//        Bundle args = new Bundle();
+
+
+//        args.putDouble("fromLat", ride.getLocations().get(0).getDeparture().getLatitude());
+//        args.putDouble("fromLng", ride.getLocations().get(0).getDeparture().getLongitude());
+//        args.putDouble("toLat", ride.getLocations().get(0).getDestination().getLatitude());
+//        args.putDouble("toLng", ride.getLocations().get(0).getDestination().getLongitude());
+//
+//        Log.i("fromLat", String.valueOf(ride.getLocations().get(0).getDeparture().getLatitude()));
+//        Log.i("fromLng", String.valueOf(ride.getLocations().get(0).getDeparture().getLongitude()));
+//        Log.i("toLat", String.valueOf(ride.getLocations().get(0).getDestination().getLatitude()));
+//        Log.i("toLng", String.valueOf(ride.getLocations().get(0).getDestination().getLongitude()));
+
+//        fragment.setArguments(args);
+        FragmentManager manager = getChildFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.replace(R.id.map_container, fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
 
         TextView date = view.findViewById(R.id.date);
         TextView startAddress = view.findViewById(R.id.start_address);

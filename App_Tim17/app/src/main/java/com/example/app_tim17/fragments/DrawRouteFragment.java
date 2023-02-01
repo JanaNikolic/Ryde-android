@@ -93,11 +93,10 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
             mMap.clear();
 //            mMap.setMyLocationEnabled(true);
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
-                    .target(new LatLng(45.253885, 19.847360)).zoom(10).build()));
+                    .target(new LatLng(45.253885, 19.847360)).zoom(13).build()));
             return;
         }
 
-        
 
 
         LatLng from = new LatLng(fromLat, fromLng);
