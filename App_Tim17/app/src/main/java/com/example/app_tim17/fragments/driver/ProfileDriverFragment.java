@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.EditProfileFragment;
-import com.example.app_tim17.fragments.passenger.ReviewDriverAndVehicleFragment;
 import com.example.app_tim17.model.response.DistanceStatisticsResponse;
 import com.example.app_tim17.model.response.MoneyStatisticsResponse;
 import com.example.app_tim17.model.response.RideStatisticsResponse;

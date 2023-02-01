@@ -7,7 +7,7 @@ public class ReviewRequest {
 
     @SerializedName("rating")
     @Expose
-    int rating;
+    float rating;
 
     @SerializedName("comment")
     @Expose
@@ -15,15 +15,15 @@ public class ReviewRequest {
     public ReviewRequest() {
 
     }
-    public ReviewRequest(int rating, String comment) {
+    public ReviewRequest(float rating, String comment) {
         super();
         this.rating = rating;
         this.comment = comment;
     }
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
     public String getComment() {

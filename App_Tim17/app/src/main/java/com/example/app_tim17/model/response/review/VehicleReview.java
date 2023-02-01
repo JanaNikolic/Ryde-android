@@ -11,7 +11,7 @@ public class VehicleReview {
     private Long id;
     @SerializedName("rating")
     @Expose
-    private Long rating;
+    private float rating;
     @SerializedName("comment")
     @Expose
     private String comment;
@@ -22,7 +22,7 @@ public class VehicleReview {
      public VehicleReview() {
     }
 
-    public VehicleReview(Long id, Long rating, String comment, PassengerRideResponse passenger) {
+    public VehicleReview(Long id, float rating, String comment, PassengerRideResponse passenger) {
         super();
         this.id = id;
         this.rating = rating;
@@ -38,11 +38,11 @@ public class VehicleReview {
         this.id = id;
     }
 
-    public Long getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(Long rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

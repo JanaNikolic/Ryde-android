@@ -7,23 +7,23 @@ import com.google.gson.annotations.SerializedName;
 public class DriverReview {
 
     @SerializedName("id")
-    @Expose
+    @Expose(serialize = false)
     private Long id;
     @SerializedName("rating")
     @Expose
-    private Long rating;
+    private float rating;
     @SerializedName("comment")
     @Expose
     private String comment;
     @SerializedName("passenger")
-    @Expose
+    @Expose(serialize = false)
     private PassengerRideResponse passenger;
 
 
     public DriverReview() {
     }
 
-    public DriverReview(Long id, Long rating, String comment, PassengerRideResponse passenger) {
+    public DriverReview(Long id, float rating, String comment, PassengerRideResponse passenger) {
         super();
         this.id = id;
         this.rating = rating;
@@ -39,11 +39,11 @@ public class DriverReview {
         this.id = id;
     }
 
-    public Long getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(Long rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

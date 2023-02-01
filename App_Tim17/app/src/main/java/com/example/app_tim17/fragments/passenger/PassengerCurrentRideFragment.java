@@ -217,8 +217,12 @@ public class PassengerCurrentRideFragment extends Fragment {
                         };
                         countDownTimer.start();
                     } else if (ride.getStatus().equals("FINISHED")) {
+                        ReviewDriverAndVehicleFragment fragment = new ReviewDriverAndVehicleFragment();
+                        Bundle args = new Bundle();
+                        args.putLong("rideId", ride.getId());
+                        fragment.setArguments(args);
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.add(R.id.main_pass, new ReviewDriverAndVehicleFragment());
+                        transaction.add(R.id.main_pass, fragment);
 
                         transaction.commit();
 
