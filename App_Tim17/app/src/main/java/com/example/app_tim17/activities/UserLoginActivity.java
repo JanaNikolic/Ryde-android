@@ -11,11 +11,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.ResetPasswordFragment;
+import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
 import com.example.app_tim17.model.request.LoginRequest;
 import com.example.app_tim17.model.response.LoginResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
@@ -38,16 +44,28 @@ public class UserLoginActivity extends AppCompatActivity {
         tokenUtils = new TokenUtils();
         setContentView(R.layout.activity_user_login);
         Button loginBtn = findViewById(R.id.loginBtn);
+        TextView forgotPass = findViewById(R.id.forgotPassword);
+
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setReorderingAllowed(true);
+                transaction.add(R.id.login_activity, ResetPasswordFragment.class, null);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RetrofitService retrofitService = new RetrofitService();
 
                 userService = retrofitService.getRetrofit().create(UserService.class);
-                
-//                Intent intent = new Intent(UserLoginActivity.this, DriverActivity.class);
-//                startActivity(intent);
-//                finish();
+
                 EditText email = findViewById(R.id.emailInput);
                 EditText password = findViewById(R.id.passwordInput);
 
@@ -111,24 +129,6 @@ public class UserLoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-    public void ShowHidePass(View view){
-        if(view.getId()==R.id.showPassBtn){
-            EditText passwordInput = findViewById(R.id.passwordInput);
-            if(passwordInput.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-                ((ImageView)(view)).setImageResource(R.drawable.ic_hide_password);
-
-                //Show Password
-                passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            }
-            else{
-                ((ImageView)(view)).setImageResource(R.drawable.ic_show_password);
-
-                //Hide Password
-                passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-            }
-        }
     }
 
     @Override

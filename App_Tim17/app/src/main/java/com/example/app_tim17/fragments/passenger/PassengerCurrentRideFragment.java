@@ -86,7 +86,7 @@ public class PassengerCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
         retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
         Bundle args = getArguments();

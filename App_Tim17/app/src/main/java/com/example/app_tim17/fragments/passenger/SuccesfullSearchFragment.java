@@ -91,7 +91,7 @@ public class SuccesfullSearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
         rideId = getArguments().getLong("rideId");
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
         retrofitService = new RetrofitService();
         connectStomp();
 
