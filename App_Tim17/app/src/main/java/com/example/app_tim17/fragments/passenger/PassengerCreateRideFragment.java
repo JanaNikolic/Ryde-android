@@ -32,10 +32,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.activities.PassengerActivity;
 import com.example.app_tim17.model.request.PassengerRequest;
 import com.example.app_tim17.model.request.RideRequest;
 import com.example.app_tim17.model.response.Location;
 import com.example.app_tim17.model.response.message.Message;
+import com.example.app_tim17.model.response.ride.FavoriteRoute;
+import com.example.app_tim17.model.response.ride.FavoriteRouteResponse;
 import com.example.app_tim17.model.response.ride.LocationForRide;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.model.response.ride.RideResponse;
@@ -53,11 +56,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PassengerCreateRideFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PassengerCreateRideFragment extends Fragment implements View.OnClickListener {
     TokenUtils tokenUtils;
     private Button btnDatePicker, btnTimePicker, buttonNext;
@@ -72,32 +70,22 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
     private ImageView standradCar, luxCar, van;
     int mediumAnimationDuration;
     private StepView stepView;
+    FavoriteRouteResponse favoritesResponse;
     private View locations, preferences, dateTime;
     AutoCompleteTextView departure, destination;
     private int mYear, mMonth, mDay, mHour, mMinute, mSecond;
-    private String localDateTime = "%sT%s.000Z";
-    private String localTime, localDate;
+    private String localDateTime = "%sT%s.000Z", localTime, localDate;;
     private RideRequest rideRequest = new RideRequest();
+    private List<String> departures = new ArrayList<>(), destinations = new ArrayList<>();
     int position = 0;
-
+    private String[] streets, streets2;
     private RideService rideService;
     private RetrofitService retrofitService;
-
-    // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
 
     public PassengerCreateRideFragment() {}
 
     public static PassengerCreateRideFragment newInstance(String param1, String param2) {
         PassengerCreateRideFragment fragment = new PassengerCreateRideFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -105,8 +93,6 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -115,13 +101,48 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         tokenUtils = new TokenUtils();
         View v = inflater.inflate(R.layout.fragment_passenger_create_ride, container, false);
+        retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
+
         departure = (AutoCompleteTextView) v.findViewById(R.id.from);
         destination = (AutoCompleteTextView) v.findViewById(R.id.to);
-        String[] streets1 = getResources().getStringArray(R.array.streets);
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, streets1);
-        departure.setAdapter(adapter);
-        destination.setAdapter(adapter);
+        departure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                departure.showDropDown();
+            }
+        });
+        destination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                destination.showDropDown();
+            }
+        });
+        Call<FavoriteRouteResponse> favorites = rideService.getFavoriteRoutes("Bearer " + getCurrentToken());
+        favorites.enqueue(new Callback<FavoriteRouteResponse>() {
+            @Override
+            public void onResponse(Call<FavoriteRouteResponse> call, Response<FavoriteRouteResponse> response) {
+                favoritesResponse = response.body();
+                if (favoritesResponse != null) {
+                    for (FavoriteRoute route : favoritesResponse.getResults()) {
+                        departures.add(route.getLocations().get(0).getDeparture().getAddress());
+                        destinations.add(route.getLocations().get(0).getDestination().getAddress());
+                    }
+                    streets = departures.toArray(new String[0]);
+                    streets2 = destinations.toArray(new String[0]);
+                    Log.d("arrays", destinations.get(0));
+
+                    departure.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, streets));
+                    destination.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, streets2));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FavoriteRouteResponse> call, Throwable t) {
+
+            }
+        });
+
 
         stepView = v.findViewById(R.id.step_view);
         stepView.done(false);
@@ -351,8 +372,6 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
     }
 
     private void sendRequest(RideRequest rideRequest) {
-        retrofitService = new RetrofitService();
-        rideService = retrofitService.getRetrofit().create(RideService.class);
         String token = "Bearer " + getCurrentToken();
 
         Call<Ride> call = rideService.createRide(token, rideRequest);
