@@ -27,17 +27,16 @@
 
 
 
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/map"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map_container_his"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/map"
+        tools:layout="@layout/fragment_maps"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
 
 
     <ImageView
@@ -92,6 +91,7 @@
     <!--            app:layout_constraintStart_toStartOf="parent"/>-->
 
 
+
     <ImageView
         android:id="@+id/end_address_label"
         android:layout_width="wrap_content"
@@ -127,7 +127,7 @@
 
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/map" />
+        app:layout_constraintTop_toBottomOf="@+id/driverLabel" />
 
 
     <TextView
@@ -148,8 +148,8 @@
         android:layout_height="64dp"
         android:background="@color/black_overlay"
         android:layout_marginTop="18dp"
-        app:layout_constraintEnd_toEndOf="@id/map"
-        app:layout_constraintStart_toStartOf="@id/map"
+        app:layout_constraintEnd_toEndOf="@id/map_container_his"
+        app:layout_constraintStart_toStartOf="@id/map_container_his"
         app:layout_constraintTop_toBottomOf="@id/end_address_pass" />
 
 
@@ -186,7 +186,7 @@
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@id/line"
-        app:layout_constraintStart_toStartOf="@id/map"
+        app:layout_constraintStart_toStartOf="@id/map_container_his"
         app:layout_constraintTop_toBottomOf="@id/end_address_label" />
 
 
@@ -199,7 +199,7 @@
 
         android:textColor="@color/dark_teal"
         android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="@id/map"
+        app:layout_constraintEnd_toEndOf="@id/map_container_his"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toEndOf="@id/line"
         app:layout_constraintTop_toBottomOf="@id/end_address_pass" />
@@ -223,7 +223,7 @@
         app:layout_constraintTop_toBottomOf="@+id/addReview">
 
         <LinearLayout
-            android:id="@+id/review_card"
+            android:id="@+id/review_card_pass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -239,6 +239,26 @@
         android:text="@string/add_favorite2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line" />
+
+    <TextView
+        android:id="@+id/driverLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/driver"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/date_pass"
+        app:layout_constraintTop_toBottomOf="@+id/map_container_his" />
+
+    <TextView
+        android:id="@+id/driver_history_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/dark_teal"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/driverLabel"
+        app:layout_constraintTop_toBottomOf="@+id/map_container_his" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

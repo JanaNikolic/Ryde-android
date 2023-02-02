@@ -19,7 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.fragments.EditProfileFragment;
+import com.example.app_tim17.fragments.MapsFragment;
 import com.example.app_tim17.fragments.UserInfoFragment;
 import com.example.app_tim17.model.request.FavoriteRouteRequest;
 import com.example.app_tim17.model.response.PassengerResponse;
@@ -33,6 +35,10 @@ import com.example.app_tim17.service.PassengerService;
 import com.example.app_tim17.service.ReviewService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,12 +65,13 @@ public class PassengerRideInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_ride_info, container, false);
         Long id = getArguments().getLong("ride_id");
+
         tokenUtils = new TokenUtils();
         RetrofitService retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
         reviewService = retrofitService.getRetrofit().create(ReviewService.class);
 
-        LinearLayout reviewCardsLayout = view.findViewById(R.id.review_card);
+        LinearLayout reviewCardsLayout = view.findViewById(R.id.review_card_pass);
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
         Call<ReviewRideResponse> call = reviewService.getRideReviews("Bearer " + token, id);
@@ -105,6 +112,9 @@ public class PassengerRideInfoFragment extends Fragment {
             }
         });
         initializeComponents(view, id);
+
+
+
 
 //        reviewCard.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -196,6 +206,9 @@ public class PassengerRideInfoFragment extends Fragment {
         });
         return view;
     }
+
+
+
     private void initializeComponents(View view, Long id) {
         TextView startAddress = view.findViewById(R.id.start_address_pass);
         TextView endAddress = view.findViewById(R.id.end_address_pass);
@@ -204,6 +217,7 @@ public class PassengerRideInfoFragment extends Fragment {
         TextView endTime = view.findViewById(R.id.end_time_pass);
         TextView startTime = view.findViewById(R.id.start_time_pass);
         TextView duration = view.findViewById(R.id.ride_duration_pass);
+        TextView driver = view.findViewById(R.id.driver_history_pass);
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
         Call<Ride> call = rideService.getRide("Bearer " + token, id);
@@ -214,6 +228,7 @@ public class PassengerRideInfoFragment extends Fragment {
                 ride = response.body();
                 System.out.println(response);
                 if (ride != null) {
+
                     date.setText((ride.getStartTime().split("T")[0]));
                     startTime.setText(ride.getStartTime().split("T")[1].split("\\.")[0]);
                     String endTimeText;
@@ -243,9 +258,21 @@ public class PassengerRideInfoFragment extends Fragment {
                     String cost = String.valueOf(ride.getTotalCost() + " RSD");
                     price.setText(cost);
 
+                    DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                    Bundle bundle = new Bundle();
+                    bundle.putDouble("fromLat", ride.getLocations().get(0).getDeparture().getLatitude());
+                    bundle.putDouble("fromLng", ride.getLocations().get(0).getDeparture().getLongitude());
+                    bundle.putDouble("toLat", ride.getLocations().get(0).getDestination().getLatitude());
+                    bundle.putDouble("toLng", ride.getLocations().get(0).getDestination().getLongitude());
+                    draw.setArguments(bundle);
 
+                    // Open fragment
+                    getChildFragmentManager()
+                            .beginTransaction().replace(R.id.map_container_his,draw)
+                            .commit();
                     startAddress.setText(ride.getLocations().get(0).getDeparture().getAddress());
                     endAddress.setText(ride.getLocations().get(0).getDestination().getAddress());
+                    driver.setText(ride.getDriver().getEmail());
                 }
             }
             @Override

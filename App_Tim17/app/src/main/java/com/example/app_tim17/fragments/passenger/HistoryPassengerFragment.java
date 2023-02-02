@@ -56,6 +56,7 @@ import retrofit2.Response;
  */
 public class HistoryPassengerFragment extends Fragment implements SensorEventListener{
     SensorManager sensorManager;
+    private int counter;
     private boolean order;
     private static RecyclerView recyclerView;
     private PassengerRideHistoryAdapter rideHistoryAdapter;
@@ -100,13 +101,10 @@ public class HistoryPassengerFragment extends Fragment implements SensorEventLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
         sensorManager.registerListener(this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
-                SensorManager.SENSOR_DELAY_NORMAL);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -117,46 +115,39 @@ public class HistoryPassengerFragment extends Fragment implements SensorEventLis
         super.onPause();
         sensorManager.unregisterListener(this);
     }
-    private static final int SHAKE_THRESHOLD = 10;
+    private static final int SHAKE_THRESHOLD = 11;
     private long lastUpdate;
     private float last_x;
     private float last_y;
     private float last_z;
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-
-
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-
             long curTime = System.currentTimeMillis();
-            // only allow one update every 100ms.
-            if ((curTime - lastUpdate) > 1000) {
+            if ((curTime - lastUpdate) > 1500) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
-
                 float[] values = sensorEvent.values;
                 float x = values[0];
                 float y = values[1];
                 float z = values[2];
-
                 float speed = Math.abs(x+y+z - last_x - last_y - last_z) / diffTime * 10000;
-
                 if (speed > SHAKE_THRESHOLD) {
-                    if (order){
-                        Collections.sort(rides, compareByEndDate.reversed());
-                        System.out.println(rides);
+                    counter++;
+                    if (order && counter >1){
+                        Collections.sort(rides, compareByDate.reversed());
+                        rideHistoryAdapter = new PassengerRideHistoryAdapter(getContext(), rides);
+                        recyclerView.setAdapter(rideHistoryAdapter);
                         order = false;
+                        counter = 0;
                     }
-                    else{
-                        Collections.sort(rides, compareByEndDate);
-                        System.out.println(rides);
+                    else if (!order && counter >1){
+                        Collections.sort(rides, compareByDate);
+                        rideHistoryAdapter = new PassengerRideHistoryAdapter(getContext(), rides);
+                        recyclerView.setAdapter(rideHistoryAdapter);
                         order = true;
+                        counter = 0;
                     }
-
-
-                    System.out.println("Accelerometer: shaking \n [" + x + ", " + y + ", " + z + "]");
-                }else{
-                    System.out.println("Accelerometer: not shaking \n [" + x + ", " + y + ", " + z + "]");
                 }
                 last_x = x;
                 last_y = y;
@@ -165,15 +156,11 @@ public class HistoryPassengerFragment extends Fragment implements SensorEventLis
 
         }
     }
-    Comparator<Ride> compareByEndDate =
-
+    Comparator<Ride> compareByDate =
             (Ride ride1, Ride ride2) -> ride1.getStartTime().compareTo( ride2.getStartTime() );
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -191,11 +178,11 @@ public class HistoryPassengerFragment extends Fragment implements SensorEventLis
         call.enqueue(new Callback<RideResponse>() {
             @Override
             public void onResponse(Call<RideResponse> call, Response<RideResponse> response) {
-                Log.d("WTF", response.body().toString());
+                Log.d("", response.body().toString());
                 if (response.isSuccessful()) {
-                    Log.d("WTF", response.body().toString());
+                    Log.d("", response.body().toString());
                     RideResponse rideResponse = response.body();
-                    Log.d("WTF", rideResponse.toString());
+                    Log.d("", rideResponse.toString());
 
                     rides = new ArrayList<>();
                     if (rideResponse.getRides() != null) {
