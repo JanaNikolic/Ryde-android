@@ -6,6 +6,7 @@ import com.example.app_tim17.model.request.RejectionRequest;
 import com.example.app_tim17.model.request.RideRequest;
 import com.example.app_tim17.model.response.message.Message;
 import com.example.app_tim17.model.response.message.MessagesResponse;
+import com.example.app_tim17.model.response.ride.FavoriteRouteResponse;
 import com.example.app_tim17.model.response.ride.Ride;
 
 import retrofit2.Call;
@@ -41,4 +42,7 @@ public interface RideService {
 
     @PUT("ride/{id}/panic")
     Call<Ride> panic(@Header("Authorization") String token, @Path("id") Long id, @Body PanicRequest request);
+
+    @GET("ride/favorites")
+    Call<FavoriteRouteResponse> getFavoriteRoutes(@Header("Authorization") String token);
 }

@@ -25,6 +25,10 @@ import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
 import com.example.app_tim17.fragments.passenger.MainPassengerFragment;
 import com.example.app_tim17.fragments.passenger.ProfilePassengerFragment;
 import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.response.ride.FavoriteRoute;
+import com.example.app_tim17.model.response.ride.FavoriteRouteResponse;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -37,6 +41,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompHeader;
@@ -44,6 +51,8 @@ import ua.naiksoftware.stomp.dto.StompHeader;
 public class PassengerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     private StompClient mStompClient;
     private TokenUtils tokenUtils;
+    private RetrofitService retrofitService;
+    private RideService rideService;
     private Disposable mRestPingDisposable;
     private CompositeDisposable compositeDisposable;
     private Gson mGson = new GsonBuilder().create();
@@ -70,9 +79,9 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
 
-
         mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
         connectStomp();
+
     }
 
     @Override
@@ -257,4 +266,5 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
             transaction.commit();
         }
     }
+
 }
