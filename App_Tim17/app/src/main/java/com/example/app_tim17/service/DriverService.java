@@ -28,7 +28,7 @@ public interface DriverService {
     @GET("driver/{id}/vehicle")
     Call<VehicleResponse> getDriversVehicle(@Path("id") Long id, @Header("Authorization") String token);
 
-    @GET("driver/{id}/ride")
+    @GET("driver/{id}/ride?sort=startTime,desc")
     Call<RideResponse> getDriversRides(@Path("id") Long id, @Header("Authorization") String token);
 
     @GET("driver/rideCount/{id}")
