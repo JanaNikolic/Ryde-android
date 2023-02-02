@@ -24,16 +24,14 @@
         tools:layout_editor_absoluteX="2dp"
         tools:layout_editor_absoluteY="1dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/map"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map_container"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        tools:layout="@layout/fragment_maps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
@@ -41,29 +39,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_circle_16"
-        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/start_address"
         app:layout_constraintStart_toStartOf="@id/date"
-        app:layout_constraintTop_toBottomOf="@id/date" />
+        app:layout_constraintTop_toTopOf="@id/start_address" />
 
-        <TextView
-            android:id="@+id/start_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="-4dp"
-            android:fontFamily="@font/outfit_regular"
-            android:text="Bulevar Oslobodjenja 15"
-            android:textColor="@color/dark_teal"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@id/start_address_label"
-            app:layout_constraintTop_toTopOf="@id/start_address_label" />
+    <TextView
+        android:id="@+id/start_address"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="Bulevar Oslobodjenja 15, Novi Sad"
+        android:textColor="@color/dark_teal"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/start_address_label"
+        app:layout_constraintTop_toBottomOf="@id/date" />
 
     <ImageView
         android:id="@+id/dot1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:src="@drawable/ic_baseline_circle_6"
-        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="@id/start_address_label"
         app:layout_constraintStart_toStartOf="@id/start_address_label"
         app:layout_constraintTop_toBottomOf="@id/start_address_label" />
@@ -72,9 +70,9 @@
         android:id="@+id/dot2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/ic_baseline_circle_6"
+        app:layout_constraintBottom_toTopOf="@id/end_address_label"
         app:layout_constraintEnd_toEndOf="@id/start_address_label"
         app:layout_constraintStart_toStartOf="@id/start_address_label"
         app:layout_constraintTop_toBottomOf="@id/dot1" />
@@ -93,23 +91,24 @@
         android:id="@+id/end_address_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="-5dp"
         android:src="@drawable/pin"
+        app:layout_constraintBottom_toBottomOf="@id/end_address"
         app:layout_constraintStart_toStartOf="@id/start_address_label"
-        app:layout_constraintTop_toBottomOf="@id/dot2" />
+        app:layout_constraintTop_toTopOf="@id/end_address" />
 
-        <TextView
-            android:id="@+id/end_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/outfit_regular"
-            android:text="Bulevar cara Lazara 115"
-            android:textColor="@color/dark_teal"
-            android:textSize="20sp"
-            android:layout_marginStart="11dp"
-            app:layout_constraintStart_toEndOf="@id/end_address_label"
-            app:layout_constraintTop_toTopOf="@id/end_address_label" />
+    <TextView
+        android:id="@+id/end_address"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:fontFamily="@font/outfit_regular"
+        android:text="Bulevar cara Lazara 115, Novi Sad"
+        android:textColor="@color/dark_teal"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@id/end_address_label"
+        app:layout_constraintTop_toBottomOf="@id/start_address" />
 
 
     <TextView
@@ -124,7 +123,7 @@
 
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/map" />
+        app:layout_constraintTop_toBottomOf="@id/map_container" />
 
 
     <TextView
@@ -145,8 +144,8 @@
         android:layout_height="64dp"
         android:background="@color/black_overlay"
         android:layout_marginTop="18dp"
-        app:layout_constraintEnd_toEndOf="@id/map"
-        app:layout_constraintStart_toStartOf="@id/map"
+        app:layout_constraintEnd_toEndOf="@id/map_container"
+        app:layout_constraintStart_toStartOf="@id/map_container"
         app:layout_constraintTop_toBottomOf="@id/end_address" />
 
 
@@ -177,27 +176,26 @@
         android:id="@+id/ride_length"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/outfit_regular"
         android:text="2.12 km"
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/line"
         app:layout_constraintEnd_toStartOf="@id/line"
-        app:layout_constraintStart_toStartOf="@id/map"
-        app:layout_constraintTop_toBottomOf="@id/end_address_label" />
+        app:layout_constraintStart_toStartOf="@id/map_container"
+        app:layout_constraintTop_toBottomOf="@id/end_address" />
 
 
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/outfit_semi_bold"
         android:text="300 RSD"
         android:textColor="@color/dark_teal"
         android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="@id/map"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintBottom_toBottomOf="@id/line"
+        app:layout_constraintEnd_toEndOf="@id/map_container"
         app:layout_constraintStart_toEndOf="@id/line"
         app:layout_constraintTop_toBottomOf="@id/end_address" />
 

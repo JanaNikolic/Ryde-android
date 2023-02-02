@@ -18,9 +18,6 @@ import android.widget.TextView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.DrawRouteFragment;
-import com.example.app_tim17.fragments.passenger.ChatFragment;
-import com.example.app_tim17.fragments.passenger.PassengerCreateRideFragment;
-import com.example.app_tim17.fragments.passenger.ReviewDriverAndVehicleFragment;
 import com.example.app_tim17.model.request.PanicRequest;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
@@ -32,7 +29,6 @@ import com.google.android.material.imageview.ShapeableImageView;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

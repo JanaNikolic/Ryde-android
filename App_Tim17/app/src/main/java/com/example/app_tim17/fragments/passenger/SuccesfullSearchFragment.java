@@ -93,7 +93,8 @@ public class SuccesfullSearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
         rideId = getArguments().getLong("rideId");
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+
         retrofitService = new RetrofitService();
         connectStomp();
 
@@ -173,7 +174,11 @@ public class SuccesfullSearchFragment extends Fragment {
                                 if (driver != null) {
                                     driverId = driver.getId();
                                     driverName = driver.getName() + " " + driver.getSurname();
-                                    driverImage = driver.getProfilePicture();
+                                    if (driver.getProfilePicture() != null){
+                                        driverImage = driver.getProfilePicture();
+                                        Log.i("driver slika" , driverImage);
+                                    }
+                                    driverPhoneNumber = driver.getTelephoneNumber();
                                 }
                             }
 
@@ -223,7 +228,7 @@ public class SuccesfullSearchFragment extends Fragment {
                                 fragmentTransaction.replace(R.id.currentRide, fragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();}
-                        }, 800);}
+                        }, 1500);}
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });

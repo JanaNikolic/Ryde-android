@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -174,5 +175,12 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
         super.onStart();
         sheetBehavior.setPeekHeight(300);
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.putString("ride", Utils.getGsonParser().toJson(ride));
     }
 }

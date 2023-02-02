@@ -23,8 +23,6 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_driver_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.example.app_tim17.fragments.driver.MainDriverFragment"
-        tools:layout="@layout/fragment_main_driver" />
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
