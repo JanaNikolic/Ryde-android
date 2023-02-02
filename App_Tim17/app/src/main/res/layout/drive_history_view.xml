@@ -177,9 +177,6 @@
             app:layout_constraintStart_toStartOf="@+id/price" />
 
 
-
-
-
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="36dp"
@@ -204,10 +201,10 @@
             app:layout_constraintTop_toBottomOf="@+id/start_address" />
 
         <ImageView
+            android:id="@+id/messages_pass"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="end"
-            android:onClick="ShowMessages"
             android:src="@drawable/ic_baseline_message_24"
             app:layout_constraintStart_toStartOf="@+id/imageView3"
             app:layout_constraintTop_toBottomOf="@+id/end_address" />

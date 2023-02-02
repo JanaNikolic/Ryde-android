@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.RideInfoFragment;
+import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.PassengerRideInfoFragment;
 import com.example.app_tim17.model.response.ride.Ride;
 
@@ -44,6 +45,8 @@ public class PassengerRideHistoryAdapter extends RecyclerView.Adapter<PassengerR
     @Override
     public void onBindViewHolder(@NonNull PassengerRideHistoryAdapter.ViewHolder holder, int position) {
         Ride ride = rides.get(position);
+
+
         holder.dateTextView.setText(rides.get(position).getStartTime().split("T")[0]);
         holder.startTimeTextView.setText(rides.get(position).getStartTime().split("T")[1].split("\\.")[0]);
         String endTimeText;
@@ -89,6 +92,24 @@ public class PassengerRideHistoryAdapter extends RecyclerView.Adapter<PassengerR
                 transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
                 transaction.commit();
 
+            }
+        });
+        holder.itemView.findViewById(R.id.messages_pass).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                Bundle arg = new Bundle();
+
+
+                arg.putLong("userId", ride.getDriver().getId());
+                arg.putString("userName", ride.getDriver().getEmail());
+                arg.putString("type", "RIDE");
+                ChatFragment chatFragment = new ChatFragment();
+                chatFragment.setArguments(arg);
+                transaction.replace(R.id.fragment_container, chatFragment).addToBackStack(null);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 

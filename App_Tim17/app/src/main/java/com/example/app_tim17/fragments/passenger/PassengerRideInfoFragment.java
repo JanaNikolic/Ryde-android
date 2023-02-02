@@ -260,10 +260,8 @@ public class PassengerRideInfoFragment extends Fragment {
 
                     DrawRouteFragment draw = DrawRouteFragment.newInstance();
                     Bundle bundle = new Bundle();
-                    bundle.putDouble("fromLat", ride.getLocations().get(0).getDeparture().getLatitude());
-                    bundle.putDouble("fromLng", ride.getLocations().get(0).getDeparture().getLongitude());
-                    bundle.putDouble("toLat", ride.getLocations().get(0).getDestination().getLatitude());
-                    bundle.putDouble("toLng", ride.getLocations().get(0).getDestination().getLongitude());
+                    bundle.putString("fromAddress", ride.getLocations().get(0).getDeparture().getAddress());
+                    bundle.putString("toAddress", ride.getLocations().get(0).getDestination().getAddress());
                     draw.setArguments(bundle);
 
                     // Open fragment
