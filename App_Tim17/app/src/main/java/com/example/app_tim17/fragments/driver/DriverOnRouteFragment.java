@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -26,6 +27,7 @@ import com.example.app_tim17.tools.Utils;
 
 import java.util.List;
 
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,7 +49,7 @@ public class DriverOnRouteFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Ride ride;
+    private Ride ride = null;
 
     public DriverOnRouteFragment() {
         // Required empty public constructor
@@ -74,9 +76,8 @@ public class DriverOnRouteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        if (savedInstanceState != null) {
+            ride = Utils.getGsonParser().fromJson(savedInstanceState.getString("ride"), Ride.class);
         }
     }
 
@@ -92,7 +93,13 @@ public class DriverOnRouteFragment extends Fragment {
         TextView endAddress = view.findViewById(R.id.end_address);
         TextView price = view.findViewById(R.id.price);
         TextView duration = view.findViewById(R.id.duration);
-        TextView distance = view.findViewById(R.id.distance); // caluclate
+        TextView distance = view.findViewById(R.id.distance);
+
+        if (ride != null) {
+            Log.i("ride saved", Utils.getGsonParser().toJson(ride));
+        } else {
+            Log.i("ride saved", "Nije sacuvana");
+        }
 
         retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
@@ -178,4 +185,11 @@ public class DriverOnRouteFragment extends Fragment {
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("ride", Utils.getGsonParser().toJson(ride));
+    }
+
 }

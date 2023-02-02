@@ -82,7 +82,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
                 fragment.setArguments(args);
 
                 FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.replace(R.id.driver_history, fragment).addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -102,7 +102,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
                 ChatDriverFragment chatFragment = new ChatDriverFragment();
                 chatFragment.setArguments(arg);
 
-                transaction.add(R.id.fragment_container, chatFragment);
+                transaction.add(R.id.driver_history, chatFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
