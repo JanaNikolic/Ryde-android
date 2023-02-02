@@ -173,7 +173,11 @@ public class SuccesfullSearchFragment extends Fragment {
                                 if (driver != null) {
                                     driverId = driver.getId();
                                     driverName = driver.getName() + " " + driver.getSurname();
-                                    driverImage = driver.getProfilePicture();
+                                    if (driver.getProfilePicture() != null){
+                                        driverImage = driver.getProfilePicture();
+                                        Log.i("driver slika" , driverImage);
+                                    }
+                                    driverPhoneNumber = driver.getTelephoneNumber();
                                 }
                             }
 
@@ -223,7 +227,7 @@ public class SuccesfullSearchFragment extends Fragment {
                                 fragmentTransaction.replace(R.id.currentRide, fragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();}
-                        }, 800);}
+                        }, 1500);}
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });
