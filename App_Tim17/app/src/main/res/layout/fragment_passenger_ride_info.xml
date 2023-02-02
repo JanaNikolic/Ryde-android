@@ -24,6 +24,10 @@
     tools:layout_editor_absoluteX="2dp"
     tools:layout_editor_absoluteY="1dp">
 
+
+
+
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/map"
         android:layout_width="match_parent"
@@ -42,17 +46,16 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_circle_16"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@id/date"
-        app:layout_constraintTop_toBottomOf="@id/date" />
+        app:layout_constraintStart_toStartOf="@id/date_pass"
+        app:layout_constraintTop_toBottomOf="@id/date_pass" />
 
     <TextView
-        android:id="@+id/start_address"
+        android:id="@+id/start_address_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="-4dp"
         android:fontFamily="@font/outfit_regular"
-        android:text="Bulevar Oslobodjenja 15"
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/start_address_label"
@@ -100,11 +103,11 @@
         app:layout_constraintTop_toBottomOf="@id/dot2" />
 
     <TextView
-        android:id="@+id/end_address"
+        android:id="@+id/end_address_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/outfit_regular"
-        android:text="Bulevar cara Lazara 115"
+
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
         android:layout_marginStart="11dp"
@@ -113,13 +116,13 @@
 
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/date_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/outfit_medium"
-        android:text="15.10.2022."
+
         android:textColor="@color/dark_teal"
 
         android:textSize="18sp"
@@ -128,16 +131,16 @@
 
 
     <TextView
-        android:id="@+id/start_time"
+        android:id="@+id/start_time_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/outfit_regular"
-        android:text="15:30"
+
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/start_address" />
+        app:layout_constraintTop_toTopOf="@id/start_address_pass" />
 
     <ImageView
         android:id="@+id/line"
@@ -147,20 +150,20 @@
         android:layout_marginTop="18dp"
         app:layout_constraintEnd_toEndOf="@id/map"
         app:layout_constraintStart_toStartOf="@id/map"
-        app:layout_constraintTop_toBottomOf="@id/end_address" />
+        app:layout_constraintTop_toBottomOf="@id/end_address_pass" />
 
 
     <TextView
-        android:id="@+id/end_time"
+        android:id="@+id/end_time_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/outfit_regular"
-        android:text="16:00"
+
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/end_address" />
+        app:layout_constraintTop_toTopOf="@id/end_address_pass" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -174,12 +177,12 @@
 
 
     <TextView
-        android:id="@+id/ride_length"
+        android:id="@+id/ride_duration_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/outfit_regular"
-        android:text="2.12 km"
+
         android:textColor="@color/dark_teal"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@id/line"
@@ -188,25 +191,36 @@
 
 
     <TextView
-        android:id="@+id/price"
+        android:id="@+id/price_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/outfit_semi_bold"
-        android:text="300 RSD"
+
         android:textColor="@color/dark_teal"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="@id/map"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toEndOf="@id/line"
-        app:layout_constraintTop_toBottomOf="@id/end_address" />
+        app:layout_constraintTop_toBottomOf="@id/end_address_pass" />
+
+    <Button
+        android:id="@+id/addReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_review"
+        app:layout_constraintEnd_toStartOf="@+id/add_favorite"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4">
+        app:layout_constraintTop_toBottomOf="@+id/addReview">
 
         <LinearLayout
             android:id="@+id/review_card"
@@ -217,6 +231,14 @@
             app:layout_constraintTop_toBottomOf="@id/imageView4" />
     </HorizontalScrollView>
 
+    <Button
+        android:id="@+id/add_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:text="@string/add_favorite2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

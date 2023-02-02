@@ -39,6 +39,7 @@
             app:layout_constraintTop_toTopOf="@id/image_pass_profile" />
 
         <RatingBar
+            android:id="@+id/ratingBarHistory"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

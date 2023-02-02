@@ -166,7 +166,6 @@ public class ProfilePassengerFragment extends Fragment {
                 passenger = response.body();
                 System.out.println(response);
                 if (passenger != null) {
-                    System.out.println("zakar");
                     String fullNameStr = passenger.getName() + " " + passenger.getSurname();
                     fullName.setText(fullNameStr);
                     fullname.setText(fullNameStr);
@@ -175,7 +174,6 @@ public class ProfilePassengerFragment extends Fragment {
                     emailfield.setText(passenger.getEmail());
                     phoneNumber.setText(passenger.getTelephoneNumber());
                 }
-                System.out.println("zakar");
             }
             @Override
             public void onFailure(Call<PassengerResponse> call, Throwable t) {

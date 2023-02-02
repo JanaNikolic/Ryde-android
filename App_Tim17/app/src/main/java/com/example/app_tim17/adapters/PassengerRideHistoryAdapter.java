@@ -1,6 +1,8 @@
 package com.example.app_tim17.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,37 +15,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.RideInfoFragment;
+import com.example.app_tim17.fragments.passenger.PassengerRideInfoFragment;
+import com.example.app_tim17.model.response.ride.Ride;
 
+import java.io.Serializable;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class PassengerRideHistoryAdapter extends RecyclerView.Adapter<PassengerRideHistoryAdapter.ViewHolder>{
-    private List<String> dates;
-    private List<String> startTimes;
-    private List<String> endTimes;
-    private List<String> durations;
-    private List<String> prices;
-    private List<String> numOfPassengers;
-    //    private int[] rating;
-    private List<String> startAddresses;
-    private List<String> endAddresses;
-    private List<String> roadLengths;
+    private List<Ride> rides;
+
     private Context context;
 
-    public PassengerRideHistoryAdapter(Context context, List<String> date, List<String> startTime, List<String> endTime,
-                                       List<String> duration, List<String> price, List<String> numOfPassengers,
-                                       List<String> startAddress, List<String> endAddress, List<String> roadLength) {
+    public PassengerRideHistoryAdapter(Context context, List<Ride>rides) {
         super();
         this.context = context;
-        this.dates = date;
-        this.startTimes = startTime;
-        this.endTimes = endTime;
-        this.durations = duration;
-        this.prices = price;
-        this.numOfPassengers = numOfPassengers;
-//        this.rating = rating;
-        this.startAddresses = startAddress;
-        this.endAddresses = endAddress;
-        this.roadLengths = roadLength;
+        this.rides = rides;
+
     }
     @NonNull
     @Override
@@ -54,22 +43,48 @@ public class PassengerRideHistoryAdapter extends RecyclerView.Adapter<PassengerR
     }
     @Override
     public void onBindViewHolder(@NonNull PassengerRideHistoryAdapter.ViewHolder holder, int position) {
+        Ride ride = rides.get(position);
+        holder.dateTextView.setText(rides.get(position).getStartTime().split("T")[0]);
+        holder.startTimeTextView.setText(rides.get(position).getStartTime().split("T")[1].split("\\.")[0]);
+        String endTimeText;
+        String durationRide;
+        if(rides.get(position).getEndTime() == null){
+            endTimeText = "Not finished";
+            durationRide = (rides.get(position).getEstimatedTimeInMinutes() +" min");
+        }
+        else{
+            endTimeText = rides.get(position).getEndTime().split("T")[1].split("\\.")[0];
+            int endTimeHour = Integer.parseInt(endTimeText.split(":")[0]);
+            int endTimeMinute = Integer.parseInt(endTimeText.split(":")[1]);
+            int endTimeSeconds = Integer.parseInt(endTimeText.split(":")[2]);
+            LocalTime endTimeDur = LocalTime.of(endTimeHour, endTimeMinute, endTimeSeconds);
+            int startTimeHour = Integer.parseInt(ride.getStartTime().split("T")[1].split("\\.")[0].split(":")[0]);
+            int startTimeMinute = Integer.parseInt(ride.getStartTime().split("T")[1].split("\\.")[0].split(":")[1]);
+            int startTimeSeconds = Integer.parseInt(ride.getStartTime().split("T")[1].split("\\.")[0].split(":")[2]);
+            LocalTime startTimeDur = LocalTime.of(startTimeHour, startTimeMinute, startTimeSeconds);
+            long minutes = ChronoUnit.MINUTES.between(startTimeDur, endTimeDur);
+            durationRide = String.valueOf(minutes + " Min");
 
-        holder.dateTextView.setText(dates.get(position));
-        holder.startTimeTextView.setText(startTimes.get(position));
-        holder.endTimeTextView.setText(endTimes.get(position));
-        holder.durationTextView.setText(durations.get(position));
-        holder.priceTextView.setText(prices.get(position));
-        holder.numOfPassengersTextView.setText(numOfPassengers.get(position));
-        holder.startAddressTextView.setText(startAddresses.get(position));
-        holder.endAddressTextView.setText(endAddresses.get(position));
-        holder.roadLengthTextView.setText(roadLengths.get(position) + " km");
+        }
+        holder.endTimeTextView.setText(endTimeText);
+
+        holder.durationTextView.setText(durationRide);
+        String totalCost = (rides.get(position).getTotalCost() + " rsd");
+        holder.priceTextView.setText(totalCost);
+        String numOfPassenger = String.valueOf(rides.get(position).getPassengers().size());
+        holder.numOfPassengersTextView.setText(numOfPassenger);
+        holder.startAddressTextView.setText(rides.get(position).getLocations().get(0).getDeparture().getAddress());
+        holder.endAddressTextView.setText(rides.get(position).getLocations().get(0).getDestination().getAddress());
+        holder.roadLengthTextView.setText(R.string.roadLength);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                RideInfoFragment fragment = new RideInfoFragment();
+                PassengerRideInfoFragment fragment = new PassengerRideInfoFragment();
+                Bundle bundle = new Bundle();
+                bundle.putLong("ride_id", ride.getId());
+                fragment.setArguments(bundle);
                 FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
                 transaction.commit();
@@ -82,7 +97,7 @@ public class PassengerRideHistoryAdapter extends RecyclerView.Adapter<PassengerR
     @Override
     public int getItemCount() {
         // this method is used for showing number of card items in recycler view
-        return startTimes.size();
+        return rides.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

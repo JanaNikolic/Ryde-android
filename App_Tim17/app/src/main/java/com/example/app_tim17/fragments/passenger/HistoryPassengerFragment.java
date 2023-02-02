@@ -1,10 +1,16 @@
 package com.example.app_tim17.fragments.passenger;
 
+import static android.content.Context.SENSOR_SERVICE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +40,9 @@ import com.example.app_tim17.service.PassengerService;
 import com.example.app_tim17.service.TokenUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,23 +54,17 @@ import retrofit2.Response;
  * Use the {@link HistoryPassengerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HistoryPassengerFragment extends Fragment {
-
+public class HistoryPassengerFragment extends Fragment implements SensorEventListener{
+    SensorManager sensorManager;
+    private boolean order;
     private static RecyclerView recyclerView;
     private PassengerRideHistoryAdapter rideHistoryAdapter;
     private static LinearLayoutManager linearLayoutManager;
-    private List<String> dates;
-    private List<String> startTimes;
-    private List<String> endTimes;
-    private List<String> durations;
-    private List<String> totalCosts;
-    private List<String> numOfPassengers;
+    private List<Ride> rides;
     private TokenUtils tokenUtils;
-    private List<String> startAddresses;
     private RetrofitService retrofitService;
     private PassengerService passengerService;
-    private List<String> endAddresses;
-    private List<String> roadLengths;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -96,11 +99,81 @@ public class HistoryPassengerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
+                SensorManager.SENSOR_DELAY_NORMAL);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+    private static final int SHAKE_THRESHOLD = 10;
+    private long lastUpdate;
+    private float last_x;
+    private float last_y;
+    private float last_z;
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
+            long curTime = System.currentTimeMillis();
+            // only allow one update every 100ms.
+            if ((curTime - lastUpdate) > 1000) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float[] values = sensorEvent.values;
+                float x = values[0];
+                float y = values[1];
+                float z = values[2];
+
+                float speed = Math.abs(x+y+z - last_x - last_y - last_z) / diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+                    if (order){
+                        Collections.sort(rides, compareByEndDate.reversed());
+                        System.out.println(rides);
+                        order = false;
+                    }
+                    else{
+                        Collections.sort(rides, compareByEndDate);
+                        System.out.println(rides);
+                        order = true;
+                    }
+
+
+                    System.out.println("Accelerometer: shaking \n [" + x + ", " + y + ", " + z + "]");
+                }else{
+                    System.out.println("Accelerometer: not shaking \n [" + x + ", " + y + ", " + z + "]");
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+
+        }
+    }
+    Comparator<Ride> compareByEndDate =
+
+            (Ride ride1, Ride ride2) -> ride1.getStartTime().compareTo( ride2.getStartTime() );
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,37 +196,14 @@ public class HistoryPassengerFragment extends Fragment {
                     Log.d("WTF", response.body().toString());
                     RideResponse rideResponse = response.body();
                     Log.d("WTF", rideResponse.toString());
-                    dates = new ArrayList<>();
-                    startTimes = new ArrayList<>();
-                    endTimes = new ArrayList<>();
-                    durations = new ArrayList<>();
-                    totalCosts = new ArrayList<>();
-                    numOfPassengers = new ArrayList<>();
-                    startAddresses = new ArrayList<>();
-                    endAddresses = new ArrayList<>();
-                    endAddresses = new ArrayList<>();
-                    roadLengths = new ArrayList<>();
+
+                    rides = new ArrayList<>();
                     if (rideResponse.getRides() != null) {
                         for (Ride ride : rideResponse.getRides()) {
-                            dates.add(ride.getStartTime().split("T")[0]);
-                            startTimes.add(ride.getStartTime().split("T")[1].split("\\.")[0]);
-                            System.out.println(startTimes);
-                            if(ride.getEndTime()== null){
-                                endTimes.add("Not finished");
-                            }
-                            else {
-                                endTimes.add(ride.getEndTime().split("T")[1].split("\\.")[0]);
-                            }
-                            durations.add(String.valueOf(ride.getEstimatedTimeInMinutes())+" min");
-                            totalCosts.add(String.valueOf(ride.getTotalCost())+" rsd");
-                            numOfPassengers.add(String.valueOf(ride.getPassengers().size()));
-                            startAddresses.add(ride.getLocations().get(0).getDeparture().getAddress());
-                            endAddresses.add(ride.getLocations().get(0).getDestination().getAddress());
-                            roadLengths.add(String.valueOf(45));
-
+                            rides.add(ride);
 
                         }
-                        rideHistoryAdapter = new PassengerRideHistoryAdapter(getContext(), dates, startTimes, endTimes, durations, totalCosts, numOfPassengers, startAddresses, endAddresses,roadLengths);
+                        rideHistoryAdapter = new PassengerRideHistoryAdapter(getContext(), rides);
                         linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setAdapter(rideHistoryAdapter);
