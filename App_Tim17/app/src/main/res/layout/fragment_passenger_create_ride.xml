@@ -10,6 +10,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/get_ride"
@@ -57,9 +58,9 @@
         <AutoCompleteTextView
             android:id="@+id/from"
             android:layout_width="match_parent"
+            android:completionThreshold="1"
             android:layout_marginHorizontal="60dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:textSize="20sp"
             android:layout_marginVertical="10dp"
             android:backgroundTint="@color/teal"
@@ -71,7 +72,7 @@
             android:layout_marginHorizontal="60dp"
             android:layout_marginVertical="10dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/teal"
+            android:completionThreshold="1"
             android:textSize="20sp"
             android:backgroundTint="@color/teal"
             android:drawableLeft="@drawable/ic_baseline_location_on_24"

@@ -36,13 +36,6 @@ public class FavoriteRouteAdapter extends ArrayAdapter {
             view = inflater.inflate(R.layout.fav_route_adapt, null, true);
         TextView from = (TextView) view.findViewById(R.id.from);
         TextView to = (TextView) view.findViewById(R.id.to);
-        Button orderBtn = view.findViewById(R.id.btnOrder);
-        orderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Order", Toast.LENGTH_SHORT).show();
-            }
-        });
         Button deleteBtn = view.findViewById(R.id.btnDeleteFav);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
