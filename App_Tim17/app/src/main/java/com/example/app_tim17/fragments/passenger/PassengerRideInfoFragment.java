@@ -216,7 +216,7 @@ public class PassengerRideInfoFragment extends Fragment {
         TextView date = view.findViewById(R.id.date_pass);
         TextView endTime = view.findViewById(R.id.end_time_pass);
         TextView startTime = view.findViewById(R.id.start_time_pass);
-        TextView duration = view.findViewById(R.id.ride_duration_pass);
+        TextView length = view.findViewById(R.id.ride_length_pass);
         TextView driver = view.findViewById(R.id.driver_history_pass);
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
@@ -234,8 +234,7 @@ public class PassengerRideInfoFragment extends Fragment {
                     String endTimeText;
                     if(ride.getEndTime() == null){
                         endTimeText = "Not finished";
-                        String durationRide = String.valueOf(ride.getEstimatedTimeInMinutes() + " Min");
-                        duration.setText(durationRide);
+
                     }
                     else{
                         endTimeText = ride.getEndTime().split("T")[1].split("\\.")[0];
@@ -248,12 +247,11 @@ public class PassengerRideInfoFragment extends Fragment {
                         int startTimeSeconds = Integer.parseInt(ride.getStartTime().split("T")[1].split("\\.")[0].split(":")[2]);
                         LocalTime startTimeDur = LocalTime.of(startTimeHour, startTimeMinute, startTimeSeconds);
                         long minutes = ChronoUnit.MINUTES.between(startTimeDur, endTimeDur);
-                        String durationRide = String.valueOf(minutes + " Min");
-                        duration.setText(durationRide);
                     }
 
 
-
+                    String lengthRide = String.valueOf(ride.getDistance()/1000 + " Km");
+                    length.setText(lengthRide);
                     endTime.setText(endTimeText);
                     String cost = String.valueOf(ride.getTotalCost() + " RSD");
                     price.setText(cost);

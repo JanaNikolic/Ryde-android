@@ -78,7 +78,8 @@ public class PassengerRideHistoryAdapter extends RecyclerView.Adapter<PassengerR
         holder.numOfPassengersTextView.setText(numOfPassenger);
         holder.startAddressTextView.setText(rides.get(position).getLocations().get(0).getDeparture().getAddress());
         holder.endAddressTextView.setText(rides.get(position).getLocations().get(0).getDestination().getAddress());
-        holder.roadLengthTextView.setText(R.string.roadLength);
+        String length = (rides.get(position).getDistance()/1000 + " km");
+        holder.roadLengthTextView.setText(length);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
