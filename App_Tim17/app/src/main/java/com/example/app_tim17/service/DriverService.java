@@ -8,13 +8,13 @@ import com.example.app_tim17.model.response.DistanceStatisticsResponse;
 import com.example.app_tim17.model.response.MoneyStatisticsResponse;
 import com.example.app_tim17.model.response.RideStatisticsResponse;
 import com.example.app_tim17.model.response.driver.DriverResponse;
+import com.example.app_tim17.model.response.ride.RideResponse;
 import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -27,6 +27,9 @@ public interface DriverService {
 
     @GET("driver/{id}/vehicle")
     Call<VehicleResponse> getDriversVehicle(@Path("id") Long id, @Header("Authorization") String token);
+
+    @GET("driver/{id}/ride?sort=startTime,desc")
+    Call<RideResponse> getDriversRides(@Path("id") Long id, @Header("Authorization") String token);
 
     @GET("driver/rideCount/{id}")
     Call<RideStatisticsResponse> getRideCount(@Path("id") Long id, @Header("Authorization") String token,
@@ -52,6 +55,5 @@ public interface DriverService {
 
     @PUT("driver/working-hour/{id}")
     Call<WorkingHour> endShift(@Header("Authorization") String token, @Path("id") Long id, @Body EndWorkingHour workingHour);
-
 
 }

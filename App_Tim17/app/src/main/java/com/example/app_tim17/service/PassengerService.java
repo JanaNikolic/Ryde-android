@@ -2,9 +2,9 @@ package com.example.app_tim17.service;
 
 import com.example.app_tim17.model.request.PassengerUpdateRequest;
 import com.example.app_tim17.model.request.UserRequest;
+import com.example.app_tim17.model.response.PassengerResponse;
 import com.example.app_tim17.model.response.DistanceStatisticsResponse;
 import com.example.app_tim17.model.response.MoneyStatisticsResponse;
-import com.example.app_tim17.model.response.PassengerResponse;
 import com.example.app_tim17.model.response.RideStatisticsResponse;
 
 import retrofit2.Call;
@@ -15,6 +15,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+
 
 public interface PassengerService {
 
