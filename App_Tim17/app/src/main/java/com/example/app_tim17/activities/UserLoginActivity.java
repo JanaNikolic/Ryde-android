@@ -131,6 +131,25 @@ public class UserLoginActivity extends AppCompatActivity {
         });
     }
 
+    public void ShowHidePass(View view){
+        if(view.getId()==R.id.showPassBtn){
+            EditText passwordInput = findViewById(R.id.passwordInput);
+            if(passwordInput.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                ((ImageView)(view)).setImageResource(R.drawable.ic_hide_password);
+
+                //Show Password
+                passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else{
+                ((ImageView)(view)).setImageResource(R.drawable.ic_show_password);
+
+                //Hide Password
+                passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+            }
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
