@@ -84,7 +84,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-            transaction.add(R.id.fragment_driver_container, main, null);
+            transaction.add(R.id.fragment_driver_container, main, MainDriverFragment.class.getName());
             transaction.commit();
         }
 
@@ -160,20 +160,11 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        List<Fragment> fragments = fragmentManager.getFragments();
 
         switch (item.getItemId()) {
             case R.id.inbox_driver:
                 transaction.setReorderingAllowed(true);
-                for (Fragment f: fragments) {
-                    if (f.getTag()!= null && f.getTag().equals(InboxDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(HistoryDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(ProfileDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    }
-                }
+                removeFragments();
                 transaction.add(R.id.fragment_driver_container, InboxDriverFragment.class, null, InboxDriverFragment.class.getName());
                 transaction.hide(main);
                 transaction.commit();
@@ -181,30 +172,14 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
 //                activeFragment = fragmentManager.findFragmentByTag(InboxDriverFragment.class.getName());
                 return true;
             case R.id.home_driver:
-                for (Fragment f: fragments) {
-                    if (f.getTag()!= null && f.getTag().equals(InboxDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(HistoryDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(ProfileDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    }
-                }
+                removeFragments();
                 transaction.show(main);
                 transaction.commit();
                 getSupportActionBar().setTitle("Ryde");
 //                activeFragment = main;
                 return true;
             case R.id.history_driver:
-                for (Fragment f: fragments) {
-                    if (f.getTag()!= null && f.getTag().equals(InboxDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(HistoryDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(ProfileDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    }
-                }
+                removeFragments();
                 transaction.setReorderingAllowed(true);
                 transaction.add(R.id.fragment_driver_container, HistoryDriverFragment.class, null, HistoryDriverFragment.class.getName());
                 transaction.hide(main);
@@ -212,15 +187,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 getSupportActionBar().setTitle("History");
                 return true;
             case R.id.profile_driver:
-                for (Fragment f: fragments) {
-                    if (f.getTag()!= null && f.getTag().equals(InboxDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(HistoryDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(ProfileDriverFragment.class.getName())) {
-                        transaction.remove(f);
-                    }
-                }
+                removeFragments();
                 transaction.setReorderingAllowed(true);
                 transaction.add(R.id.fragment_driver_container, ProfileDriverFragment.class, null, ProfileDriverFragment.class.getName());
                 transaction.hide(main);
@@ -396,6 +363,18 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 call.cancel();
             }
         });
+    }
+
+    private void removeFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment f: fragments) {
+            if (f.getTag()!= null && !f.getTag().equals(MainDriverFragment.class.getName())) {
+                transaction.remove(f);
+            }
+            transaction.commit();
+        }
     }
 
 //    @Override

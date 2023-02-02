@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.ChangePasswordFragment;
+import com.example.app_tim17.fragments.driver.MainDriverFragment;
 import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
 import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
@@ -56,14 +57,14 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         fragment = (ChatFragment) getSupportFragmentManager().findFragmentByTag("ChatFragment");
         setContentView(R.layout.activity_passenger);
         tokenUtils = new TokenUtils();
-//        if (main == null) {
+        if (main == null) {
             main = new MainPassengerFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-            transaction.add(R.id.fragment_passenger_container, main, null);
+            transaction.add(R.id.fragment_passenger_container, main, MainPassengerFragment.class.getName());
             transaction.commit();
-//        }
+        }
 
         bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setSelectedItemId(R.id.home);
@@ -114,49 +115,24 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        List<Fragment> fragments = fragmentManager.getFragments();
 
         switch (item.getItemId()) {
             case R.id.inbox:
                 transaction.setReorderingAllowed(true);
-                for (Fragment f: fragments) {
-                    if (f.getTag()!= null && f.getTag().equals(InboxPassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(HistoryPassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(ProfilePassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    }
-                }
+                removeFragments();
                 transaction.add(R.id.fragment_passenger_container, InboxPassengerFragment.class, null, InboxPassengerFragment.class.getName());
                 transaction.hide(main);
                 transaction.commit();
                 getSupportActionBar().setTitle("Inbox");
                 return true;
             case R.id.home:
-                for (Fragment f: fragments) {
-                    if (f.getTag()!= null && f.getTag().equals(InboxPassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(HistoryPassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(ProfilePassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    }
-                }
+                removeFragments();
                 transaction.show(main);
                 transaction.commit();
                 getSupportActionBar().setTitle("Ryde");
                 return true;
             case R.id.history:
-                for (Fragment f: fragments) {
-                    if (f.getTag()!= null && f.getTag().equals(InboxPassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(HistoryPassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(ProfilePassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    }
-                }
+                removeFragments();
                 transaction.setReorderingAllowed(true);
                 transaction.add(R.id.fragment_passenger_container, HistoryPassengerFragment.class, null, HistoryPassengerFragment.class.getName());
                 transaction.hide(main);
@@ -164,15 +140,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                 getSupportActionBar().setTitle("History");
                 return true;
             case R.id.profile:
-                for (Fragment f: fragments) {
-                    if (f.getTag()!= null && f.getTag().equals(InboxPassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(HistoryPassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    } else if (f.getTag()!= null && f.getTag().equals(ProfilePassengerFragment.class.getName())) {
-                        transaction.remove(f);
-                    }
-                }
+                removeFragments();
                 transaction.setReorderingAllowed(true);
                 transaction.add(R.id.fragment_passenger_container, ProfilePassengerFragment.class, null, ProfilePassengerFragment.class.getName());
                 transaction.hide(main);
@@ -276,5 +244,17 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
     private String getCurrentToken() {
         SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
+    }
+
+    private void removeFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment f: fragments) {
+            if (f.getTag()!= null && !f.getTag().equals(MainPassengerFragment.class.getName())) {
+                transaction.remove(f);
+            }
+            transaction.commit();
+        }
     }
 }
