@@ -158,7 +158,7 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         } catch(Exception ex) {
-            Log.e(TAG, ex.getLocalizedMessage());
+            Log.e(TAG, "" + ex.getLocalizedMessage());
         }
 
         //Draw the polyline

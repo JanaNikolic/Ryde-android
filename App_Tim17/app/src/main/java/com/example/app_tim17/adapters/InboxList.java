@@ -3,6 +3,8 @@ package com.example.app_tim17.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.example.app_tim17.model.response.chat.Chat;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -27,6 +30,7 @@ public class InboxList extends ArrayAdapter{
     private List<String> Times = new ArrayList<>();
     private List<String> Messages = new ArrayList<>();
     private List<String> Types = new ArrayList<>();
+    private List<String> ProfilePictures = new ArrayList<>();
     private Activity context;
 
     public InboxList(Activity context, List<Chat> inbox) {
@@ -36,7 +40,8 @@ public class InboxList extends ArrayAdapter{
             this.UserNames.add(chat.getUser().getName() + " " + chat.getUser().getSurname());
             this.Times.add(chat.getLastMessage().getTimeOfSending().substring(11, 16));
             this.Messages.add(chat.getLastMessage().getMessage());
-            this.Types.add(chat.getLastMessage().getType());
+            this.Types.add(chat.getType());
+            this.ProfilePictures.add(chat.getUser().getProfilePicture());
         }
     }
 
@@ -51,18 +56,28 @@ public class InboxList extends ArrayAdapter{
         TextView userName = (TextView) row.findViewById(R.id.username);
         TextView time = (TextView) row.findViewById(R.id.time);
         TextView message = (TextView) row.findViewById(R.id.message);
+        TextView type = (TextView) row.findViewById(R.id.type);
+
         ShapeableImageView profilePicture = (ShapeableImageView) row.findViewById(R.id.profile_pic);
-        Log.d("TAG", Types.get(position));
         if (Types.get(position).equals("SUPPORT")) {
             image.setStrokeColor(ColorStateList.valueOf(Color.BLUE));
-        } else if (Types.get(position).equals("RIDE")) {
-            image.setStrokeColor(ColorStateList.valueOf(Color.GREEN));
+            type.setText(Types.get(position));
+            type.setTextColor(ColorStateList.valueOf(Color.BLUE));
         } else {
-            image.setStrokeColor(ColorStateList.valueOf(Color.RED));
+            image.setStrokeColor(ColorStateList.valueOf(Color.GREEN));
+            type.setText(Types.get(position));
+            type.setTextColor(ColorStateList.valueOf(Color.GREEN));
         }
         userName.setText(UserNames.get(position));
         time.setText(Times.get(position));
-        profilePicture.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.profile_picture, null));
+        if (ProfilePictures.get(position) == null || ProfilePictures.get(position).equals("")) {
+            profilePicture.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.profile_picture, null));
+        } else {
+            Log.d("profilePic", ProfilePictures.get(position));
+            byte[] decodedString = Base64.getDecoder().decode(ProfilePictures.get(position));
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            profilePicture.setImageBitmap(decodedByte);
+        }
         message.setText(Messages.get(position));
 
         return  row;

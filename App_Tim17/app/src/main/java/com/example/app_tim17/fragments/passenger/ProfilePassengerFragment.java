@@ -1,24 +1,47 @@
 package com.example.app_tim17.fragments.passenger;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.shapes.Shape;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.EditProfileFragment;
 import com.example.app_tim17.fragments.UserInfoFragment;
+
 import com.example.app_tim17.model.response.DistanceStatisticsResponse;
 import com.example.app_tim17.model.response.MoneyStatisticsResponse;
+
+import com.example.app_tim17.fragments.driver.DriverStatisticsFragment;
+import com.example.app_tim17.model.request.DriverUpdateRequest;
+import com.example.app_tim17.model.request.PassengerUpdateRequest;
+
 import com.example.app_tim17.model.response.PassengerResponse;
 import com.example.app_tim17.model.response.RideStatisticsResponse;
 import com.example.app_tim17.model.response.UserResponse;
@@ -27,7 +50,9 @@ import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.PassengerService;
 import com.example.app_tim17.service.TokenUtils;
+import com.google.android.material.imageview.ShapeableImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 
 import retrofit2.Call;
@@ -45,6 +70,7 @@ public class ProfilePassengerFragment extends Fragment {
     private String thisMonthStart;
     private String thisMonthEnd;
     private UserResponse passenger;
+    private ShapeableImageView profilePic;
 
     public ProfilePassengerFragment() {
         // Required empty public constructor
@@ -77,12 +103,28 @@ public class ProfilePassengerFragment extends Fragment {
         thisMonthEnd = lastDay.toString();
         initializeComponents(view);
 
+        profilePic = (ShapeableImageView) view.findViewById(R.id.profile_pic);
+        profilePic.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                popupMenu(view);
+                return true;
+            }
+        });
+
         Call<PassengerResponse> call = passengerService.getPassenger("Bearer " + getCurrentToken(), TokenUtils.getId(getCurrentToken()));
 
         call.enqueue(new Callback<PassengerResponse>() {
             @Override
             public void onResponse(Call<PassengerResponse> call, Response<PassengerResponse> response) {
                 passenger = response.body();
+                if (passenger != null) {
+                    if (passenger.getProfilePicture() != null) {
+                        byte[] decodedString = Base64.decode(passenger.getProfilePicture(), Base64.DEFAULT);
+                        Bitmap picture = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        profilePic.setImageBitmap(picture);
+                    }
+                }
             }
             @Override
             public void onFailure(Call<PassengerResponse> call, Throwable t) {
@@ -91,7 +133,8 @@ public class ProfilePassengerFragment extends Fragment {
         });
 
         Button favBtn = (Button) view.findViewById(R.id.favRouteBtn);
-        Button edit = (Button) view.findViewById(R.id.reportBtn);
+        Button edit = (Button) view.findViewById(R.id.editBtn);
+        Button report = (Button) view.findViewById(R.id.reportBtn);
 
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,22 +158,22 @@ public class ProfilePassengerFragment extends Fragment {
                 args.putString("phoneNumber", passenger.getTelephoneNumber());
                 args.putString("email", passenger.getEmail());
                 editProfileFragment.setArguments(args);
-                transaction.add(R.id.fragment_passenger_container, editProfileFragment); // give your fragment container id in first parameter
+                transaction.add(R.id.fragment_passenger_container, editProfileFragment);
 
-                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
 
-//        edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-//                transaction.add(R.id.fragment_passenger_container, new PassengerReportFragment());
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-//            }
-//        });
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_passenger_container, new DriverStatisticsFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         return view;
     }
@@ -228,6 +271,86 @@ public class ProfilePassengerFragment extends Fragment {
             }
         });
 
+    }
+
+    private void popupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.inflate(R.menu.profile_pic_menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.camera:
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        try {
+                            startActivityForResult(takePictureIntent, 1);
+                        } catch (ActivityNotFoundException e) {
+                            // display error state to the user
+                        }
+                        return true;
+                    case R.id.galery:
+
+                        Intent i = new Intent(
+                                Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(i, 1);
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        });
+        popupMenu.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            if (selectedImage == null) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                profilePic.setImageBitmap(photo);
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                passenger.setProfilePicture(encoded);
+            } else {
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                Bitmap photo = BitmapFactory.decodeFile(picturePath);
+                profilePic.setImageBitmap(photo);
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                passenger.setProfilePicture(encoded);
+            }
+
+            updateProfilePic();
+        }
+    }
+
+    private void updateProfilePic() {
+        Call<PassengerUpdateRequest> update = passengerService.updatePassenger("Bearer " + getCurrentToken(), new PassengerUpdateRequest(passenger), TokenUtils.getId(getCurrentToken()));
+        update.enqueue(new Callback<PassengerUpdateRequest>() {
+            @Override
+            public void onResponse(Call<PassengerUpdateRequest> call, Response<PassengerUpdateRequest> response) {
+                Toast.makeText(getContext(), "Successfully updated profile picture!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<PassengerUpdateRequest> call, Throwable t) {
+
+            }
+        });
     }
 
     private String getCurrentToken() {

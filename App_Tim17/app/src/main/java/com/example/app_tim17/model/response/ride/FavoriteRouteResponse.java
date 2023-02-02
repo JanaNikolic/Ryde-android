@@ -1,3 +1,4 @@
+
 package com.example.app_tim17.model.response.ride;
 
 import com.google.gson.annotations.Expose;
@@ -38,3 +39,4 @@ public class FavoriteRouteResponse {
         this.results = results;
     }
 }
+

@@ -7,7 +7,9 @@ import com.example.app_tim17.model.request.RejectionRequest;
 import com.example.app_tim17.model.request.RideRequest;
 import com.example.app_tim17.model.response.message.Message;
 import com.example.app_tim17.model.response.message.MessagesResponse;
+
 import com.example.app_tim17.model.response.ride.FavoriteRoute;
+
 import com.example.app_tim17.model.response.ride.FavoriteRouteResponse;
 import com.example.app_tim17.model.response.ride.Ride;
 
@@ -41,6 +43,9 @@ public interface RideService {
     @PUT("ride/{id}/start")
     Call<Ride> startRide(@Header("Authorization") String token, @Path("id") Long id);
 
+    @PUT("ride/{id}/withdraw")
+    Call<Ride> withdrawRide(@Header("Authorization") String token, @Path("id") Long id);
+
     @PUT("ride/{id}/panic")
     Call<Ride> panic(@Header("Authorization") String token, @Path("id") Long id, @Body PanicRequest request);
 
@@ -55,4 +60,5 @@ public interface RideService {
 
     @POST("ride/favorites")
     Call<FavoriteRoute> createFavorite(@Header("Authorization") String token, @Body FavoriteRouteRequest request);
+
 }
