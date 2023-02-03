@@ -55,6 +55,7 @@ public class SuccesfullSearchFragment extends Fragment {
     private StompClient mStompClient;
     private RetrofitService retrofitService;
     private TokenUtils tokenUtils;
+    private RideService rideService;
     private DriverService driverService;
     private String driverName;
     private String driverImage;
@@ -66,6 +67,7 @@ public class SuccesfullSearchFragment extends Fragment {
     private String token;
     private Long driverId, rideId;
     Gson gson = new Gson();
+    Timer timer;
 
     public SuccesfullSearchFragment() {
         // Required empty public constructor
@@ -91,13 +93,41 @@ public class SuccesfullSearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
         rideId = getArguments().getLong("rideId");
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.14:8080/example-endpoint/websocket");
+
         retrofitService = new RetrofitService();
         connectStomp();
 
         driverId = getArguments().getLong("driverId");
         driverService = retrofitService.getRetrofit().create(DriverService.class);
+        rideService = retrofitService.getRetrofit().create(RideService.class);
         token = "Bearer " + getCurrentToken();
+
+        timer = new Timer();
+        TimerTask tt = new TimerTask() {
+            public void run()
+            {
+                Call<Ride> withdraw = rideService.withdrawRide("Bearer " + getCurrentToken(), rideId);
+                withdraw.enqueue(new Callback<Ride>() {
+                    @Override
+                    public void onResponse(Call<Ride> call, Response<Ride> response) {
+                        Toast.makeText(getContext(), "No driver found. Try again later.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ride> call, Throwable t) {
+
+                    }
+                });
+                PassengerCreateRideFragment fragment = new PassengerCreateRideFragment();
+
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.currentRide, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            };
+        };
+        timer.schedule(tt, 30000);
 
 
     return v;
@@ -127,6 +157,7 @@ public class SuccesfullSearchFragment extends Fragment {
                     Ride ride = gson.fromJson(topicMessage.getPayload(), Ride.class);
                     if (ride.getStatus().equals("REJECTED")) {
                         Toast.makeText(getContext(), "Ride was rejected, please try again.", Toast.LENGTH_SHORT).show();
+                        timer.cancel();
                         PassengerCreateRideFragment fragment = new PassengerCreateRideFragment();
 
                         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
@@ -135,7 +166,7 @@ public class SuccesfullSearchFragment extends Fragment {
                         fragmentTransaction.commit();
                     } else {
                         Call<DriverResponse> call = driverService.getDriver(driverId, token);
-
+                        timer.cancel();
                         call.enqueue(new Callback<DriverResponse>() {
                             @Override
                             public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
@@ -143,7 +174,11 @@ public class SuccesfullSearchFragment extends Fragment {
                                 if (driver != null) {
                                     driverId = driver.getId();
                                     driverName = driver.getName() + " " + driver.getSurname();
-                                    driverImage = driver.getProfilePicture();
+                                    if (driver.getProfilePicture() != null){
+                                        driverImage = driver.getProfilePicture();
+                                        Log.i("driver slika" , driverImage);
+                                    }
+                                    driverPhoneNumber = driver.getTelephoneNumber();
                                 }
                             }
 
@@ -193,7 +228,7 @@ public class SuccesfullSearchFragment extends Fragment {
                                 fragmentTransaction.replace(R.id.currentRide, fragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();}
-                        }, 800);}
+                        }, 1500);}
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });
@@ -217,5 +252,7 @@ public class SuccesfullSearchFragment extends Fragment {
         if (compositeDisposable != null) compositeDisposable.dispose();
         super.onDestroy();
     }
+
+
 
 }

@@ -2,6 +2,7 @@ package com.example.app_tim17.model.request;
 
 import androidx.annotation.Nullable;
 
+import com.example.app_tim17.model.response.UserResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -42,6 +43,15 @@ public class DriverUpdateRequest {
         this.email = email;
         this.address = address;
         this.documents = documents;
+    }
+
+    public DriverUpdateRequest(UserResponse driver) {
+        this.name = driver.getName();
+        this.surname = driver.getSurname();
+        this.profilePicture = driver.getProfilePicture();
+        this.telephoneNumber = driver.getTelephoneNumber();
+        this.email = driver.getEmail();
+        this.address = driver.getAddress();
     }
 
     public String getName() {

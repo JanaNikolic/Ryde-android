@@ -3,6 +3,7 @@ package com.example.app_tim17.fragments.passenger;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,19 +18,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.fragments.driver.NoActiveRideFragment;
+import com.example.app_tim17.model.Note;
 import com.example.app_tim17.model.request.MessageRequest;
 import com.example.app_tim17.model.request.PanicRequest;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.service.UserService;
 import com.example.app_tim17.tools.FragmentTransition;
+import com.example.app_tim17.tools.Utils;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.gson.Gson;
@@ -65,6 +70,7 @@ public class PassengerCurrentRideFragment extends Fragment {
     CountDownTimer countDownTimer;
     int time;
     int interval = 1000; // 1 second
+    private UserService userService;
 
     public PassengerCurrentRideFragment() {
         // Required empty public constructor
@@ -86,9 +92,12 @@ public class PassengerCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.14:8080/example-endpoint/websocket");
+
         retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
+        userService = retrofitService.getRetrofit().create(UserService.class);
         Bundle args = getArguments();
         rideId = args.getLong("rideId");
         connectStomp();
@@ -101,11 +110,15 @@ public class PassengerCurrentRideFragment extends Fragment {
         TextView licenseNumber = (TextView) view.findViewById(R.id.license_number_ride);
         TextView model = (TextView) view.findViewById(R.id.model);
         ShapeableImageView driverPicture = (ShapeableImageView) view.findViewById(R.id.profile_photo);
+        EditText noteContent = (EditText) view.findViewById(R.id.note_content);
 
+
+        Button sendNoteBtn = (Button) view.findViewById(R.id.send_note_btn);
         Button phone = (Button) view.findViewById(R.id.call_driver);
         Button message = (Button) view.findViewById(R.id.message_driver);
         Button panic = (Button) view.findViewById(R.id.panic_btn);
         String number = args.getString("driverPhoneNumber");
+//        Log.i("driver number", number);
 
         driverName.setText(args.getString("driverName"));
         licenseNumber.setText(args.getString("licensePlate"));
@@ -119,13 +132,45 @@ public class PassengerCurrentRideFragment extends Fragment {
         startTime.setText(args.getString("timeStart").split("T")[1].split("\\.")[0]);
         Bundle route = getArguments().getBundle("route");
 
-        if (route != null) {
-            DrawRouteFragment draw = DrawRouteFragment.newInstance();
-            draw.setArguments(route);
-            FragmentTransition.to(draw, getActivity(), false);
-        }
-//        args.getString("driverImage"); // TODO
+//        if (route != null) { TODO remove
+//            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//            draw.setArguments(route);
+//            FragmentTransition.to(draw, getActivity(), false);
+//        }
+        String photoStr = args.getString("driverImage");
 
+        if (args.getString("driverImage") != null && !photoStr.equals("")) {
+            Bitmap photo = Utils.StringToBitMap(photoStr);
+            driverPicture.setImageBitmap(photo);
+        }
+
+        sendNoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String note = noteContent.getText().toString().trim();
+                if (!note.equals("")) {
+                    String token = getCurrentToken();
+                    Long id = TokenUtils.getId(token);
+                    Call<Note> call = userService.sendNote(id, new Note (null, null, note), "Bearer " + token);
+                    noteContent.setText("");
+
+                    call.enqueue(new Callback<Note>() {
+                        @Override
+                        public void onResponse(Call<Note> call, Response<Note> response) {
+                            Log.i("note ", Utils.getGsonParser().toJson(response.body()));
+                            Toast.makeText(getContext(), "Note sent!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Note> call, Throwable t) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(), "Note must not be empty!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,6 +196,8 @@ public class PassengerCurrentRideFragment extends Fragment {
 
                 arg.putLong("userId", args.getLong("driverId"));
                 arg.putString("userName", args.getString("driverName"));
+                arg.putString("type", "RIDE");
+                arg.putLong("ride", rideId);
 
                 ChatFragment chatPassengerFragment = new ChatFragment();
                 chatPassengerFragment.setArguments(arg);
@@ -217,8 +264,13 @@ public class PassengerCurrentRideFragment extends Fragment {
                         };
                         countDownTimer.start();
                     } else if (ride.getStatus().equals("FINISHED")) {
+                        Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT).show();
+                        ReviewDriverAndVehicleFragment fragment = new ReviewDriverAndVehicleFragment();
+                        Bundle args = new Bundle();
+                        args.putLong("rideId", ride.getId());
+                        fragment.setArguments(args);
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.add(R.id.main_pass, new ReviewDriverAndVehicleFragment());
+                        transaction.add(R.id.main_pass, fragment);
 
                         transaction.commit();
 

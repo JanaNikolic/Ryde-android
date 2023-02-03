@@ -171,6 +171,7 @@ public class HistoryPassengerFragment extends Fragment implements SensorEventLis
         retrofitService = new RetrofitService();
         passengerService = retrofitService.getRetrofit().create(PassengerService.class);
         recyclerView = view.findViewById(R.id.pass_history_cards);
+
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
         Long id = tokenUtils.getId(token);
@@ -203,6 +204,7 @@ public class HistoryPassengerFragment extends Fragment implements SensorEventLis
                 Toast.makeText(getContext(), "NOT WORKING", Toast.LENGTH_SHORT);
             }
         });
+
 
 
 

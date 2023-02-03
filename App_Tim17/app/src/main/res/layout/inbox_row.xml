@@ -41,7 +41,7 @@
         android:layout_column="2"
         android:layout_columnSpan="1"
         android:layout_marginRight="20dp"
-        android:textAlignment="center"
+        android:textAlignment="gravity"
         android:textSize="15dp"
         android:fontFamily="@font/outfit_regular"/>
 
@@ -53,11 +53,23 @@
         android:layout_marginLeft="10dp"
         android:layout_row="1"
         android:layout_column="1"
-        android:maxLines="2"
         tools:ignore="MissingConstraints"
         android:textSize="20dp"
         android:maxLength="25"
         android:ellipsize="end"
+        android:textAlignment="gravity"/>
+    <TextView
+        android:layout_columnSpan="2"
+        android:id="@+id/type"
+        android:layout_height="40dp"
+        android:layout_columnWeight="1"
+        android:layout_marginLeft="10dp"
+        android:maxWidth="15dp"
+        android:layout_row="1"
+        android:layout_column="2"
+        tools:ignore="MissingConstraints"
+        android:textSize="15sp"
+        android:maxLength="25"
         android:textAlignment="gravity"/>
 
 </GridLayout>

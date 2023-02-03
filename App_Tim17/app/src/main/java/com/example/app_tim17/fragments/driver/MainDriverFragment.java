@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -87,6 +88,12 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
         // Open fragment
         replaceFragment(fragment);
 
+        FragmentManager manager = getChildFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.replace(R.id.currentRide, new NoActiveRideFragment(), NoActiveRideFragment.class.getName());
+        ft.addToBackStack(null);
+        ft.commit();
+
 //        new Timer().schedule(new TimerTask() {
 //            @Override
 //            public void run() {
@@ -133,43 +140,6 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-    public void openAcceptanceRide() {
-        Toast.makeText(getActivity(), "NEW RIDE", Toast.LENGTH_SHORT).show();
-        Bundle args = fragment.getArguments();
-        if (args == null)
-            args = new Bundle();
-
-        retrofitService = new RetrofitService();
-        rideService = retrofitService.getRetrofit().create(RideService.class);
-        String token = "Bearer " + getCurrentToken();
-
-        tokenUtils = new TokenUtils();
-        Call<Ride> call = rideService.getActiveRide(token, tokenUtils.getId(getCurrentToken()));
-
-        Bundle finalArgs = args;
-        call.enqueue(new Callback<Ride>() {
-            @Override
-            public void onResponse(Call<Ride> call, Response<Ride> response) {
-                Ride ride = response.body();
-
-                if (ride != null) {
-                    finalArgs.putString("ride", Utils.getGsonParser().toJson(ride));
-                    DriverAcceptanceRideFragment acceptanceRideFragment = new DriverAcceptanceRideFragment();
-                    acceptanceRideFragment.setArguments(finalArgs);
-
-                    getChildFragmentManager().beginTransaction()
-                            .add(R.id.map_container, acceptanceRideFragment)
-                            .commit();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Ride> call, Throwable t) {
-                call.cancel();
-            }
-        });
-    }
-
 
     private void replaceFragment(Fragment fragment) {
         String backStateName = fragment.getClass().getName();
@@ -205,5 +175,12 @@ public class MainDriverFragment extends Fragment implements OnMapReadyCallback {
         super.onStart();
         sheetBehavior.setPeekHeight(300);
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.putString("ride", Utils.getGsonParser().toJson(ride));
     }
 }

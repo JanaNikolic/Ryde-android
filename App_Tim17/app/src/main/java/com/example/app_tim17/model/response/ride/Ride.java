@@ -48,13 +48,12 @@ public class Ride {
     @SerializedName("locations")
     @Expose
     private List<LocationForRide> locations;
-
-
-
     @SerializedName("status")
     @Expose
     private String status;
-
+    @SerializedName("scheduledTime")
+    @Expose
+    private String scheduledTime;
     @SerializedName("distance")
     @Expose
     private double distance;
@@ -62,8 +61,9 @@ public class Ride {
     public Ride() {
     }
 
-    public Ride(Long id, String startTime, String endTime, Integer totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Integer estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, Boolean petTransport, RejectionResponse rejectionResponse, List<LocationForRide> locations, String status, double distance) {
-        super();
+
+    public Ride(Long id, String startTime, String endTime, Integer totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Integer estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, @Nullable Boolean petTransport, RejectionResponse rejectionResponse, List<LocationForRide> locations, String status, String scheduledTime, double distance) {
+
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -77,6 +77,9 @@ public class Ride {
         this.rejectionResponse = rejectionResponse;
         this.locations = locations;
         this.status = status;
+
+        this.scheduledTime = scheduledTime;
+
         this.distance = distance;
     }
 
@@ -184,12 +187,14 @@ public class Ride {
         this.status = status;
     }
 
-    public RejectionResponse getRejectionResponse() {
-        return rejectionResponse;
+
+    public String getScheduledTime() {
+        return scheduledTime;
     }
 
-    public void setRejectionResponse(RejectionResponse rejectionResponse) {
-        this.rejectionResponse = rejectionResponse;
+    public void setScheduledTime(String scheduledTime) {
+        this.scheduledTime = scheduledTime;
+
     }
 
     public double getDistance() {

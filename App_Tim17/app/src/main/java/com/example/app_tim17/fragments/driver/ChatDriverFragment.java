@@ -46,28 +46,9 @@ public class ChatDriverFragment extends Fragment {
     private TokenUtils tokenUtils;
     private RetrofitService retrofitService;
     CountDownTimer timer;
-    private String name;
+    private String name, type;
+    private Long rideId;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ChatDriverFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment ChatDriverFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ChatDriverFragment newInstance() {
         ChatDriverFragment fragment = new ChatDriverFragment();
         return fragment;
@@ -77,8 +58,6 @@ public class ChatDriverFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -91,6 +70,11 @@ public class ChatDriverFragment extends Fragment {
         Bundle args = getArguments();
         Long userId = args.getLong("userId");
         name = args.getString("userName");
+        type = args.getString("type");
+        rideId = args.getLong("ride");
+        if (rideId == 0L) {
+            rideId = null;
+        }
 
         retrofitService = new RetrofitService();
         messageService = retrofitService.getRetrofit().create(MessageService.class);
@@ -185,7 +169,7 @@ public class ChatDriverFragment extends Fragment {
         retrofitService = new RetrofitService();
         messageService = retrofitService.getRetrofit().create(MessageService.class);
         String token = "Bearer " + getCurrentToken();
-        MessageRequest messageRequest = new MessageRequest(receiverId, text,"SUPPORT", null);
+        MessageRequest messageRequest = new MessageRequest(receiverId, text, type, rideId);
 
         sendSocketMessage(messageRequest);
 

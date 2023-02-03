@@ -20,8 +20,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.model.request.ReviewRequest;
+import com.example.app_tim17.model.response.review.DriverReview;
 import com.example.app_tim17.model.response.review.Review;
 import com.example.app_tim17.model.response.review.ReviewRideResponse;
+import com.example.app_tim17.model.response.review.VehicleReview;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.PassengerService;
 import com.example.app_tim17.service.ReviewService;
@@ -94,14 +96,14 @@ public class ReviewFromHistory extends Fragment {
                     ReviewRequest driverReview = new ReviewRequest();
                     driverReview.setRating((int) driverRatingBar.getRating());
                     driverReview.setComment(String.valueOf(driverFeedback.getText()));
-                    Call<Review> call = reviewService.postDriverReview("Bearer " + token, id, driverReview);
-                    call.enqueue(new Callback<Review>() {
+                    Call<DriverReview> call = reviewService.postDriverReview("Bearer " + token, id, driverReview);
+                    call.enqueue(new Callback<DriverReview>() {
                         @Override
-                        public void onResponse(Call<Review> call, Response<Review> response) {
+                        public void onResponse(Call<DriverReview> call, Response<DriverReview> response) {
 
                         }
                         @Override
-                        public void onFailure(Call<Review> call, Throwable t) {
+                        public void onFailure(Call<DriverReview> call, Throwable t) {
                             call.cancel();
                         }
                     });
@@ -109,14 +111,14 @@ public class ReviewFromHistory extends Fragment {
                     ReviewRequest vehicleReview = new ReviewRequest();
                     vehicleReview.setRating((int) vehicleRatingBar.getRating());
                     vehicleReview.setComment(String.valueOf(vehicleFeedback.getText()));
-                    Call<Review> call2 = reviewService.postVehicleReview("Bearer " + token, id, vehicleReview);
-                    call2.enqueue(new Callback<Review>() {
+                    Call<VehicleReview> call2 = reviewService.postVehicleReview("Bearer " + token, id, vehicleReview);
+                    call2.enqueue(new Callback<VehicleReview>() {
                         @Override
-                        public void onResponse(Call<Review> call, Response<Review> response) {
+                        public void onResponse(Call<VehicleReview> call, Response<VehicleReview> response) {
 
                         }
                         @Override
-                        public void onFailure(Call<Review> call, Throwable t) {
+                        public void onFailure(Call<VehicleReview> call, Throwable t) {
                             call.cancel();
                         }
                     });

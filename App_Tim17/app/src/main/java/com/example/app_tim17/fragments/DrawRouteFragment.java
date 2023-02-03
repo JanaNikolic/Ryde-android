@@ -91,6 +91,7 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
         String toAddress;
 
 
+
         if (args != null) {
             if (args.containsKey("fromAddress") && args.containsKey("toAddress")){
                 fromAddress = args.getString("fromAddress");
@@ -116,6 +117,7 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
                     e.printStackTrace();
                 }
             }
+
         } else {
             mMap.clear();
 //            mMap.setMyLocationEnabled(true);
@@ -124,7 +126,10 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
 
-        
+        Log.i("fromlat", String.valueOf(fromLat));
+        Log.i("fromLng", String.valueOf(fromLng));
+        Log.i("toLat", String.valueOf(toLat));
+        Log.i("toLng", String.valueOf(toLng));
 
 
         LatLng from = new LatLng(fromLat, fromLng);
@@ -185,7 +190,7 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         } catch(Exception ex) {
-            Log.e(TAG, ex.getLocalizedMessage());
+            Log.e(TAG, "" + ex.getLocalizedMessage());
         }
 
         //Draw the polyline

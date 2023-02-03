@@ -1,11 +1,10 @@
+
 package com.example.app_tim17.service;
 
-
-
 import com.example.app_tim17.model.request.ReviewRequest;
-import com.example.app_tim17.model.request.UserRequest;
-import com.example.app_tim17.model.response.review.Review;
-import com.example.app_tim17.model.response.review.ReviewRideResponse;
+import com.example.app_tim17.model.response.review.DriverReview;
+import com.example.app_tim17.model.response.review.RideReviewsResponse;
+import com.example.app_tim17.model.response.review.VehicleReview;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,13 +14,14 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ReviewService {
-    @GET("review/{id}")
-    Call<ReviewRideResponse> getRideReviews(@Header("Authorization") String token, @Path("id") Long id);
 
-    @POST("review/{id}/driver")
-    Call<Review> postDriverReview(@Header("Authorization") String token, @Path("id") Long id, @Body ReviewRequest reviewRequest);
+    @GET("review/{rideId}")
+    Call<RideReviewsResponse> getRideReviews(@Header("Authorization") String token, @Path("rideId") Long id);
 
-    @POST("review/{id}/vehicle")
-    Call<Review> postVehicleReview(@Header("Authorization") String token, @Path("id") Long id, @Body ReviewRequest reviewRequest);
+    @POST("review/{rideId}/driver")
+    Call<DriverReview> postDriverReview(@Header("Authorization") String token, @Path("rideId") Long id, @Body ReviewRequest review);
 
+    @POST("review/{rideId}/vehicle")
+    Call<VehicleReview> postVehicleReview(@Header("Authorization") String token, @Path("rideId") Long id, @Body ReviewRequest review);
 }
+

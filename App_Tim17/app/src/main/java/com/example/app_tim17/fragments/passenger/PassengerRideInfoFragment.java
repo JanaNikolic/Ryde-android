@@ -25,8 +25,11 @@ import com.example.app_tim17.fragments.MapsFragment;
 import com.example.app_tim17.fragments.UserInfoFragment;
 import com.example.app_tim17.model.request.FavoriteRouteRequest;
 import com.example.app_tim17.model.response.PassengerResponse;
+import com.example.app_tim17.model.response.review.DriverReview;
 import com.example.app_tim17.model.response.review.Review;
 import com.example.app_tim17.model.response.review.ReviewRideResponse;
+import com.example.app_tim17.model.response.review.RideReviewsResponse;
+import com.example.app_tim17.model.response.review.VehicleReview;
 import com.example.app_tim17.model.response.ride.FavoriteRoute;
 import com.example.app_tim17.model.response.ride.PassengerRideResponse;
 import com.example.app_tim17.model.response.ride.Ride;
@@ -53,7 +56,7 @@ import retrofit2.Response;
 
 public class PassengerRideInfoFragment extends Fragment {
     private Ride ride;
-    private ReviewRideResponse rideReview;
+    private RideReviewsResponse rideReview;
     private RideService rideService;
     private TokenUtils tokenUtils;
     private ReviewService reviewService;
@@ -74,40 +77,40 @@ public class PassengerRideInfoFragment extends Fragment {
         LinearLayout reviewCardsLayout = view.findViewById(R.id.review_card_pass);
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
-        Call<ReviewRideResponse> call = reviewService.getRideReviews("Bearer " + token, id);
-        call.enqueue(new Callback<ReviewRideResponse>() {
+        Call<RideReviewsResponse> call = reviewService.getRideReviews("Bearer " + token, id);
+        call.enqueue(new Callback<RideReviewsResponse>() {
             @Override
-            public void onResponse(Call<ReviewRideResponse> call, Response<ReviewRideResponse> response) {
+            public void onResponse(Call<RideReviewsResponse> call, Response<RideReviewsResponse> response) {
 
                 rideReview = response.body();
                 System.out.println(response);
                 if (rideReview != null) {
-                    for (Review vehicleReview: rideReview.getVehicleReview()) {
+                    for (VehicleReview vehicleReview: rideReview.getVehicleReview()) {
                         CardView reviewCard = (CardView) inflater.inflate(R.layout.review_card, container, false);
                         TextView passInfo = reviewCard.findViewById(R.id.review_passenger);
                         passInfo.setText(vehicleReview.getPassenger().getEmail());
                         TextView comment = reviewCard.findViewById(R.id.review_content);
                         String fullComent = "Vehicle review: " + vehicleReview.getComment();
                         comment.setText(fullComent);
-                        RatingBar ratingBar = reviewCard.findViewById(R.id.ratingBarHistory);
+                        RatingBar ratingBar = reviewCard.findViewById(R.id.stars);
                         ratingBar.setRating(vehicleReview.getRating());
                         reviewCardsLayout.addView(reviewCard);
                     }
-                    for (Review driverReview: rideReview.getDriverReview()) {
+                    for (DriverReview driverReview: rideReview.getDriverReview()) {
                         CardView reviewCard = (CardView) inflater.inflate(R.layout.review_card, container, false);
                         TextView passInfo = reviewCard.findViewById(R.id.review_passenger);
                         passInfo.setText(driverReview.getPassenger().getEmail());
                         TextView comment = reviewCard.findViewById(R.id.review_content);
                         String fullComent = "Driver review: " + driverReview.getComment();
                         comment.setText(fullComent);
-                        RatingBar ratingBar = reviewCard.findViewById(R.id.ratingBarHistory);
+                        RatingBar ratingBar = reviewCard.findViewById(R.id.stars);
                         ratingBar.setRating(driverReview.getRating());
                         reviewCardsLayout.addView(reviewCard);
                     }
                 }
             }
             @Override
-            public void onFailure(Call<ReviewRideResponse> call, Throwable t) {
+            public void onFailure(Call<RideReviewsResponse> call, Throwable t) {
                 call.cancel();
             }
         });

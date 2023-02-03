@@ -5,9 +5,15 @@ import com.example.app_tim17.model.request.UserRequest;
 import com.example.app_tim17.model.response.DistanceStatisticsResponse;
 import com.example.app_tim17.model.response.MoneyStatisticsResponse;
 import com.example.app_tim17.model.response.PassengerResponse;
+
 import com.example.app_tim17.model.response.RideStatisticsResponse;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.model.response.ride.RideResponse;
+
+import com.example.app_tim17.model.response.DistanceStatisticsResponse;
+import com.example.app_tim17.model.response.MoneyStatisticsResponse;
+import com.example.app_tim17.model.response.RideStatisticsResponse;
+
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,6 +23,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+
 
 public interface PassengerService {
 
@@ -29,8 +36,10 @@ public interface PassengerService {
     @GET("passenger/{id}")
     Call<PassengerResponse> getPassenger(@Header("Authorization") String token, @Path("id") Long id);
 
+
     @GET("passenger/{id}/ride")
     Call<RideResponse> getPassengerRides(@Header("Authorization") String token, @Path("id") Long id);
+
 
     @GET("passenger/rideCount/{id}")
     Call<RideStatisticsResponse> getRideCount(@Path("id") Long id, @Header("Authorization") String token,

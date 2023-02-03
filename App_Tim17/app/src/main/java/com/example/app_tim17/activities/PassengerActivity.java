@@ -17,13 +17,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
+import com.example.app_tim17.fragments.ChangePasswordFragment;
+import com.example.app_tim17.fragments.driver.MainDriverFragment;
 import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
 import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
 import com.example.app_tim17.fragments.passenger.MainPassengerFragment;
 import com.example.app_tim17.fragments.passenger.ProfilePassengerFragment;
 import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.response.ride.FavoriteRoute;
+import com.example.app_tim17.model.response.ride.FavoriteRouteResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -36,7 +41,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import tech.gusavila92.websocketclient.WebSocketClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompHeader;
@@ -44,11 +51,14 @@ import ua.naiksoftware.stomp.dto.StompHeader;
 public class PassengerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     private StompClient mStompClient;
     private TokenUtils tokenUtils;
+    private RetrofitService retrofitService;
+    private RideService rideService;
     private Disposable mRestPingDisposable;
     private CompositeDisposable compositeDisposable;
     private Gson mGson = new GsonBuilder().create();
     BottomNavigationView bottomNavigationView;
     ChatFragment fragment;
+    private MainPassengerFragment main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +66,22 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         fragment = (ChatFragment) getSupportFragmentManager().findFragmentByTag("ChatFragment");
         setContentView(R.layout.activity_passenger);
         tokenUtils = new TokenUtils();
+        if (main == null) {
+            main = new MainPassengerFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            transaction.add(R.id.fragment_passenger_container, main, MainPassengerFragment.class.getName());
+            transaction.commit();
+        }
+
         bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.14:8080/example-endpoint/websocket");
         connectStomp();
+
     }
 
     @Override
@@ -78,6 +98,13 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                 edit.commit();
                 startActivity(new Intent(getApplicationContext(), UserLoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
+                return true;
+            }
+            case R.id.change_password: {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_passenger_container, new ChangePasswordFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
                 return true;
             }
             default:
@@ -101,23 +128,33 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         switch (item.getItemId()) {
             case R.id.inbox:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_passenger_container, InboxPassengerFragment.class, null);
+                removeFragments();
+                transaction.add(R.id.fragment_passenger_container, InboxPassengerFragment.class, null, InboxPassengerFragment.class.getName());
+                transaction.hide(main);
                 transaction.commit();
+                getSupportActionBar().setTitle("Inbox");
                 return true;
             case R.id.home:
-                transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_passenger_container, MainPassengerFragment.class, null);
+                removeFragments();
+                transaction.show(main);
                 transaction.commit();
+                getSupportActionBar().setTitle("Ryde");
                 return true;
             case R.id.history:
+                removeFragments();
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_passenger_container, HistoryPassengerFragment.class, null);
+                transaction.add(R.id.fragment_passenger_container, HistoryPassengerFragment.class, null, HistoryPassengerFragment.class.getName());
+                transaction.hide(main);
                 transaction.commit();
+                getSupportActionBar().setTitle("History");
                 return true;
             case R.id.profile:
+                removeFragments();
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_passenger_container, ProfilePassengerFragment.class, null);
+                transaction.add(R.id.fragment_passenger_container, ProfilePassengerFragment.class, null, ProfilePassengerFragment.class.getName());
+                transaction.hide(main);
                 transaction.commit();
+                getSupportActionBar().setTitle("Profile");
                 return true;
         }
         return false;
@@ -162,7 +199,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         compositeDisposable.add(dispLifecycle);
 
         // Receive greetings
-        Disposable dispTopic = mStompClient.topic("/socket-publisher/" + tokenUtils.getId(getCurrentToken()))
+        Disposable dispTopic = mStompClient.topic("/socket-publisher/" + TokenUtils.getId(getCurrentToken()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
@@ -180,10 +217,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         compositeDisposable.add(mStompClient.send("/topic/hello-msg-mapping", mGson.toJson(message))
                 .compose(applySchedulers())
                 .subscribe(() -> {
-                    Log.d("STOMP", "STOMP echo send successfully");
-                    Toast.makeText(getApplicationContext(), "Sent message", Toast.LENGTH_LONG).show();
                 }, throwable -> {
-                    Log.e("STOMP", "Error send STOMP echo", throwable);
                     Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG);
 
                 }));
@@ -220,4 +254,17 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
     }
+
+    private void removeFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment f: fragments) {
+            if (f.getTag()!= null && !f.getTag().equals(MainPassengerFragment.class.getName())) {
+                transaction.remove(f);
+            }
+            transaction.commit();
+        }
+    }
+
 }
