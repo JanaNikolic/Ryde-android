@@ -124,8 +124,10 @@
 
 package com.example.app_tim17.model.response.ride;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.app_tim17.model.response.chat.Chat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -137,7 +139,7 @@ public class RideResponse {
     private Long totalCount;
     @SerializedName("results")
     @Expose
-    private List<Ride> results = null;
+    private List<Ride> results = new ArrayList<Ride>();
 
     public RideResponse() {
     }

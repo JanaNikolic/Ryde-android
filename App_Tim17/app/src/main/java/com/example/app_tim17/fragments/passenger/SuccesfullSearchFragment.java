@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -53,6 +55,7 @@ public class SuccesfullSearchFragment extends Fragment {
     private StompClient mStompClient;
     private RetrofitService retrofitService;
     private TokenUtils tokenUtils;
+    private RideService rideService;
     private DriverService driverService;
     private String driverName;
     private String driverImage;
@@ -61,8 +64,10 @@ public class SuccesfullSearchFragment extends Fragment {
     private String driverPhoneNumber;
     private Disposable mRestPingDisposable;
     private CompositeDisposable compositeDisposable;
-    private String rideId, driverId, token;
+    private String token;
+    private Long driverId, rideId;
     Gson gson = new Gson();
+    Timer timer;
 
     public SuccesfullSearchFragment() {
         // Required empty public constructor
@@ -86,15 +91,43 @@ public class SuccesfullSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_succesfull_search, container, false);
-        rideId = getArguments().getString("rideId");
+        rideId = getArguments().getLong("rideId");
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
+
         retrofitService = new RetrofitService();
         connectStomp();
 
-        driverId = getArguments().getString("driverId");
+        driverId = getArguments().getLong("driverId");
         driverService = retrofitService.getRetrofit().create(DriverService.class);
+        rideService = retrofitService.getRetrofit().create(RideService.class);
         token = "Bearer " + getCurrentToken();
+
+        timer = new Timer();
+        TimerTask tt = new TimerTask() {
+            public void run()
+            {
+                Call<Ride> withdraw = rideService.withdrawRide("Bearer " + getCurrentToken(), rideId);
+                withdraw.enqueue(new Callback<Ride>() {
+                    @Override
+                    public void onResponse(Call<Ride> call, Response<Ride> response) {
+                        Toast.makeText(getContext(), "No driver found. Try again later.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ride> call, Throwable t) {
+
+                    }
+                });
+                PassengerCreateRideFragment fragment = new PassengerCreateRideFragment();
+
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.currentRide, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            };
+        };
+        timer.schedule(tt, 30000);
 
 
     return v;
@@ -124,6 +157,7 @@ public class SuccesfullSearchFragment extends Fragment {
                     Ride ride = gson.fromJson(topicMessage.getPayload(), Ride.class);
                     if (ride.getStatus().equals("REJECTED")) {
                         Toast.makeText(getContext(), "Ride was rejected, please try again.", Toast.LENGTH_SHORT).show();
+                        timer.cancel();
                         PassengerCreateRideFragment fragment = new PassengerCreateRideFragment();
 
                         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
@@ -131,16 +165,19 @@ public class SuccesfullSearchFragment extends Fragment {
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                     } else {
-                        Call<DriverResponse> call = driverService.getDriver(Long.valueOf(driverId), token);
-
+                        Call<DriverResponse> call = driverService.getDriver(driverId, token);
+                        timer.cancel();
                         call.enqueue(new Callback<DriverResponse>() {
                             @Override
                             public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
                                 DriverResponse driver = response.body();
                                 if (driver != null) {
-                                    driverId = String.valueOf(driver.getId());
+                                    driverId = driver.getId();
                                     driverName = driver.getName() + " " + driver.getSurname();
-                                    driverImage = driver.getProfilePicture();
+                                    if (driver.getProfilePicture() != null){
+                                        driverImage = driver.getProfilePicture();
+                                    }
+                                    driverPhoneNumber = driver.getTelephoneNumber();
                                 }
                             }
 
@@ -166,7 +203,7 @@ public class SuccesfullSearchFragment extends Fragment {
                             @Override
                             public void onFailure(Call<VehicleResponse> call, Throwable t) {
                                 Toast.makeText(getContext(), "Oops, something went wrong", Toast.LENGTH_SHORT).show();
-                                getChildFragmentManager().popBackStack(); // TODO check
+                                getChildFragmentManager().popBackStack();
                             }
                         });
 
@@ -179,8 +216,8 @@ public class SuccesfullSearchFragment extends Fragment {
                                 args.putString("vehicleModel", vehicleModel);
                                 args.putString("driverPhoneNumber", driverPhoneNumber);
                                 args.putString("driverImage", driverImage);
-                                args.putString("rideId", rideId);
-                                args.putString("driverId", driverId);
+                                args.putLong("rideId", rideId);
+                                args.putLong("driverId", driverId);
                                 args.putString("time", ride.getEstimatedTimeInMinutes().toString());
 
                                 PassengerCurrentRideFragment fragment = new PassengerCurrentRideFragment();
@@ -190,7 +227,7 @@ public class SuccesfullSearchFragment extends Fragment {
                                 fragmentTransaction.replace(R.id.currentRide, fragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();}
-                        }, 800);}
+                        }, 1500);}
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });
@@ -214,5 +251,7 @@ public class SuccesfullSearchFragment extends Fragment {
         if (compositeDisposable != null) compositeDisposable.dispose();
         super.onDestroy();
     }
+
+
 
 }

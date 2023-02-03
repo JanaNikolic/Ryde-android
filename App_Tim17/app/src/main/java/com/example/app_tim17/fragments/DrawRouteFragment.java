@@ -1,6 +1,8 @@
 package com.example.app_tim17.fragments;
 
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -79,25 +82,54 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
 
         Bundle args = getArguments();
 
-        double fromLat;
-        double fromLng;
-        double toLat;
-        double toLng;
-        
+        double fromLat = 0;
+        double fromLng = 0;
+        double toLat = 0;
+        double toLng = 0;
+
+        String fromAddress;
+        String toAddress;
+
+
+
         if (args != null) {
-             fromLat = args.getDouble("fromLat");
-             fromLng = args.getDouble("fromLng");
-             toLat = args.getDouble("toLat");
-             toLng = args.getDouble("toLng");
+            if (args.containsKey("fromAddress") && args.containsKey("toAddress")){
+                fromAddress = args.getString("fromAddress");
+                toAddress = args.getString("toAddress");
+
+                Log.i("fromAddress", String.valueOf(fromAddress));
+                Log.i("toAddress", String.valueOf(toAddress));
+
+                Geocoder geocoder = new Geocoder(getContext());
+                List<Address> addresses;
+                try {
+                    addresses = geocoder.getFromLocationName(fromAddress, 1);
+                    if(addresses.size() > 0) {
+                        fromLat = addresses.get(0).getLatitude();
+                        fromLng = addresses.get(0).getLongitude();
+                    }
+                    addresses = geocoder.getFromLocationName(toAddress, 1);
+                    if(addresses.size() > 0) {
+                        toLat = addresses.get(0).getLatitude();
+                        toLng = addresses.get(0).getLongitude();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         } else {
             mMap.clear();
 //            mMap.setMyLocationEnabled(true);
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
-                    .target(new LatLng(45.253885, 19.847360)).zoom(10).build()));
+                    .target(new LatLng(45.253885, 19.847360)).zoom(13).build()));
             return;
         }
 
-        
+        Log.i("fromlat", String.valueOf(fromLat));
+        Log.i("fromLng", String.valueOf(fromLng));
+        Log.i("toLat", String.valueOf(toLat));
+        Log.i("toLng", String.valueOf(toLng));
 
 
         LatLng from = new LatLng(fromLat, fromLng);
@@ -158,7 +190,7 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         } catch(Exception ex) {
-            Log.e(TAG, ex.getLocalizedMessage());
+            Log.e(TAG, "" + ex.getLocalizedMessage());
         }
 
         //Draw the polyline

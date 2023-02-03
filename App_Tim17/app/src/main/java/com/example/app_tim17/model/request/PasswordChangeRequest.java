@@ -6,10 +6,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class PasswordChangeRequest {
 
-    @SerializedName("new_password")
+    @SerializedName("newPassword")
     @Expose
     private String newPassword;
-    @SerializedName("old_password")
+    @SerializedName("oldPassword")
     @Expose
     private String oldPassword;
 

@@ -48,18 +48,22 @@ public class Ride {
     @SerializedName("locations")
     @Expose
     private List<LocationForRide> locations;
-
-
-
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("scheduledTime")
+    @Expose
+    private String scheduledTime;
+    @SerializedName("distance")
+    @Expose
+    private double distance;
 
     public Ride() {
     }
 
-    public Ride(Long id, String startTime, String endTime, Integer totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Integer estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, Boolean petTransport, RejectionResponse rejectionResponse, List<LocationForRide> locations, String status) {
-        super();
+
+    public Ride(Long id, String startTime, String endTime, Integer totalCost, DriverRideResponse driver, List<PassengerRideResponse> passengers, Integer estimatedTimeInMinutes, String vehicleType, Boolean babyTransport, @Nullable Boolean petTransport, RejectionResponse rejectionResponse, List<LocationForRide> locations, String status, String scheduledTime, double distance) {
+
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -73,6 +77,10 @@ public class Ride {
         this.rejectionResponse = rejectionResponse;
         this.locations = locations;
         this.status = status;
+
+        this.scheduledTime = scheduledTime;
+
+        this.distance = distance;
     }
 
     public Long getId() {
@@ -177,5 +185,23 @@ public class Ride {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    public String getScheduledTime() {
+        return scheduledTime;
+    }
+
+    public void setScheduledTime(String scheduledTime) {
+        this.scheduledTime = scheduledTime;
+
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }

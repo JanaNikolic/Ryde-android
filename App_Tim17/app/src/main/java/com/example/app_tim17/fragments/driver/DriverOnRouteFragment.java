@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -26,6 +27,7 @@ import com.example.app_tim17.tools.Utils;
 
 import java.util.List;
 
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +49,7 @@ public class DriverOnRouteFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Ride ride = null;
 
     public DriverOnRouteFragment() {
         // Required empty public constructor
@@ -73,9 +76,8 @@ public class DriverOnRouteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        if (savedInstanceState != null) {
+            ride = Utils.getGsonParser().fromJson(savedInstanceState.getString("ride"), Ride.class);
         }
     }
 
@@ -91,12 +93,18 @@ public class DriverOnRouteFragment extends Fragment {
         TextView endAddress = view.findViewById(R.id.end_address);
         TextView price = view.findViewById(R.id.price);
         TextView duration = view.findViewById(R.id.duration);
-        TextView distance = view.findViewById(R.id.distance); // caluclate
+        TextView distance = view.findViewById(R.id.distance);
+
+        if (ride != null) {
+            Log.i("ride saved", Utils.getGsonParser().toJson(ride));
+        } else {
+            Log.i("ride saved", "Nije sacuvana");
+        }
 
         retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
         Bundle sentArgs = getArguments();
-        Ride ride = null;
+
         if (sentArgs != null && sentArgs.containsKey("ride")) {
             ride = Utils.getGsonParser().fromJson(sentArgs.getString("ride"), Ride.class);
 
@@ -105,41 +113,48 @@ public class DriverOnRouteFragment extends Fragment {
             String priceStr = ride.getTotalCost() + " RSD";
             price.setText(priceStr);
 
+            priceStr =  ride.getDistance() / 1000  + " km";
+            distance.setText(priceStr);
+
             priceStr =  ride.getEstimatedTimeInMinutes() + " min";
             duration.setText(priceStr);
         }
 
 
-        Ride finalRide = ride;
+//        Ride finalRide = ride;
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Bundle route = new Bundle();
-//                route.putDouble("fromLat", finalRide.getLocations().get(0).getDeparture().getLatitude());
-//                route.putDouble("fromLng", finalRide.getLocations().get(0).getDeparture().getLongitude());
-                route.putDouble("fromLat", 45.257430);
-                route.putDouble("fromLng", 19.840850);
-//                route.putDouble("toLat", finalRide.getLocations().get(0).getDestination().getLatitude());
-//                route.putDouble("toLng", finalRide.getLocations().get(0).getDestination().getLongitude());
-                route.putDouble("toLat", 45.241290);
-                route.putDouble("toLng", 19.847320);
+////                route.putDouble("fromLat", finalRide.getLocations().get(0).getDeparture().getLatitude());
+////                route.putDouble("fromLng", finalRide.getLocations().get(0).getDeparture().getLongitude());
+//                route.putDouble("fromLat", 45.257430);
+//                route.putDouble("fromLng", 19.840850);
+////                route.putDouble("toLat", finalRide.getLocations().get(0).getDestination().getLatitude());
+////                route.putDouble("toLng", finalRide.getLocations().get(0).getDestination().getLongitude());
+//                route.putDouble("toLat", 45.241290);
+//                route.putDouble("toLng", 19.847320);
+
+                route.putString("fromAddress", ride.getLocations().get(0).getDeparture().getAddress());
+                route.putString("toAddress", ride.getLocations().get(0).getDestination().getAddress());
+
                 DrawRouteFragment draw = DrawRouteFragment.newInstance();
                 draw.setArguments(route);
                 FragmentTransition.to(draw, getActivity(), false);
 
                 String token = "Bearer " + getCurrentToken();
 
-                Call<Ride> call = rideService.startRide(token, finalRide.getId());
+                Call<Ride> call = rideService.startRide(token, ride.getId());
 
 
                 call.enqueue(new Callback<Ride>() {
                     @Override
                     public void onResponse(Call<Ride> call, Response<Ride> response) {
-                        Ride ride = response.body();
+                        Ride rideResponse = response.body();
 
-                        if (ride != null) {
-                            sentArgs.putString("ride", Utils.getGsonParser().toJson(ride));
+                        if (rideResponse != null) {
+                            sentArgs.putString("ride", Utils.getGsonParser().toJson(rideResponse));
 
                             DriverCurrentRideFragment currentRideFragment = new DriverCurrentRideFragment();
                             currentRideFragment.setArguments(sentArgs);
@@ -170,4 +185,11 @@ public class DriverOnRouteFragment extends Fragment {
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("ride", Utils.getGsonParser().toJson(ride));
+    }
+
 }

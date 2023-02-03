@@ -1,25 +1,24 @@
-package com.example.app_tim17.model.response;
 
-import java.util.List;
+package com.example.app_tim17.model.response.ride;
 
-import com.example.app_tim17.model.WorkingHour;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class WorkingHourResponse {
+import java.util.ArrayList;
+import java.util.List;
 
+public class FavoriteRouteResponse {
     @SerializedName("totalCount")
     @Expose
     private Long totalCount;
     @SerializedName("results")
     @Expose
-    private List<WorkingHour> results = null;
+    private List<FavoriteRoute> results = new ArrayList<FavoriteRoute>();
 
-    public WorkingHourResponse() {
+    public FavoriteRouteResponse() {
     }
 
-    public WorkingHourResponse(Long totalCount, List<WorkingHour> results) {
-        super();
+    public FavoriteRouteResponse(Long totalCount, List<FavoriteRoute> results) {
         this.totalCount = totalCount;
         this.results = results;
     }
@@ -32,12 +31,12 @@ public class WorkingHourResponse {
         this.totalCount = totalCount;
     }
 
-    public List<WorkingHour> getWorkingHours() {
+    public List<FavoriteRoute> getResults() {
         return results;
     }
 
-    public void setWorkingHours(List<WorkingHour> results) {
+    public void setResults(List<FavoriteRoute> results) {
         this.results = results;
     }
-
 }
+

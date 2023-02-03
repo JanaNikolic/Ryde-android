@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -87,16 +88,12 @@ public class InboxPassengerFragment extends Fragment {
         call.enqueue(new Callback<ChatResponse>() {
             @Override
             public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
-                Log.d("WTF", response.body().toString());
                 if (response.isSuccessful()) {
-                    Log.d("WTF", response.body().toString());
                     ChatResponse chatResponse = response.body();
-                    Log.d("WTF", chatResponse.toString());
                     mChatList = new ArrayList<>();
                     if (chatResponse != null) {
                         for (Chat chat : chatResponse.getChats()) {
                             mChatList.add(chat);
-                            Log.d("Message", "one message");
                         }
                         inboxList = new InboxList(getActivity(), mChatList);
                         listView.setAdapter(inboxList);
@@ -106,7 +103,7 @@ public class InboxPassengerFragment extends Fragment {
             @Override
             public void onFailure(Call<ChatResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(getContext(), "NOT WORKING", Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(), "NOT WORKING", Toast.LENGTH_SHORT);
             }
         });
 
@@ -119,6 +116,7 @@ public class InboxPassengerFragment extends Fragment {
                 Chat chat = (Chat) inboxList.getItem(position);
                 args.putLong("userId", chat.getUser().getId());
                 args.putString("userName", chat.getUser().getName() + " " + chat.getUser().getSurname());
+                args.putString("type", chat.getType());
                 chatFragment.setArguments(args);
                 replaceFragment(chatFragment);
             }

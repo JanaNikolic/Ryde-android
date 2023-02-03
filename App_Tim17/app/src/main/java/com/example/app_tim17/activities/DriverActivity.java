@@ -20,29 +20,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
-import com.example.app_tim17.fragments.MapsFragment;
-import com.example.app_tim17.fragments.driver.ChatDriverFragment;
+import com.example.app_tim17.fragments.ChangePasswordFragment;
+import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.fragments.driver.DriverAcceptanceRideFragment;
 import com.example.app_tim17.fragments.driver.HistoryDriverFragment;
 import com.example.app_tim17.fragments.driver.InboxDriverFragment;
 import com.example.app_tim17.fragments.driver.MainDriverFragment;
+import com.example.app_tim17.fragments.driver.NoActiveRideFragment;
 import com.example.app_tim17.fragments.driver.ProfileDriverFragment;
-import com.example.app_tim17.fragments.passenger.ChatFragment;
-import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
+import com.example.app_tim17.model.WorkingHour;
+import com.example.app_tim17.model.request.EndWorkingHour;
 import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.request.StartWorkingHour;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.tools.FragmentTransition;
 import com.example.app_tim17.tools.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.reactivex.CompletableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,7 +56,6 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tech.gusavila92.websocketclient.WebSocketClient;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompHeader;
@@ -64,33 +67,42 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
     private TokenUtils tokenUtils;
     private RetrofitService retrofitService;
     private RideService rideService;
-    private Disposable mRestPingDisposable;
+    private DriverService driverService;
     private CompositeDisposable compositeDisposable;
     private Gson mGson = new GsonBuilder().create();
     MainDriverFragment mainFragment;
-    Bundle finalArgs;
+    private WorkingHour workingHour;
+    private MainDriverFragment main;
+    Gson gson = new Gson();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
         tokenUtils = new TokenUtils();
-        bottomNavigationView = findViewById(R.id.nav_view_driver);
-        bottomNavigationView.setSelectedItemId(R.id.home_driver);
-        bottomNavigationView.setOnItemSelectedListener(this);
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                mainFragment = (MainDriverFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_driver_container);
-            }
-        }, 1000);
+        if (main == null) {
+            main = new MainDriverFragment();
 
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            transaction.add(R.id.fragment_driver_container, main, MainDriverFragment.class.getName());
+            transaction.commit();
+        }
+
+
+        bottomNavigationView = findViewById(R.id.nav_view_driver);
+        bottomNavigationView.setOnItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.home_driver);
 
         retrofitService = new RetrofitService();
-        rideService = retrofitService.getRetrofit().create(RideService.class);
+        driverService = retrofitService.getRetrofit().create(DriverService.class);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
         connectStomp();
+        startWorkingHour();
     }
 
     @Override
@@ -107,12 +119,12 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
             public void onClick(View view) {
                 if (toggle.isChecked()) {
                     text.setText(R.string.online);
-
                     text.setTextColor(getResources().getColor(R.color.yellow));
+                    startWorkingHour();
                 } else {
                     text.setText(R.string.offline);
-
                     text.setTextColor(getResources().getColor(R.color.white));
+                    if (workingHour != null) endWorkingHour();
                 }
             }
         });
@@ -127,6 +139,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 return true;
             }
             case R.id.action_logout: {
+                if (workingHour != null) endWorkingHour();
                 SharedPreferences sharedPreferences = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.remove("token");
@@ -135,6 +148,12 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 startActivity(new Intent(getApplicationContext(), UserLoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 this.finish();
                 return true;
+            }
+            case R.id.change_password: {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_driver_container, new ChangePasswordFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
             default:
                 return super.onOptionsItemSelected(item);
@@ -146,26 +165,41 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment f: fragments) {
+            if (f.getTag()!= null && !f.getTag().equals(MainDriverFragment.class.getName())) {
+                transaction.remove(f);
+            }
+        }
+
         switch (item.getItemId()) {
             case R.id.inbox_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_driver_container, InboxDriverFragment.class, null);
+                transaction.add(R.id.fragment_driver_container, InboxDriverFragment.class, null, InboxDriverFragment.class.getName());
+                transaction.hide(main);
                 transaction.commit();
+                getSupportActionBar().setTitle("Inbox");
+//                activeFragment = fragmentManager.findFragmentByTag(InboxDriverFragment.class.getName());
                 return true;
             case R.id.home_driver:
-                transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_driver_container, MainDriverFragment.class, null);
+                transaction.show(main);
                 transaction.commit();
+                getSupportActionBar().setTitle("Ryde");
+//                activeFragment = main;
                 return true;
             case R.id.history_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_driver_container, HistoryDriverFragment.class, null);
+                transaction.add(R.id.fragment_driver_container, HistoryDriverFragment.class, null, HistoryDriverFragment.class.getName());
+                transaction.hide(main);
                 transaction.commit();
+                getSupportActionBar().setTitle("History");
                 return true;
             case R.id.profile_driver:
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.fragment_driver_container, ProfileDriverFragment.class, null);
+                transaction.add(R.id.fragment_driver_container, ProfileDriverFragment.class, null, ProfileDriverFragment.class.getName());
+                transaction.hide(main);
                 transaction.commit();
+                getSupportActionBar().setTitle("Profile");
                 return true;
         }
         return false;
@@ -184,29 +218,6 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
 
         resetSubscriptions();
 
-        Disposable dispLifecycle = mStompClient.lifecycle()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(lifecycleEvent -> {
-                    switch (lifecycleEvent.getType()) {
-                        case OPENED:
-                            Toast.makeText(getApplicationContext(), "Stomp connection opened", Toast.LENGTH_SHORT).show();
-                            break;
-                        case ERROR:
-                            Log.e("STOMP", "Stomp connection error", lifecycleEvent.getException());
-                            Toast.makeText(getApplicationContext(), "Stomp connection error", Toast.LENGTH_SHORT).show();
-                            break;
-                        case CLOSED:
-                            Toast.makeText(getApplicationContext(), "Stomp connection closed", Toast.LENGTH_SHORT).show();
-                            resetSubscriptions();
-                            break;
-                        case FAILED_SERVER_HEARTBEAT:
-                            Toast.makeText(getApplicationContext(), "Stomp failed server heartbeat", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                });
-
-        compositeDisposable.add(dispLifecycle);
 
         // Receive greetings
         Disposable dispTopic = mStompClient.topic("/socket-publisher/" + tokenUtils.getId(getCurrentToken()))
@@ -226,7 +237,34 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Log.d("STOMP", "Received " + topicMessage.getPayload());
-                    mainFragment.openAcceptanceRide();
+                    Ride ride = gson.fromJson(topicMessage.getPayload(), Ride.class);
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    if (ride.getStatus().equals("FINISHED")) {
+                        Toast.makeText(getApplicationContext(), "Ride has ended!", Toast.LENGTH_SHORT).show();
+
+                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                        FragmentTransition.to(draw, DriverActivity.this, false);
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().findFragmentById(R.id.fragment_driver_container).getChildFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
+                        fragmentTransaction.commit();
+                    } else {
+                        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+                        for (Fragment f: fragments) {
+                            if (f.getTag()!= null && f.getTag().equals(InboxDriverFragment.class.getName())) {
+                                transaction.remove(f);
+                            } else if (f.getTag()!= null && f.getTag().equals(HistoryDriverFragment.class.getName())) {
+                                transaction.remove(f);
+                            } else if (f.getTag()!= null && f.getTag().equals(ProfileDriverFragment.class.getName())) {
+                                transaction.remove(f);
+                            }
+                        }
+                        transaction.setReorderingAllowed(true);
+    //                    transaction.addToBackStack(null);
+                        transaction.show(main);
+                        transaction.commit();
+                        getSupportActionBar().setTitle("Ryde");
+                        openAcceptanceRide();
+                    }
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });
@@ -234,8 +272,42 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         compositeDisposable.add(dispTopic2);
     }
 
+    public void openAcceptanceRide() {
+        Toast.makeText(getApplicationContext(), "NEW RIDE", Toast.LENGTH_SHORT).show();
+
+        retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
+        String token = "Bearer " + getCurrentToken();
+
+        tokenUtils = new TokenUtils();
+        Call<Ride> call = rideService.getActiveRide(token, tokenUtils.getId(getCurrentToken()));
+
+        Bundle finalArgs = new Bundle();
+        call.enqueue(new Callback<Ride>() {
+            @Override
+            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                Ride ride = response.body();
+
+                if (ride != null) {
+                    finalArgs.putString("ride", Utils.getGsonParser().toJson(ride));
+                    DriverAcceptanceRideFragment acceptanceRideFragment = new DriverAcceptanceRideFragment();
+                    acceptanceRideFragment.setArguments(finalArgs);
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.map_container, acceptanceRideFragment)
+                            .commitAllowingStateLoss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Ride> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+
     public void sendEchoViaStomp(MessageRequest message) {
-//        if (!mStompClient.isConnected()) return;
         compositeDisposable.add(mStompClient.send("/topic/hello-msg-mapping", mGson.toJson(message))
                 .compose(applySchedulers())
                 .subscribe(() -> {
@@ -266,17 +338,68 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+
     @Override
     protected void onDestroy() {
         mStompClient.disconnect();
-
-        if (mRestPingDisposable != null) mRestPingDisposable.dispose();
         if (compositeDisposable != null) compositeDisposable.dispose();
         super.onDestroy();
+        if (workingHour != null) endWorkingHour();
     }
 
     private String getCurrentToken() {
         SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
+    }
+
+    private void startWorkingHour() {
+        Call<WorkingHour> call = driverService.startShift("Bearer " + getCurrentToken(), TokenUtils.getId(getCurrentToken()), new StartWorkingHour(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))));
+        call.enqueue(new Callback<WorkingHour>() {
+            @Override
+            public void onResponse(Call<WorkingHour> call, Response<WorkingHour> response) {
+                workingHour = response.body();
+                Toast.makeText(getApplicationContext(), "Started shift!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<WorkingHour> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    private void endWorkingHour() {
+        Call<WorkingHour> call = driverService.endShift("Bearer " + getCurrentToken(), workingHour.getId(), new EndWorkingHour(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))));
+        call.enqueue(new Callback<WorkingHour>() {
+            @Override
+            public void onResponse(Call<WorkingHour> call, Response<WorkingHour> response) {
+                Toast.makeText(getApplicationContext(), "Ended shift!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<WorkingHour> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        Toast.makeText(DriverActivity.this, "on Pause Driver", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        Toast.makeText(DriverActivity.this, "on Stop Driver", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        Toast.makeText(DriverActivity.this, "on Resume Driver", Toast.LENGTH_LONG).show();
+
     }
 }

@@ -3,6 +3,7 @@ package com.example.app_tim17.fragments.driver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -10,31 +11,43 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.DrawRouteFragment;
-import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.PassengerCreateRideFragment;
 import com.example.app_tim17.fragments.passenger.ReviewDriverAndVehicleFragment;
+import com.example.app_tim17.model.request.PanicRequest;
+import com.example.app_tim17.model.response.PassengerResponse;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.PassengerService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.tools.FragmentTransition;
 import com.example.app_tim17.tools.Utils;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
-import okhttp3.internal.Util;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ua.naiksoftware.stomp.Stomp;
+import ua.naiksoftware.stomp.StompClient;
+import ua.naiksoftware.stomp.dto.StompHeader;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,50 +55,30 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class DriverCurrentRideFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     TextView timer;
     CountDownTimer countDownTimer;
     int time;
     private RideService rideService;
     private RetrofitService retrofitService;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private PassengerService passengerService;
+    private PassengerResponse passenger;
+    private StompClient mStompClient;
+    private CompositeDisposable compositeDisposable;
+    private Long rideId;
 
     public DriverCurrentRideFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DriverCurrentRideFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DriverCurrentRideFragment newInstance(String param1, String param2) {
         DriverCurrentRideFragment fragment = new DriverCurrentRideFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -93,6 +86,11 @@ public class DriverCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_driver_current_ride, container, false);
+//        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
+        retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
+        passengerService = retrofitService.getRetrofit().create(PassengerService.class);
+
 
         TextView startAddress = (TextView) view.findViewById(R.id.start_address);
         TextView endAddress = (TextView) view.findViewById(R.id.end_address);
@@ -104,10 +102,41 @@ public class DriverCurrentRideFragment extends Fragment {
         Button phone = (Button) view.findViewById(R.id.call_pass);
         Button message = (Button) view.findViewById(R.id.message_pass);
         Button end = (Button) view.findViewById(R.id.end_btn);
-
+        Button panic = (Button) view.findViewById(R.id.panic_btn);
         Bundle args = getArguments();
 
         Ride ride = Utils.getGsonParser().fromJson(args.getString("ride"), Ride.class);
+        rideId = ride.getId();
+
+        Call<PassengerResponse> call = passengerService.getPassenger("Bearer " + getCurrentToken(), ride.getPassengers().get(0).getId());
+
+        call.enqueue(new Callback<PassengerResponse>() {
+            @Override
+            public void onResponse(Call<PassengerResponse> call, Response<PassengerResponse> response) {
+                if (response.body() != null) {
+                    passenger = response.body();
+                    if (passenger.getProfilePicture() != null) {
+                        Bitmap photo = Utils.StringToBitMap(passenger.getProfilePicture());
+                        passPicture.setImageBitmap(photo);
+                    }
+                    passName.setText(passenger.getName() + " " + passenger.getSurname());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PassengerResponse> call, Throwable t) {
+
+            }
+        });
+
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + passenger.getTelephoneNumber()));
+                startActivity(intent);
+            }
+        });
 
         if (ride != null) {
             startTime.setText(ride.getStartTime().split("T")[1].split("\\.")[0]);
@@ -115,17 +144,13 @@ public class DriverCurrentRideFragment extends Fragment {
             endAddress.setText(ride.getLocations().get(0).getDestination().getAddress());
             String text = ride.getTotalCost() + " RSD";
             price.setText(text);
-            passName.setText(ride.getPassengers().get(0).getEmail());
             time = ride.getEstimatedTimeInMinutes() * 1000 * 60;
         }
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                retrofitService = new RetrofitService();
-                rideService = retrofitService.getRetrofit().create(RideService.class);
                 String token = "Bearer " + getCurrentToken();
-
                 Call<Ride> call = rideService.endRide(token, ride.getId());
 
                 call.enqueue(new Callback<Ride>() {
@@ -133,7 +158,6 @@ public class DriverCurrentRideFragment extends Fragment {
                     public void onResponse(Call<Ride> call, Response<Ride> response) {
                         DrawRouteFragment draw = DrawRouteFragment.newInstance();
                         FragmentTransition.to(draw, getActivity(), false);
-
                         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
                         fragmentTransaction.commit();
@@ -147,15 +171,31 @@ public class DriverCurrentRideFragment extends Fragment {
 
             }
         });
-        phone.setOnClickListener(new View.OnClickListener() {
+
+        panic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                TODO get passenger phone number
-//                Intent intent = new Intent(Intent.ACTION_DIAL);
-//                intent.setData(Uri.parse("tel:" + number));
-//                startActivity(intent);
+                String token = "Bearer " + getCurrentToken();
+                Call<Ride> call = rideService.panic(token, ride.getId(), new PanicRequest());
+
+                call.enqueue(new Callback<Ride>() {
+                    @Override
+                    public void onResponse(Call<Ride> call, Response<Ride> response) {
+                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                        FragmentTransition.to(draw, getActivity(), false);
+                        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
+                        fragmentTransaction.commit();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ride> call, Throwable t) {
+                        call.cancel();
+                    }
+                });
             }
         });
+
 
         message.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +206,8 @@ public class DriverCurrentRideFragment extends Fragment {
 
                 arg.putLong("userId", ride.getPassengers().get(0).getId());
                 arg.putString("userName", ride.getPassengers().get(0).getEmail());
+                arg.putString("type", "RIDE");
+                arg.putLong("ride", ride.getId());
 
                 ChatDriverFragment chatFragment = new ChatDriverFragment();
                 chatFragment.setArguments(arg);

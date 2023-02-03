@@ -3,9 +3,12 @@ package com.example.app_tim17.fragments.passenger;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -15,28 +18,41 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.DrawRouteFragment;
+import com.example.app_tim17.fragments.driver.NoActiveRideFragment;
+import com.example.app_tim17.model.Note;
+import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.request.PanicRequest;
 import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.service.UserService;
 import com.example.app_tim17.tools.FragmentTransition;
+import com.example.app_tim17.tools.Utils;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
+import io.reactivex.CompletableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompHeader;
@@ -45,13 +61,16 @@ public class PassengerCurrentRideFragment extends Fragment {
     private CompositeDisposable compositeDisposable;
     private StompClient mStompClient;
     private RetrofitService retrofitService;
+    private Gson mGson = new GsonBuilder().create();
+    private RideService rideService;
     private TokenUtils tokenUtils;
     Gson gson = new Gson();
-    String rideId;
+    private Long rideId;
     TextView timer;
     CountDownTimer countDownTimer;
-    int time;
+    int time = 60000;
     int interval = 1000; // 1 second
+    private UserService userService;
 
     public PassengerCurrentRideFragment() {
         // Required empty public constructor
@@ -73,10 +92,14 @@ public class PassengerCurrentRideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.16:8080/example-endpoint/websocket");
+
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
+
         retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
+        userService = retrofitService.getRetrofit().create(UserService.class);
         Bundle args = getArguments();
-        rideId = args.getString("rideId");
+        rideId = args.getLong("rideId");
         connectStomp();
 
         TextView startAddress = (TextView) view.findViewById(R.id.start_address);
@@ -87,18 +110,21 @@ public class PassengerCurrentRideFragment extends Fragment {
         TextView licenseNumber = (TextView) view.findViewById(R.id.license_number_ride);
         TextView model = (TextView) view.findViewById(R.id.model);
         ShapeableImageView driverPicture = (ShapeableImageView) view.findViewById(R.id.profile_photo);
+        EditText noteContent = (EditText) view.findViewById(R.id.note_content);
 
+
+        Button sendNoteBtn = (Button) view.findViewById(R.id.send_note_btn);
         Button phone = (Button) view.findViewById(R.id.call_driver);
         Button message = (Button) view.findViewById(R.id.message_driver);
-
+        Button panic = (Button) view.findViewById(R.id.panic_btn);
         String number = args.getString("driverPhoneNumber");
-        //Log.i("brtelefona", number);
+//        Log.i("driver number", number);
 
         driverName.setText(args.getString("driverName"));
         licenseNumber.setText(args.getString("licensePlate"));
         model.setText(args.getString("vehicleModel"));
 
-        time = Integer.parseInt(args.getString("time")) * 1000 * 60;
+//        time = Integer.parseInt(args.getString("time")) * 1000 * 60;
         startAddress.setText(args.getString("startAddress"));
         endAddress.setText(args.getString("endAddress"));
         price.setText(args.getString("price"));
@@ -106,19 +132,58 @@ public class PassengerCurrentRideFragment extends Fragment {
         startTime.setText(args.getString("timeStart").split("T")[1].split("\\.")[0]);
         Bundle route = getArguments().getBundle("route");
 
-        if (route != null) {
-            DrawRouteFragment draw = DrawRouteFragment.newInstance();
-            draw.setArguments(route);
-            FragmentTransition.to(draw, getActivity(), false);
-        }
-//        args.getString("driverImage"); // TODO
+//        if (route != null) { TODO remove
+//            DrawRouteFragment draw = DrawRouteFragment.newInstance();
+//            draw.setArguments(route);
+//            FragmentTransition.to(draw, getActivity(), false);
+//        }
+        String photoStr = args.getString("driverImage");
 
+        if (args.getString("driverImage") != null && !photoStr.equals("")) {
+            Bitmap photo = Utils.StringToBitMap(photoStr);
+            driverPicture.setImageBitmap(photo);
+        }
+
+        sendNoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String note = noteContent.getText().toString().trim();
+                if (!note.equals("")) {
+                    String token = getCurrentToken();
+                    Long id = TokenUtils.getId(token);
+                    Call<Note> call = userService.sendNote(id, new Note (null, null, note), "Bearer " + token);
+                    noteContent.setText("");
+
+                    call.enqueue(new Callback<Note>() {
+                        @Override
+                        public void onResponse(Call<Note> call, Response<Note> response) {
+                            Log.i("note ", Utils.getGsonParser().toJson(response.body()));
+                            Toast.makeText(getContext(), "Note sent!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Note> call, Throwable t) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(), "Note must not be empty!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + number));
                 startActivity(intent);
+            }
+        });
+
+        panic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendPanic();
             }
         });
 
@@ -131,6 +196,8 @@ public class PassengerCurrentRideFragment extends Fragment {
 
                 arg.putLong("userId", args.getLong("driverId"));
                 arg.putString("userName", args.getString("driverName"));
+                arg.putString("type", "RIDE");
+                arg.putLong("ride", rideId);
 
                 ChatFragment chatPassengerFragment = new ChatFragment();
                 chatPassengerFragment.setArguments(arg);
@@ -184,10 +251,9 @@ public class PassengerCurrentRideFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Ride ride = gson.fromJson(topicMessage.getPayload(), Ride.class);
-                    if (ride.getStatus().equals("ACTIVE")) {
-                        countDownTimer = new CountDownTimer(time, interval) {
+                    if (ride.getStatus().equals("STARTED")) {
+                        countDownTimer = new CountDownTimer(60000, interval) {
                             public void onTick(long millisUntilFinished) {
-                                Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT).show();
                                 timer.setText(getDateFromMillis(time - millisUntilFinished));
                             }
 
@@ -197,10 +263,15 @@ public class PassengerCurrentRideFragment extends Fragment {
                         };
                         countDownTimer.start();
                     } else if (ride.getStatus().equals("FINISHED")) {
+                        Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT).show();
+                        ReviewDriverAndVehicleFragment fragment = new ReviewDriverAndVehicleFragment();
+                        Bundle args = new Bundle();
+                        args.putLong("rideId", ride.getId());
+                        fragment.setArguments(args);
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.add(R.id.main_pass, new ReviewDriverAndVehicleFragment());
+                        transaction.add(R.id.main_pass, fragment);
 
-                        transaction.commit();
+//                        transaction.commit();
 
                         transaction = getParentFragmentManager().beginTransaction();
                         transaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
@@ -212,6 +283,34 @@ public class PassengerCurrentRideFragment extends Fragment {
 
         compositeDisposable.add(dispTopic);
 
+    }
+
+    public void sendPanic() {
+        String token = "Bearer " + getCurrentToken();
+        Call<Ride> call = rideService.panic(token, rideId, new PanicRequest());
+
+        call.enqueue(new Callback<Ride>() {
+            @Override
+            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                FragmentTransition.to(draw, getActivity(), false);
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
+                fragmentTransaction.commit();
+            }
+
+            @Override
+            public void onFailure(Call<Ride> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    protected CompletableTransformer applySchedulers() {
+        return upstream -> upstream
+                .unsubscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private void resetSubscriptions() {
@@ -231,5 +330,20 @@ public class PassengerCurrentRideFragment extends Fragment {
     private String getCurrentToken() {
         SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
     }
 }
