@@ -140,7 +140,7 @@ public class ProfilePassengerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment_passenger_container, new PassengerFavoriteRouteFragment());
+                transaction.add(R.id.fragment_passenger_container, new PassengerFavoriteRouteFragment(), PassengerFavoriteRouteFragment.class.getName());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -158,7 +158,7 @@ public class ProfilePassengerFragment extends Fragment {
                 args.putString("phoneNumber", passenger.getTelephoneNumber());
                 args.putString("email", passenger.getEmail());
                 editProfileFragment.setArguments(args);
-                transaction.add(R.id.fragment_passenger_container, editProfileFragment);
+                transaction.add(R.id.fragment_passenger_container, editProfileFragment, EditProfileFragment.class.getName());
 
                 transaction.addToBackStack(null);
                 transaction.commit();
@@ -169,7 +169,7 @@ public class ProfilePassengerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment_passenger_container, new DriverStatisticsFragment());
+                transaction.add(R.id.fragment_passenger_container, new DriverStatisticsFragment(), DriverStatisticsFragment.class.getName());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

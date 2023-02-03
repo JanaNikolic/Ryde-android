@@ -61,6 +61,9 @@ public class DriverStatisticsFragment extends Fragment {
     Call<RideStatisticsResponse> rideCount;
     Call<MoneyStatisticsResponse> moneyCount;
     Call<DistanceStatisticsResponse> distanceCount;
+    TextView titleErnings;
+    TextView avgEarntxt;
+    TextView sumEarnTxt;
 
 
     public DriverStatisticsFragment() {
@@ -92,6 +95,9 @@ public class DriverStatisticsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_driver_statistics, container, false);
         Button button = (Button) view.findViewById(R.id.rangeBtn);
+        titleErnings = (TextView) view.findViewById(R.id.title_ernings);
+        avgEarntxt = (TextView) view.findViewById(R.id.avgEarntxt);
+        sumEarnTxt = (TextView) view.findViewById(R.id.sumEarnTxt);
 
         initializeGraphs(view);
 
@@ -135,6 +141,10 @@ public class DriverStatisticsFragment extends Fragment {
             rideCount = passengerService.getRideCount(TokenUtils.getId(getCurrentToken()), "Bearer " + getCurrentToken(), startDate, endDate);
             moneyCount = passengerService.getMoneyCount(TokenUtils.getId(getCurrentToken()), "Bearer " + getCurrentToken(), startDate, endDate);
             distanceCount = passengerService.getDistanceCount(TokenUtils.getId(getCurrentToken()), "Bearer " + getCurrentToken(), startDate, endDate);
+            titleErnings.setText("Spendings");
+            avgEarntxt.setText("Avg spendings");
+            sumEarnTxt.setText("Total spendings");
+
         } else {
             rideCount = driverService.getRideCount(TokenUtils.getId(getCurrentToken()), "Bearer " + getCurrentToken(), startDate, endDate);
             moneyCount = driverService.getMoneyCount(TokenUtils.getId(getCurrentToken()), "Bearer " + getCurrentToken(), startDate, endDate);

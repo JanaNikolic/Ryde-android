@@ -124,7 +124,7 @@ public class ProfileDriverFragment extends Fragment {
                 args.putString("phoneNumber", driver.getTelephoneNumber());
                 args.putString("email", driver.getEmail());
                 editProfileFragment.setArguments(args);
-                transaction.add(R.id.fragment_driver_container, editProfileFragment); // give your fragment container id in first parameter
+                transaction.add(R.id.fragment_driver_container, editProfileFragment, EditProfileFragment.class.getName()); // give your fragment container id in first parameter
 
                 transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                 transaction.commit();
@@ -135,7 +135,7 @@ public class ProfileDriverFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment_driver_container, new DriverStatisticsFragment());
+                transaction.add(R.id.fragment_driver_container, new DriverStatisticsFragment(), DriverStatisticsFragment.class.getName());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

@@ -21,10 +21,12 @@ import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.ChangePasswordFragment;
+import com.example.app_tim17.fragments.DrawRouteFragment;
 import com.example.app_tim17.fragments.driver.DriverAcceptanceRideFragment;
 import com.example.app_tim17.fragments.driver.HistoryDriverFragment;
 import com.example.app_tim17.fragments.driver.InboxDriverFragment;
 import com.example.app_tim17.fragments.driver.MainDriverFragment;
+import com.example.app_tim17.fragments.driver.NoActiveRideFragment;
 import com.example.app_tim17.fragments.driver.ProfileDriverFragment;
 import com.example.app_tim17.model.WorkingHour;
 import com.example.app_tim17.model.request.EndWorkingHour;
@@ -35,6 +37,7 @@ import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
+import com.example.app_tim17.tools.FragmentTransition;
 import com.example.app_tim17.tools.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -70,7 +73,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
     MainDriverFragment mainFragment;
     private WorkingHour workingHour;
     private MainDriverFragment main;
-    private Fragment activeFragment;
+    Gson gson = new Gson();
 
 
     @Override
@@ -97,7 +100,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         driverService = retrofitService.getRetrofit().create(DriverService.class);
 
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.14:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
         connectStomp();
         startWorkingHour();
     }
@@ -234,23 +237,34 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Log.d("STOMP", "Received " + topicMessage.getPayload());
+                    Ride ride = gson.fromJson(topicMessage.getPayload(), Ride.class);
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    List<Fragment> fragments = getSupportFragmentManager().getFragments();
-                    for (Fragment f: fragments) {
-                        if (f.getTag()!= null && f.getTag().equals(InboxDriverFragment.class.getName())) {
-                            transaction.remove(f);
-                        } else if (f.getTag()!= null && f.getTag().equals(HistoryDriverFragment.class.getName())) {
-                            transaction.remove(f);
-                        } else if (f.getTag()!= null && f.getTag().equals(ProfileDriverFragment.class.getName())) {
-                            transaction.remove(f);
+                    if (ride.getStatus().equals("FINISHED")) {
+                        Toast.makeText(getApplicationContext(), "Ride has ended!", Toast.LENGTH_SHORT).show();
+
+                        DrawRouteFragment draw = DrawRouteFragment.newInstance();
+                        FragmentTransition.to(draw, DriverActivity.this, false);
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().findFragmentById(R.id.fragment_driver_container).getChildFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.currentRide, new NoActiveRideFragment());
+                        fragmentTransaction.commit();
+                    } else {
+                        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+                        for (Fragment f: fragments) {
+                            if (f.getTag()!= null && f.getTag().equals(InboxDriverFragment.class.getName())) {
+                                transaction.remove(f);
+                            } else if (f.getTag()!= null && f.getTag().equals(HistoryDriverFragment.class.getName())) {
+                                transaction.remove(f);
+                            } else if (f.getTag()!= null && f.getTag().equals(ProfileDriverFragment.class.getName())) {
+                                transaction.remove(f);
+                            }
                         }
+                        transaction.setReorderingAllowed(true);
+    //                    transaction.addToBackStack(null);
+                        transaction.show(main);
+                        transaction.commit();
+                        getSupportActionBar().setTitle("Ryde");
+                        openAcceptanceRide();
                     }
-                    transaction.setReorderingAllowed(true);
-//                    transaction.addToBackStack(null);
-                    transaction.show(main);
-                    transaction.commit();
-                    getSupportActionBar().setTitle("Ryde");
-                    openAcceptanceRide();
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });

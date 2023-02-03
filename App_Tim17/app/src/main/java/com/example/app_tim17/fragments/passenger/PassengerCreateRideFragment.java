@@ -133,9 +133,10 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                     streets = departures.toArray(new String[0]);
                     streets2 = destinations.toArray(new String[0]);
 
-
-                    departure.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, streets));
-                    destination.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, streets2));
+                    if (getActivity() != null) {
+                        destination.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, streets2));
+                        departure.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, streets));
+                    }
                 }
             }
 

@@ -17,6 +17,12 @@
         android:id="@+id/action_logout"
         app:showAsAction="never"/>
     <item
+        android:title="Change password"
+        android:id="@+id/change_password"
+        android:orderInCategory="150"
+        app:showAsAction="never"
+        />
+    <item
         android:title="Settings"
         android:id="@+id/action_settings"
         android:orderInCategory="100"

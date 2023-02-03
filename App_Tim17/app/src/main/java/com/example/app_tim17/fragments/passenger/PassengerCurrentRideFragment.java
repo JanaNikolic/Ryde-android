@@ -68,7 +68,7 @@ public class PassengerCurrentRideFragment extends Fragment {
     private Long rideId;
     TextView timer;
     CountDownTimer countDownTimer;
-    int time;
+    int time = 60000;
     int interval = 1000; // 1 second
     private UserService userService;
 
@@ -93,7 +93,7 @@ public class PassengerCurrentRideFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_current_ride, container, false);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.0.14:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
 
         retrofitService = new RetrofitService();
         rideService = retrofitService.getRetrofit().create(RideService.class);
@@ -124,7 +124,7 @@ public class PassengerCurrentRideFragment extends Fragment {
         licenseNumber.setText(args.getString("licensePlate"));
         model.setText(args.getString("vehicleModel"));
 
-        time = Integer.parseInt(args.getString("time")) * 1000 * 60;
+//        time = Integer.parseInt(args.getString("time")) * 1000 * 60;
         startAddress.setText(args.getString("startAddress"));
         endAddress.setText(args.getString("endAddress"));
         price.setText(args.getString("price"));
@@ -251,10 +251,9 @@ public class PassengerCurrentRideFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Ride ride = gson.fromJson(topicMessage.getPayload(), Ride.class);
-                    if (ride.getStatus().equals("ACTIVE")) {
-                        countDownTimer = new CountDownTimer(time, interval) {
+                    if (ride.getStatus().equals("STARTED")) {
+                        countDownTimer = new CountDownTimer(60000, interval) {
                             public void onTick(long millisUntilFinished) {
-                                Toast.makeText(getContext(), "Ride has ended!", Toast.LENGTH_SHORT).show();
                                 timer.setText(getDateFromMillis(time - millisUntilFinished));
                             }
 
@@ -272,7 +271,7 @@ public class PassengerCurrentRideFragment extends Fragment {
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                         transaction.add(R.id.main_pass, fragment);
 
-                        transaction.commit();
+//                        transaction.commit();
 
                         transaction = getParentFragmentManager().beginTransaction();
                         transaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
@@ -296,7 +295,7 @@ public class PassengerCurrentRideFragment extends Fragment {
                 DrawRouteFragment draw = DrawRouteFragment.newInstance();
                 FragmentTransition.to(draw, getActivity(), false);
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.currentRide, new PassengerCreateRideFragment()  );
+                fragmentTransaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
                 fragmentTransaction.commit();
             }
 

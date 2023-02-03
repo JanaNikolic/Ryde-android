@@ -136,6 +136,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_marginStart="16dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/profile_picture"
             app:layout_constraintBottom_toTopOf="@+id/line2"
             app:layout_constraintStart_toStartOf="parent"
