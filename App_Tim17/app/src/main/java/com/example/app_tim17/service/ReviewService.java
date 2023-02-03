@@ -1,3 +1,4 @@
+
 package com.example.app_tim17.service;
 
 import com.example.app_tim17.model.request.ReviewRequest;
@@ -23,3 +24,4 @@ public interface ReviewService {
     @POST("review/{rideId}/vehicle")
     Call<VehicleReview> postVehicleReview(@Header("Authorization") String token, @Path("rideId") Long id, @Body ReviewRequest review);
 }
+

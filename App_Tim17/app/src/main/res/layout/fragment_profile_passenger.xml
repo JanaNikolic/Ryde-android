@@ -24,7 +24,7 @@
                 android:background="@color/teal">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/profile_pic"
+                    android:id="@+id/profile_pic_pass"
                     android:layout_width="100dp"
                     android:longClickable="true"
                     android:scaleType="centerCrop"
@@ -38,12 +38,12 @@
                     app:strokeWidth="3dp" />
 
                 <TextView
-                    android:id="@+id/fullname_field"
+                    android:id="@+id/fullname_field_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/profile_pic"
+                    android:layout_toRightOf="@+id/profile_pic_pass"
                     android:fontFamily="sans-serif-black"
                     android:includeFontPadding="false"
                     android:text="Taimoor Sikander"
@@ -51,12 +51,12 @@
                     android:textSize="25sp" />
 
                 <TextView
-                    android:id="@+id/username_field"
+                    android:id="@+id/email_field_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fullname_field"
+                    android:layout_below="@id/fullname_field_pass"
                     android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/profile_pic"
+                    android:layout_toRightOf="@+id/profile_pic_pass"
                     android:includeFontPadding="false"
                     android:text="taimoor_sikander"
                     android:textSize="18sp" />
@@ -98,7 +98,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-100dp"
+                android:layout_marginTop="-40dp"
                 android:paddingHorizontal="30dp"
                 android:paddingTop="40dp" />
 
@@ -109,187 +109,225 @@
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="20dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/full_name_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Full Name"
-                    app:boxBackgroundColor="@android:color/transparent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_drive_file_rename_outline_24"
-                        android:drawablePadding="10dp"
-                        android:textSize="18sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/email_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="E-MAIL"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/full_name_profile_pass"
+                    android:layout_height="match_parent"
                     app:boxBackgroundColor="@android:color/transparent"
-                    app:boxStrokeColor="@color/yellow">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_alternate_email_24"
-                        android:drawablePadding="10dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/phone_number_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Phone Number"
-                    app:boxBackgroundColor="@android:color/transparent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_phone_enabled_24"
-                        android:drawablePadding="10dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
+                    android:textAlignment="viewEnd"
+                    android:drawableStart="@drawable/ic_baseline_drive_file_rename_outline_24"
+                    android:drawablePadding="20dp"
+                    android:textSize="22sp"
+                    android:paddingVertical="10dp"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:paddingVertical="10dp"
+                    android:id="@+id/email_profile_pass"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:textAlignment="viewEnd"
+                    android:drawableStart="@drawable/ic_baseline_alternate_email_24"
+                    android:drawablePadding="20dp"
+                    android:textSize="22sp"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:paddingVertical="10dp"
+                    android:id="@+id/phone_num_profile_pass"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:textAlignment="viewEnd"
+                    android:drawableStart="@drawable/ic_baseline_phone_enabled_24"
+                    android:drawablePadding="20dp"
+                    android:textSize="22sp"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:paddingVertical="10dp"
                     android:id="@+id/address_profile"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundColor="@android:color/transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/address"
-                    app:boxBackgroundColor="@android:color/transparent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_address_24"
-                        android:drawablePadding="10dp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:textAlignment="viewEnd"
+                    android:drawableStart="@drawable/ic_baseline_address_24"
+                    android:drawablePadding="20dp"
+                    android:textSize="22sp"
+                    />
 
             </LinearLayout>
-            <TextView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_bold"
+            android:textSize="20sp"
+            android:paddingTop="30dp"
+            android:gravity="center"
+            android:textColor="@color/teal"
+            android:text="STATISTICS"
+            />
+        <com.google.android.material.card.MaterialCardView
+            android:clickable="true"
+            android:layout_height="250dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="40dp"
+            android:layout_marginHorizontal="60dp"
+            app:cardCornerRadius="15dp"
+            app:cardBackgroundColor="#fece2f"
+            app:cardElevation="10dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/outfit_bold"
-                android:textSize="20sp"
-                android:paddingTop="30dp"
-                android:gravity="center"
-                android:textColor="@color/teal"
-                android:text="STATISTICS"
-                />
+                android:layout_height="match_parent">
 
-            <com.google.android.material.card.MaterialCardView
-                android:clickable="true"
-                android:layout_height="250dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_marginVertical="40dp"
-                android:layout_marginHorizontal="60dp"
-                app:cardCornerRadius="15dp"
-                app:cardBackgroundColor="#fece2f"
-                app:cardElevation="10dp">
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/money_spent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/money_earned"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/outfit_bold"
-                        android:gravity="center"
-                        android:paddingVertical="20dp"
-                        android:text="Money Earned"
-                        android:textColor="@color/teal"
-                        android:textSize="24sp"
-                        app:layout_constraintTop_toTopOf="parent" />
-                    <TextView
-                        android:id="@+id/money_amount"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="4.790"
-                        android:layout_marginBottom="30dp"
-                        android:textColor="@color/teal"
-                        android:gravity="center"
-                        android:textSize="60sp"/>
-                    <TextView
-                        android:id="@+id/rsd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="RSD"
-                        android:textColor="@color/teal"
-                        android:gravity="center"
-                        app:layout_constraintBottom_toTopOf="@id/this_month"
-                        android:textSize="26sp"/>
-                    <TextView
-                        android:id="@+id/this_month"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/teal"
-                        android:text="This Month"
-                        android:fontFamily="@font/outfit_bold"
-                        android:textSize="24sp"
-                        android:paddingVertical="20dp"
-                        android:gravity="center"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                android:layout_height="250dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_marginHorizontal="60dp"
-                android:layout_marginBottom="40dp"
-                app:cardCornerRadius="15dp"
-                app:cardBackgroundColor="#fece2f"
-                app:cardElevation="10dp">
-                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_bold"
+                    android:gravity="center"
+                    android:paddingVertical="20dp"
+                    android:text="Money Spent"
+                    android:textColor="@color/teal"
+                    android:textSize="24sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/money_amount_pass"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    android:textSize="60sp"/>
+                <TextView
+                    android:id="@+id/rsd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RSD"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="@id/this_month"
+                    android:textSize="26sp"/>
+                <TextView
+                    android:id="@+id/this_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/teal"
+                    android:text="This Month"
+                    android:fontFamily="@font/outfit_bold"
+                    android:textSize="24sp"
+                    android:paddingVertical="20dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="250dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginBottom="40dp"
+            app:cardCornerRadius="15dp"
+            app:cardBackgroundColor="#fece2f"
+            app:cardElevation="10dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/kilometers_crossed"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/outfit_bold"
-                        android:gravity="center"
-                        android:paddingVertical="20dp"
-                        android:text="Kilometers Driven"
-                        android:textColor="@color/teal"
-                        android:textSize="24sp"
-                        app:layout_constraintTop_toTopOf="parent" />
-                    <TextView
-                        android:id="@+id/kilometers"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="47,2"
-                        android:layout_marginBottom="30dp"
-                        android:textColor="@color/teal"
-                        android:gravity="center"
-                        android:textSize="60sp"/>
-                    <TextView
-                        android:id="@+id/km"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="km"
-                        android:textColor="@color/teal"
-                        android:gravity="center"
-                        app:layout_constraintBottom_toTopOf="@id/this_week"
-                        android:textSize="26sp"/>
-                    <TextView
-                        android:id="@+id/this_week"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/teal"
-                        android:text="This Week"
-                        android:fontFamily="@font/outfit_bold"
-                        android:textSize="24sp"
-                        android:paddingVertical="20dp"
-                        android:gravity="center"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/kilometers_crossed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_bold"
+                    android:gravity="center"
+                    android:paddingVertical="20dp"
+                    android:text="Kilometers Passed"
+                    android:textColor="@color/teal"
+                    android:textSize="24sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/kilometers_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    android:textSize="60sp"/>
+                <TextView
+                    android:id="@+id/km"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="km"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="@id/this_month_2"
+                    android:textSize="26sp"/>
+                <TextView
+                    android:id="@+id/this_month_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/teal"
+                    android:text="This Month"
+                    android:fontFamily="@font/outfit_bold"
+                    android:textSize="24sp"
+                    android:paddingVertical="20dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="250dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginBottom="40dp"
+            app:cardCornerRadius="15dp"
+            app:cardBackgroundColor="#fece2f"
+            app:cardElevation="10dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/rides"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_bold"
+                    android:gravity="center"
+                    android:paddingVertical="20dp"
+                    android:text="Rides"
+                    android:textColor="@color/teal"
+                    android:textSize="24sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/number_of_rides_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    android:textSize="60sp"/>
+                <TextView
+                    android:id="@+id/num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#"
+                    android:textColor="@color/teal"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="@id/this_month_3"
+                    android:textSize="26sp"/>
+                <TextView
+                    android:id="@+id/this_month_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/teal"
+                    android:text="This Month"
+                    android:fontFamily="@font/outfit_bold"
+                    android:textSize="24sp"
+                    android:paddingVertical="20dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 

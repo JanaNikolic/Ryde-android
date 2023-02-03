@@ -1,17 +1,40 @@
 package com.example.app_tim17.fragments.passenger;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.adapters.FavoriteRouteAdapter;
+
+import com.example.app_tim17.adapters.InboxList;
+import com.example.app_tim17.model.response.chat.Chat;
+import com.example.app_tim17.model.response.chat.ChatResponse;
+import com.example.app_tim17.model.response.ride.FavoriteRoute;
+import com.example.app_tim17.model.response.ride.FavoriteRouteResponse;
+import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.MessageService;
+import com.example.app_tim17.service.PassengerService;
+import com.example.app_tim17.service.RideService;
+import com.example.app_tim17.service.TokenUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,10 +44,11 @@ import com.example.app_tim17.adapters.FavoriteRouteAdapter;
 public class PassengerFavoriteRouteFragment extends Fragment {
 
 
-    private final String[] startAddress = {"Bulevar Oslobođenja 15", "Bulevar Oslobođenja 150",
-            "Železnička 12", "Fruškogorska 12", "Fruškogorska 18", "Fruškogorska 15"};
-    private final String[] endAddress = {"Fruškogorska 15", "Železnička 12", "Fruškogorska 12",
-            "Bulevar Oslobođenja 150", "Nemanjina 18", "Bulevar Oslobođenja 15"};
+    private List<FavoriteRoute> favoriteRoutes;
+    private RetrofitService retrofitService;
+    private RideService rideService;
+    private TokenUtils tokenUtils;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -51,10 +75,43 @@ public class PassengerFavoriteRouteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_passenger_favorite_route, container, false);
-
+        tokenUtils = new TokenUtils();
+        retrofitService = new RetrofitService();
+        rideService = retrofitService.getRetrofit().create(RideService.class);
         ListView listView = (ListView) view.findViewById(R.id.list_view_fav_route);
-        FavoriteRouteAdapter favRouteAdapter = new FavoriteRouteAdapter(getActivity(), startAddress, endAddress);
-        listView.setAdapter(favRouteAdapter);
+
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+        Call<FavoriteRouteResponse> call = rideService.getFavoriteRoutes("Bearer " + token);
+
+        call.enqueue(new Callback<FavoriteRouteResponse>() {
+            @Override
+            public void onResponse(Call<FavoriteRouteResponse> call, Response<FavoriteRouteResponse> response) {
+                Log.d("WTF", response.body().toString());
+                if (response.isSuccessful()) {
+                    Log.d("WTF", response.body().toString());
+                    FavoriteRouteResponse favRouteResponse = response.body();
+                    Log.d("WTF", favRouteResponse.toString());
+                    favoriteRoutes = new ArrayList<>();
+                    if (favRouteResponse.getResults() != null) {
+                        for (FavoriteRoute favoriteRoute : favRouteResponse.getResults()) {
+                            favoriteRoutes.add(favoriteRoute);
+                            Log.d("Message", "one message");
+                        }
+                        FavoriteRouteAdapter favRouteAdapter = new FavoriteRouteAdapter(getActivity(), favoriteRoutes);
+                        listView.setAdapter(favRouteAdapter);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<FavoriteRouteResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getContext(), "NOT WORKING", Toast.LENGTH_SHORT);
+            }
+        });
+
+
+
 
 
         return view;

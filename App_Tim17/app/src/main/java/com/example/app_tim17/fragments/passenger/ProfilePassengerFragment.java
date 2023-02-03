@@ -23,16 +23,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
 
 import com.example.app_tim17.R;
 import com.example.app_tim17.fragments.EditProfileFragment;
 import com.example.app_tim17.fragments.UserInfoFragment;
+
+import com.example.app_tim17.model.response.DistanceStatisticsResponse;
+import com.example.app_tim17.model.response.MoneyStatisticsResponse;
+
 import com.example.app_tim17.fragments.driver.DriverStatisticsFragment;
 import com.example.app_tim17.model.request.DriverUpdateRequest;
 import com.example.app_tim17.model.request.PassengerUpdateRequest;
+
 import com.example.app_tim17.model.response.PassengerResponse;
+import com.example.app_tim17.model.response.RideStatisticsResponse;
 import com.example.app_tim17.model.response.UserResponse;
 import com.example.app_tim17.model.response.driver.DriverResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
@@ -90,8 +101,9 @@ public class ProfilePassengerFragment extends Fragment {
         LocalDate lastDay = LocalDate.now().plusMonths(1).withDayOfMonth(1);
         thisMonthStart = firstDay.toString();
         thisMonthEnd = lastDay.toString();
+        initializeComponents(view);
 
-        profilePic = (ShapeableImageView) view.findViewById(R.id.profile_pic);
+        profilePic = (ShapeableImageView) view.findViewById(R.id.profile_pic_pass);
         profilePic.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -164,6 +176,101 @@ public class ProfilePassengerFragment extends Fragment {
         });
 
         return view;
+    }
+    private void initializeComponents(View view) {
+
+        TextView fullName = view.findViewById(R.id.full_name_profile_pass);
+        ImageView profilePic = view.findViewById(R.id.profile_pic_pass);
+        TextView email = view.findViewById(R.id.email_profile_pass);
+        TextView phoneNumber = view.findViewById(R.id.phone_num_profile_pass);
+        TextView address = view.findViewById(R.id.address_profile);
+        TextView fullname = view.findViewById(R.id.fullname_field_pass);
+        TextView emailfield = view.findViewById(R.id.email_field_pass);
+        TextView numberOfRides = (TextView) view.findViewById(R.id.number_of_rides_pass);
+        TextView moneyAmount = (TextView) view.findViewById(R.id.money_amount_pass);
+        TextView kilometers = (TextView) view.findViewById(R.id.kilometers_pass);
+        SharedPreferences sp = getActivity().getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+        Long id = tokenUtils.getId(token);
+        Call<PassengerResponse> call = passengerService.getPassenger("Bearer " + token, id);
+
+        Call<RideStatisticsResponse> rideCount = passengerService.getRideCount(id, "Bearer " + token, thisMonthStart, thisMonthEnd);
+
+        Call<MoneyStatisticsResponse> moneyCount = passengerService.getMoneyCount(id, "Bearer " + token, thisMonthStart, thisMonthEnd);
+
+        Call<DistanceStatisticsResponse> distanceCount = passengerService.getDistanceCount(id, "Bearer " + token, thisMonthStart, thisMonthEnd);
+
+        call.enqueue(new Callback<PassengerResponse>() {
+            @Override
+            public void onResponse(Call<PassengerResponse> call, Response<PassengerResponse> response) {
+
+//                Log.d("TAG",response.code()+"");
+
+                passenger = response.body();
+                System.out.println(response);
+                if (passenger != null) {
+                    String fullNameStr = passenger.getName() + " " + passenger.getSurname();
+                    fullName.setText(fullNameStr);
+                    fullname.setText(fullNameStr);
+                    address.setText(passenger.getAddress());
+                    email.setText(passenger.getEmail());
+                    emailfield.setText(passenger.getEmail());
+                    phoneNumber.setText(passenger.getTelephoneNumber());
+                }
+            }
+            @Override
+            public void onFailure(Call<PassengerResponse> call, Throwable t) {
+                call.cancel();
+            }
+        });
+        rideCount.enqueue(new Callback<RideStatisticsResponse>() {
+            @Override
+            public void onResponse(Call<RideStatisticsResponse> call, Response<RideStatisticsResponse> response) {
+                RideStatisticsResponse stats = response.body();
+
+                if (stats != null) {
+                    numberOfRides.setText(stats.getTotalCount().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RideStatisticsResponse> call, Throwable t) {
+                rideCount.cancel();
+            }
+        });
+
+        moneyCount.enqueue(new Callback<MoneyStatisticsResponse>() {
+            @Override
+            public void onResponse(Call<MoneyStatisticsResponse> call, Response<MoneyStatisticsResponse> response) {
+                MoneyStatisticsResponse stats = response.body();
+
+                if (stats != null) {
+                    moneyAmount.setText(Float.toString(stats.getTotalCount()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MoneyStatisticsResponse> call, Throwable t) {
+                moneyCount.cancel();
+            }
+        });
+
+        distanceCount.enqueue(new Callback<DistanceStatisticsResponse>() {
+            @Override
+            public void onResponse(Call<DistanceStatisticsResponse> call, Response<DistanceStatisticsResponse> response) {
+                DistanceStatisticsResponse stats = response.body();
+
+                if (stats != null) {
+                    kilometers.setText(Float.toString(stats.getTotalCount()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DistanceStatisticsResponse> call, Throwable t) {
+                distanceCount.cancel();
+            }
+        });
+
     }
 
     private void popupMenu(View view) {

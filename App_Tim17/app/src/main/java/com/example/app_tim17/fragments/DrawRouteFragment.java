@@ -90,31 +90,34 @@ public class DrawRouteFragment extends Fragment implements OnMapReadyCallback {
         String fromAddress;
         String toAddress;
 
+
+
         if (args != null) {
-             if (args.containsKey("fromAddress") && args.containsKey("toAddress")){
-                 fromAddress = args.getString("fromAddress");
-                 toAddress = args.getString("toAddress");
+            if (args.containsKey("fromAddress") && args.containsKey("toAddress")){
+                fromAddress = args.getString("fromAddress");
+                toAddress = args.getString("toAddress");
 
-                 Log.i("fromAddress", String.valueOf(fromAddress));
-                 Log.i("toAddress", String.valueOf(toAddress));
+                Log.i("fromAddress", String.valueOf(fromAddress));
+                Log.i("toAddress", String.valueOf(toAddress));
 
-                 Geocoder geocoder = new Geocoder(getContext());
-                 List<Address> addresses;
-                 try {
-                     addresses = geocoder.getFromLocationName(fromAddress, 1);
-                     if(addresses.size() > 0) {
-                         fromLat = addresses.get(0).getLatitude();
-                         fromLng = addresses.get(0).getLongitude();
-                     }
-                     addresses = geocoder.getFromLocationName(toAddress, 1);
-                     if(addresses.size() > 0) {
-                         toLat = addresses.get(0).getLatitude();
-                         toLng = addresses.get(0).getLongitude();
-                     }
-                 } catch (IOException e) {
-                     e.printStackTrace();
-                 }
-             }
+                Geocoder geocoder = new Geocoder(getContext());
+                List<Address> addresses;
+                try {
+                    addresses = geocoder.getFromLocationName(fromAddress, 1);
+                    if(addresses.size() > 0) {
+                        fromLat = addresses.get(0).getLatitude();
+                        fromLng = addresses.get(0).getLongitude();
+                    }
+                    addresses = geocoder.getFromLocationName(toAddress, 1);
+                    if(addresses.size() > 0) {
+                        toLat = addresses.get(0).getLatitude();
+                        toLng = addresses.get(0).getLongitude();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         } else {
             mMap.clear();
 //            mMap.setMyLocationEnabled(true);
