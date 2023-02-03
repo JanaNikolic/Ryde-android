@@ -125,23 +125,27 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment f: fragments) {
+            if (f.getTag()!= null && !f.getTag().equals(MainPassengerFragment.class.getName())) {
+                transaction.remove(f);
+            }
+        }
+
         switch (item.getItemId()) {
             case R.id.inbox:
                 transaction.setReorderingAllowed(true);
-                removeFragments();
                 transaction.add(R.id.fragment_passenger_container, InboxPassengerFragment.class, null, InboxPassengerFragment.class.getName());
                 transaction.hide(main);
                 transaction.commit();
                 getSupportActionBar().setTitle("Inbox");
                 return true;
             case R.id.home:
-                removeFragments();
                 transaction.show(main);
                 transaction.commit();
                 getSupportActionBar().setTitle("Ryde");
                 return true;
             case R.id.history:
-                removeFragments();
                 transaction.setReorderingAllowed(true);
                 transaction.add(R.id.fragment_passenger_container, HistoryPassengerFragment.class, null, HistoryPassengerFragment.class.getName());
                 transaction.hide(main);
@@ -149,7 +153,6 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                 getSupportActionBar().setTitle("History");
                 return true;
             case R.id.profile:
-                removeFragments();
                 transaction.setReorderingAllowed(true);
                 transaction.add(R.id.fragment_passenger_container, ProfilePassengerFragment.class, null, ProfilePassengerFragment.class.getName());
                 transaction.hide(main);
@@ -253,18 +256,6 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
     private String getCurrentToken() {
         SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
-    }
-
-    private void removeFragments() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        List<Fragment> fragments = fragmentManager.getFragments();
-        for (Fragment f: fragments) {
-            if (f.getTag()!= null && !f.getTag().equals(MainPassengerFragment.class.getName())) {
-                transaction.remove(f);
-            }
-            transaction.commit();
-        }
     }
 
 }

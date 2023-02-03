@@ -204,7 +204,7 @@ public class SuccesfullSearchFragment extends Fragment {
                             @Override
                             public void onFailure(Call<VehicleResponse> call, Throwable t) {
                                 Toast.makeText(getContext(), "Oops, something went wrong", Toast.LENGTH_SHORT).show();
-                                getChildFragmentManager().popBackStack(); // TODO check
+                                getChildFragmentManager().popBackStack();
                             }
                         });
 
