@@ -379,7 +379,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
 
                             ;
                         };
-                        timer.schedule(tt, 50000);
+                        timer.schedule(tt, 300000);
 
                         TimerTask t2 = new TimerTask() {
                             public void run() {
@@ -393,7 +393,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
 
                             ;
                         };
-                        timer.schedule(t2, 100000);
+                        timer.schedule(t2, 600000);
                     } else if (ride.getStatus().equals("REJECTED")) {
                         Toast.makeText(PassengerActivity.this, "Ride has been rejected", Toast.LENGTH_SHORT).show();
                     }
