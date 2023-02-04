@@ -297,7 +297,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                                 if (driver != null) {
                                     driverId = driver.getId();
                                     driverName = driver.getName() + " " + driver.getSurname();
-                                    if (driver.getProfilePicture() != null){
+                                    if (driver.getProfilePicture() != null) {
                                         driverImage = driver.getProfilePicture();
                                     }
                                     driverPhoneNumber = driver.getTelephoneNumber();
@@ -310,7 +310,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                             }
                         });
 
-                        Call<VehicleResponse> call2 = driverService.getDriversVehicle(driverId, "Bearer "+ getCurrentToken());
+                        Call<VehicleResponse> call2 = driverService.getDriversVehicle(driverId, "Bearer " + getCurrentToken());
 
                         call2.enqueue(new Callback<VehicleResponse>() {
                             @Override
@@ -351,45 +351,52 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().findFragmentById(R.id.fragment_passenger_container).getChildFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.currentRide, fragment);
                                 fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();}
-                        }, 1500);}
+                                fragmentTransaction.commit();
+                            }
+                        }, 1500);
 
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify")
-                            .setSmallIcon(R.drawable.standard_car_selected)
-                            .setContentTitle("Scheduled ride reminder")
-                            .setContentText("Your ride will arrive in 15 minutes.")
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify")
+                                .setSmallIcon(R.drawable.standard_car_selected)
+                                .setContentTitle("Scheduled ride reminder")
+                                .setContentText("Your ride will arrive in 15 minutes.")
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
 // notificationId is a unique int for each notification that you must define
-                    notificationManager.notify(1, builder.build());
-                    timer = new Timer();
-                    TimerTask tt = new TimerTask() {
-                        public void run()
-                        {
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(PassengerActivity.this, "notify")
-                                    .setSmallIcon(R.drawable.standard_car_selected)
-                                    .setContentTitle("Scheduled ride reminder")
-                                    .setContentText("Your ride will arrive in 10 minutes.")
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                            notificationManager.notify(2, builder.build());
-                        };
-                    };
-                    timer.schedule(tt, 50000);
+                        notificationManager.notify(1, builder.build());
+                        timer = new Timer();
+                        TimerTask tt = new TimerTask() {
+                            public void run() {
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(PassengerActivity.this, "notify")
+                                        .setSmallIcon(R.drawable.standard_car_selected)
+                                        .setContentTitle("Scheduled ride reminder")
+                                        .setContentText("Your ride will arrive in 10 minutes.")
+                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                                notificationManager.notify(2, builder.build());
+                            }
 
-                    TimerTask t2 = new TimerTask() {
-                        public void run()
-                        {
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(PassengerActivity.this, "notify")
-                                    .setSmallIcon(R.drawable.standard_car_selected)
-                                    .setContentTitle("Scheduled ride reminder")
-                                    .setContentText("Your ride will arrive in 5 minutes.")
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                            notificationManager.notify(3, builder.build());
+                            ;
                         };
-                    };
-                    timer.schedule(t2, 100000);
+                        timer.schedule(tt, 50000);
+
+                        TimerTask t2 = new TimerTask() {
+                            public void run() {
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(PassengerActivity.this, "notify")
+                                        .setSmallIcon(R.drawable.standard_car_selected)
+                                        .setContentTitle("Scheduled ride reminder")
+                                        .setContentText("Your ride will arrive in 5 minutes.")
+                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                                notificationManager.notify(3, builder.build());
+                            }
+
+                            ;
+                        };
+                        timer.schedule(t2, 100000);
+                    } else if (ride.getStatus().equals("REJECTED")) {
+                        Toast.makeText(PassengerActivity.this, "Ride has been rejected", Toast.LENGTH_SHORT).show();
+                    }
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });
