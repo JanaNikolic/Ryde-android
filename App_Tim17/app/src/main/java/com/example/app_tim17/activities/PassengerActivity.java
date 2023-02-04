@@ -2,13 +2,18 @@ package com.example.app_tim17.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -64,6 +69,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
     private Disposable mRestPingDisposable;
     private CompositeDisposable compositeDisposable;
     private Gson mGson = new GsonBuilder().create();
+    Timer timer;
     BottomNavigationView bottomNavigationView;
     ChatFragment fragment;
     Long driverId;
@@ -95,6 +101,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
 
         mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
         connectStomp();
+        createNotificationChannel();
 
     }
 
@@ -264,6 +271,7 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
 
         if (mRestPingDisposable != null) mRestPingDisposable.dispose();
         if (compositeDisposable != null) compositeDisposable.dispose();
+        timer.cancel();
         super.onDestroy();
     }
 
@@ -345,6 +353,43 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();}
                         }, 1500);}
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify")
+                            .setSmallIcon(R.drawable.standard_car_selected)
+                            .setContentTitle("Scheduled ride reminder")
+                            .setContentText("Your ride will arrive in 15 minutes.")
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+// notificationId is a unique int for each notification that you must define
+                    notificationManager.notify(1, builder.build());
+                    timer = new Timer();
+                    TimerTask tt = new TimerTask() {
+                        public void run()
+                        {
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(PassengerActivity.this, "notify")
+                                    .setSmallIcon(R.drawable.standard_car_selected)
+                                    .setContentTitle("Scheduled ride reminder")
+                                    .setContentText("Your ride will arrive in 10 minutes.")
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                            notificationManager.notify(2, builder.build());
+                        };
+                    };
+                    timer.schedule(tt, 50000);
+
+                    TimerTask t2 = new TimerTask() {
+                        public void run()
+                        {
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(PassengerActivity.this, "notify")
+                                    .setSmallIcon(R.drawable.standard_car_selected)
+                                    .setContentTitle("Scheduled ride reminder")
+                                    .setContentText("Your ride will arrive in 5 minutes.")
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                            notificationManager.notify(3, builder.build());
+                        };
+                    };
+                    timer.schedule(t2, 100000);
                 }, throwable -> {
                     Log.e("STOMP", "Error on subscribe topic", throwable);
                 });
@@ -352,5 +397,16 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         compositeDisposable.add(dispTopic);
     }
 
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "channel";
+            String description = "notification channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notify", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 
 }
