@@ -100,7 +100,7 @@ public class DriverActivity extends AppCompatActivity implements BottomNavigatio
         driverService = retrofitService.getRetrofit().create(DriverService.class);
 
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
         connectStomp();
         startWorkingHour();
     }

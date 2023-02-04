@@ -23,11 +23,17 @@ import com.example.app_tim17.fragments.passenger.ChatFragment;
 import com.example.app_tim17.fragments.passenger.HistoryPassengerFragment;
 import com.example.app_tim17.fragments.passenger.InboxPassengerFragment;
 import com.example.app_tim17.fragments.passenger.MainPassengerFragment;
+import com.example.app_tim17.fragments.passenger.PassengerCreateRideFragment;
+import com.example.app_tim17.fragments.passenger.PassengerCurrentRideFragment;
 import com.example.app_tim17.fragments.passenger.ProfilePassengerFragment;
 import com.example.app_tim17.model.request.MessageRequest;
+import com.example.app_tim17.model.response.driver.DriverResponse;
 import com.example.app_tim17.model.response.ride.FavoriteRoute;
 import com.example.app_tim17.model.response.ride.FavoriteRouteResponse;
+import com.example.app_tim17.model.response.ride.Ride;
+import com.example.app_tim17.model.response.vehicle.VehicleResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
+import com.example.app_tim17.service.DriverService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,6 +41,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.reactivex.CompletableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,12 +60,15 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
     private StompClient mStompClient;
     private TokenUtils tokenUtils;
     private RetrofitService retrofitService;
-    private RideService rideService;
+    private DriverService driverService;
     private Disposable mRestPingDisposable;
     private CompositeDisposable compositeDisposable;
     private Gson mGson = new GsonBuilder().create();
     BottomNavigationView bottomNavigationView;
     ChatFragment fragment;
+    Long driverId;
+    String driverName, driverPhoneNumber, driverImage, vehicleLicensePlate, vehicleModel;
+    Gson gson = new Gson();
     private MainPassengerFragment main;
 
     @Override
@@ -79,7 +90,10 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(this);
 
-        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.43.198:8080/example-endpoint/websocket");
+        retrofitService = new RetrofitService();
+        driverService = retrofitService.getRetrofit().create(DriverService.class);
+
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.JWS, "ws://192.168.1.7:8080/example-endpoint/websocket");
         connectStomp();
 
     }
@@ -257,5 +271,86 @@ public class PassengerActivity extends AppCompatActivity implements BottomNaviga
         SharedPreferences sp = getSharedPreferences("com.example.app_tim17_preferences", Context.MODE_PRIVATE);
         return sp.getString("token", "");
     }
+
+    public void scheduledRide(long rideId) {
+        Disposable dispTopic = mStompClient.topic("/topic/ride/" + rideId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(topicMessage -> {
+                    Ride ride = gson.fromJson(topicMessage.getPayload(), Ride.class);
+                    if (ride.getStatus().equals("ACCEPTED")) {
+                        Toast.makeText(getApplicationContext(), "You're ride will be there soon!", Toast.LENGTH_LONG).show();
+                        driverId = ride.getDriver().getId();
+                        Call<DriverResponse> call = driverService.getDriver(driverId, "Bearer " + getCurrentToken());
+                        call.enqueue(new Callback<DriverResponse>() {
+                            @Override
+                            public void onResponse(Call<DriverResponse> call, Response<DriverResponse> response) {
+                                DriverResponse driver = response.body();
+                                if (driver != null) {
+                                    driverId = driver.getId();
+                                    driverName = driver.getName() + " " + driver.getSurname();
+                                    if (driver.getProfilePicture() != null){
+                                        driverImage = driver.getProfilePicture();
+                                    }
+                                    driverPhoneNumber = driver.getTelephoneNumber();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<DriverResponse> call, Throwable t) {
+                                Toast.makeText(PassengerActivity.this, "Oops, something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        Call<VehicleResponse> call2 = driverService.getDriversVehicle(driverId, "Bearer "+ getCurrentToken());
+
+                        call2.enqueue(new Callback<VehicleResponse>() {
+                            @Override
+                            public void onResponse(Call<VehicleResponse> call, Response<VehicleResponse> response) {
+                                VehicleResponse vehicle = response.body();
+                                if (vehicle != null) {
+                                    vehicleLicensePlate = vehicle.getLicenseNumber();
+                                    vehicleModel = vehicle.getModel();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<VehicleResponse> call, Throwable t) {
+                                Toast.makeText(PassengerActivity.this, "Oops, something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                Bundle args = new Bundle();
+                                args.putString("driverName", driverName);
+                                args.putString("licensePlate", vehicleLicensePlate);
+                                args.putString("vehicleModel", vehicleModel);
+                                args.putString("driverPhoneNumber", driverPhoneNumber);
+                                args.putString("driverImage", driverImage);
+                                args.putString("startAddress", ride.getLocations().get(0).getDeparture().getAddress());
+                                args.putString("endAddress", ride.getLocations().get(0).getDestination().getAddress());
+                                args.putString("price", ride.getTotalCost().toString());
+                                args.putString("timeStart", ride.getStartTime());
+                                args.putLong("rideId", rideId);
+                                args.putLong("driverId", driverId);
+                                args.putString("time", ride.getEstimatedTimeInMinutes().toString());
+
+                                PassengerCurrentRideFragment fragment = new PassengerCurrentRideFragment();
+                                fragment.setArguments(args);
+
+                                FragmentTransaction fragmentTransaction = getSupportFragmentManager().findFragmentById(R.id.fragment_passenger_container).getChildFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.currentRide, fragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();}
+                        }, 1500);}
+                }, throwable -> {
+                    Log.e("STOMP", "Error on subscribe topic", throwable);
+                });
+
+        compositeDisposable.add(dispTopic);
+    }
+
 
 }

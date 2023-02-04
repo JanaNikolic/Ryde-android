@@ -45,14 +45,21 @@ import com.example.app_tim17.model.response.ride.Ride;
 import com.example.app_tim17.model.response.ride.RideResponse;
 import com.example.app_tim17.retrofit.RetrofitService;
 import com.example.app_tim17.service.MessageService;
+import com.example.app_tim17.service.PassengerService;
 import com.example.app_tim17.service.RideService;
 import com.example.app_tim17.service.TokenUtils;
 import com.example.app_tim17.tools.FragmentTransition;
 import com.shuhart.stepview.StepView;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,6 +75,8 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
     private List<PassengerRequest> passengers = new ArrayList<PassengerRequest>();
     private LocationForRide locationsForRide = new LocationForRide();
     private Location location;
+    private LocalDate date;
+    private LocalTime time;
     private View dateTimePicker;
     private ImageView standradCar, luxCar, van;
     int mediumAnimationDuration;
@@ -76,7 +85,9 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
     private View locations, preferences, dateTime;
     AutoCompleteTextView departure, destination;
     private int mYear, mMonth, mDay, mHour, mMinute, mSecond;
-    private String localDateTime = "%sT%s.000Z", localTime, localDate;;
+    private String localDateTime = "%sT%sZ", localTime, localDate;
+    DateTimeFormatter requestFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
     private RideRequest rideRequest = new RideRequest();
     private List<String> departures = new ArrayList<>(), destinations = new ArrayList<>();
     int position = 0;
@@ -227,8 +238,9 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                         @Override
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
-                            localDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                            txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            LocalDate date = LocalDate.of(year, monthOfYear+1, dayOfMonth);
+                            localDate = date.format(requestFormat);
+                            txtDate.setText(localDate);
 
                         }
                     }, mYear, mMonth, mDay);
@@ -247,8 +259,9 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                               int minute) {
-                            localTime = hourOfDay + ":" + minute + ":" + "00";
-                            txtTime.setText(hourOfDay + ":" + minute);
+                            LocalTime time = LocalTime.of(hourOfDay, minute);
+                            localTime = time.format(timeFormat);
+                            txtTime.setText(localTime);
                         }
                     }, mHour, mMinute,true);
             timePickerDialog.show();
@@ -366,7 +379,6 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
                     if (futureOrder.isChecked()) {
                         localDateTime = String.format(localDateTime, localDate, localTime);
                         rideRequest.setScheduledTime(localDateTime);
-                        Toast.makeText(getContext(),localDateTime,Toast.LENGTH_LONG).show();
                     } else {
                         rideRequest.setScheduledTime(null);
                     }
@@ -385,7 +397,7 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
 
     private void sendRequest(RideRequest rideRequest) {
         String token = "Bearer " + getCurrentToken();
-
+        rideRequest.setScheduledTime(localDateTime);
         Call<Ride> call = rideService.createRide(token, rideRequest);
 
         call.enqueue(new Callback<Ride>() {
@@ -393,34 +405,47 @@ public class PassengerCreateRideFragment extends Fragment implements View.OnClic
             public void onResponse(Call<Ride> call, Response<Ride> response) {
                 Ride ride = response.body();
                 if (ride != null) {
-                    Log.d("response", ride.toString());
-                    SuccesfullSearchFragment succesfullSearchFragment = new SuccesfullSearchFragment();
-                    Bundle args = new Bundle();
-                    Bundle route = new Bundle();
+                    if (ride.getStatus().equals("SCHEDULED")) {
+                        if (getActivity() != null) {
+                            PassengerActivity activity = (PassengerActivity) getActivity();
+                            activity.scheduledRide(ride.getId());
 
-                    route.putString("fromAddress", ride.getLocations().get(0).getDeparture().getAddress());
-                    route.putString("toAddress", ride.getLocations().get(0).getDestination().getAddress());
+                            Toast.makeText(getContext(), "Ride successfully scheduled!", Toast.LENGTH_SHORT).show();
 
-                    args.putBundle("route", route);
+                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.currentRide, new PassengerCreateRideFragment());
+                            fragmentTransaction.commit();
+                        }
+                    } else {
+                        Log.d("response", ride.toString());
+                        SuccesfullSearchFragment succesfullSearchFragment = new SuccesfullSearchFragment();
+                        Bundle args = new Bundle();
+                        Bundle route = new Bundle();
 
-                    List<LocationForRide> locs = ride.getLocations();
-                    for (LocationForRide l: locs ) {
-                        args.putString("startAddress", l.getDeparture().getAddress());
-                        args.putString("endAddress", l.getDestination().getAddress());
+                        route.putString("fromAddress", ride.getLocations().get(0).getDeparture().getAddress());
+                        route.putString("toAddress", ride.getLocations().get(0).getDestination().getAddress());
+
+                        args.putBundle("route", route);
+
+                        List<LocationForRide> locs = ride.getLocations();
+                        for (LocationForRide l : locs) {
+                            args.putString("startAddress", l.getDeparture().getAddress());
+                            args.putString("endAddress", l.getDestination().getAddress());
+                        }
+
+                        args.putLong("driverId", ride.getDriver().getId());
+                        args.putString("time", ride.getEstimatedTimeInMinutes().toString());
+                        args.putLong("rideId", ride.getId());
+
+                        args.putString("price", ride.getTotalCost().toString() + " RSD");
+                        args.putString("timeStart", ride.getStartTime());
+
+                        succesfullSearchFragment.setArguments(args);
+
+                        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.currentRide, succesfullSearchFragment);
+                        fragmentTransaction.commit();
                     }
-
-                    args.putLong("driverId", ride.getDriver().getId());
-                    args.putString("time", ride.getEstimatedTimeInMinutes().toString());
-                    args.putLong("rideId", ride.getId());
-
-                    args.putString("price", ride.getTotalCost().toString() + " RSD");
-                    args.putString("timeStart", ride.getStartTime());
-
-                    succesfullSearchFragment.setArguments(args);
-
-                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.currentRide, succesfullSearchFragment);
-                    fragmentTransaction.commit();
                 }
             }
             @Override
